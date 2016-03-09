@@ -2,13 +2,13 @@
 
 
 
-$DB_NAME = 'dub_tickets';
+$DB_NAME = 'db';
 
 $DB_HOST = 'localhost';
 
-$DB_USER = 'dub_tickets';
+$DB_USER = 'user';
 
-$DB_PASS = '^[nH$lt$~W}6';
+$DB_PASS = 'password';
 
 
 
