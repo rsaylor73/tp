@@ -61,8 +61,23 @@ if ($_GET['h'] != "no") {
 		$file = $GLOBAL['path'] . "/templates/" . $dir . "/header_cart.phtml";
                 $template->load_template($file,$data22);
 	} else {
-		$file = $GLOBAL['path']  . "/templates/" . $dir . "/header.phtml";
-		$template->load_template($file,$data22);
+		if ($_GET['section'] != "") {
+			$section = $_GET['section'];
+		}
+		if ($_POST['section'] != "") {
+			$section = $_POST['section'];
+		}
+		switch ($section) {
+			case "dashboard":
+		                $file = $GLOBAL['path']  . "/templates/" . $dir . "/hq_header.phtml";
+                		$template->load_template($file,$data22);
+			break;
+
+			default:
+		                $file = $GLOBAL['path']  . "/templates/" . $dir . "/header.phtml";
+        		        $template->load_template($file,$data22);
+			break;
+		}
 	}
 }
 
@@ -108,8 +123,15 @@ if ($_GET['section'] == "search") {
 
 
 if ($_GET['section'] == "dashboard") {
-        $file = $GLOBAL['path']  . "/templates/" . $dir . "/dashboard.phtml";
+        //$file = $GLOBAL['path']  . "/templates/" . $dir . "/dashboard.phtml";
+        //$template->load_template($file,$null);
+
+        $file = $GLOBAL['path']  . "/templates/" . $dir . "/hq_nav.phtml";
         $template->load_template($file,$null);
+
+        $file = $GLOBAL['path']  . "/templates/" . $dir . "/hq_body.phtml";
+        $template->load_template($file,$null);
+
 }
 
 if ($_POST['section'] == "save_details") {
@@ -195,7 +217,16 @@ if ($_POST['section'] == "cart") {
 	$file = $GLOBAL['path']  . "/templates/" . $dir . "/footer_cart.phtml";
 	$template->load_template($file,$null);
 } else {
-        $file = $GLOBAL['path']  . "/templates/" . $dir . "/footer.phtml";
-        $template->load_template($file,$null);
+                switch ($section) {
+                        case "dashboard":
+                                $file = $GLOBAL['path']  . "/templates/" . $dir . "/hq_footer.phtml";
+                                $template->load_template($file,$data22);
+                        break;
+
+			default:
+			        $file = $GLOBAL['path']  . "/templates/" . $dir . "/footer.phtml";
+			        $template->load_template($file,$null);
+			break;
+		}
 }
 ?>
