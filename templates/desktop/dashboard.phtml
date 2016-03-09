@@ -1,0 +1,263 @@
+<?php
+// $result = auto complete non array
+include "include/settings.php";
+include "include/mysql.php";
+include "include/templates.php";
+
+$tickets->navigation();
+
+?>
+
+<div id="dashboard_right">
+
+<?php
+switch ($_GET['center']) {
+	case "new_details":
+	$tickets->new_details();
+	break;
+
+	case "edit_details":
+	$tickets->edit_details();
+	break;
+
+	case "delete_details":
+	$tickets->delete_details();
+	break;
+
+	case "edit_design":
+	$tickets->edit_design();
+	break;
+
+	case "edit_settings":
+	$tickets->edit_settings();
+	break;
+
+	case "manage_tickets":
+	$tickets->manage_tickets();
+	break;
+
+	case "edit_tickets":
+	$tickets->edit_tickets();
+	break;
+
+	case "payout":
+	$tickets->payout();
+	break;
+
+	case "discounts":
+	$tickets->discounts();
+	break;
+
+	case "new_user":
+	$tickets->new_user();
+	break;
+
+	case "users":
+	$tickets->users();
+	break;
+
+	case "edit_user":
+	$tickets->edit_user();
+	break;
+
+	case "registration":
+	$tickets->registration_form();
+	break;
+
+	case "report":
+	$tickets->detail_report();
+	break;
+
+	case "delete_cu":
+	$tickets->delete_checked_user();
+	break;
+
+	default:
+
+	$sql = "
+	SELECT
+		`events`.`title`,
+		`events`.`id`
+
+	FROM
+		`events`
+
+
+	WHERE
+		`events`.`userID` = '$_SESSION[id]'
+		AND `events`.`enable_donation` = 'No'
+	
+	ORDER BY `events`.`title`
+
+	";
+
+        $sql3 = "
+        SELECT
+                `events`.`title`,
+                `events`.`id`
+
+        FROM
+                `events`
+
+
+        WHERE
+                `events`.`userID` = '$_SESSION[id]'
+		AND `events`.`enable_donation` = 'Yes'
+
+        ORDER BY `events`.`title`
+
+        ";
+
+	$result = $tickets->new_mysql($sql);
+	while ($row = $result->fetch_assoc()) {
+		$sql2 = "
+		SELECT
+			SUM(`cart`.`qty`) AS 'total'
+
+		FROM
+			`cart`
+		WHERE
+			`cart`.`eventID` = '$row[id]'
+			AND `cart`.`status` = 'Paid'
+		";
+		$result2 = $tickets->new_mysql($sql2);
+		$total = "";
+		while ($row2 = $result2->fetch_assoc()) {
+			$total = $row2['total'];
+		}
+		if ($total == "") {
+			$total = "0";
+		}
+		$data .= "['".$row['title']."','index.php?section=dashboard&center=report&id=".$row['id']."',".$total."],";
+	}
+	$data = substr($data,0,-1);
+
+        $result3 = $tickets->new_mysql($sql3);
+        while ($row3 = $result3->fetch_assoc()) {
+                $sql4 = "
+                SELECT
+                        SUM(`donate`.`price`) AS 'total'
+
+                FROM
+                        `donate`
+                WHERE
+                        `donate`.`eventID` = '$row3[id]'
+                        AND `donate`.`status` = 'Paid'
+                ";
+                $result4 = $tickets->new_mysql($sql4);
+                $total = "";
+                while ($row4 = $result4->fetch_assoc()) {
+                        $total = $row4['total'];
+                }
+                if ($total == "") {
+                        $total = "0";
+                }
+                $data2 .= "['".$row3['title']."',".$total."],";
+        }
+        $data2 = substr($data2,0,-1);
+
+
+?>
+
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  <script type="text/javascript">
+
+
+
+google.load('visualization', '1', {packages: ['corechart', 'bar']});
+google.setOnLoadCallback(drawMultSeries2);
+
+function drawMultSeries2() {
+      var data2 = google.visualization.arrayToDataTable([
+        ['Event', 'Donations'],
+        <?=$data2;?>
+      ]);
+
+      var options2 = {
+        title: 'Donations By Event (In Dollars)',
+        chartArea: {width: '50%'},
+        hAxis: {
+          title: '',
+          minValue: 0
+        },
+        vAxis: {
+          title: 'Event'
+        }
+      };
+
+      var chart2 = new google.visualization.BarChart(document.getElementById('chart_div2'));
+      chart2.draw(data2, options2);
+    }
+
+
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Event', 'link', 'Tickets Sold'],
+		<?=$data;?>
+        ]);
+
+        var view = new google.visualization.DataView(data);
+        view.setColumns([0, 2]);
+
+        var options = {
+          title: 'Tickets Sold By Event (Click on the event bar to expand the graph)',
+	colors: ['green'],
+        chartArea: {width: '50%'},
+        hAxis: {
+          title: '',
+          minValue: 0
+        },
+        vAxis: {
+          title: 'Event'
+        }
+
+        };
+
+        var chart = new google.visualization.BarChart( 
+          document.getElementById('chart_div3'));
+        chart.draw(view, options);
+
+        var selectHandler = function(e) {
+         window.location = data.getValue(chart.getSelection()[0]['row'], 1 );
+        }
+
+        // Add our selection handler.
+        google.visualization.events.addListener(chart, 'select', selectHandler);
+      }
+
+
+ </script>
+
+
+<?php
+	print '
+	Hi and welcome to your HQ. To get started use the links to the left.
+	';
+
+	?>
+	<br><br><br>
+	<?php
+	if ($data != "") {
+		print "<div id=\"chart_div3\"></div>";
+	} else {
+		print "<br><br>No reports are available for Tickets Sold By Event<br><br>";
+	}
+
+	if ($data2 != "") {
+		print "<div id=\"chart_div2\"></div>";
+	} else {
+		print "<br><br>No reports for Donations<br><br>";
+	}
+
+	break;
+}
+
+?>
+
+<br><br><br>
+
+</div>
+
+

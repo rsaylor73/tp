@@ -1,0 +1,9 @@
+[01-Feb-2016 22:48:24 UTC] PHP Warning:  include(/class/templates.class.php): failed to open stream: No such file or directory in /home/tpapp/public_html/include/templates.php on line 10
+[01-Feb-2016 22:48:24 UTC] PHP Warning:  include(): Failed opening '/class/templates.class.php' for inclusion (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/tpapp/public_html/include/templates.php on line 10
+[01-Feb-2016 22:48:24 UTC] PHP Fatal error:  Class 'Templates' not found in /home/tpapp/public_html/include/templates.php on line 11
+[02-Feb-2016 23:30:50 UTC] PHP Warning:  include(/class/templates.class.php): failed to open stream: No such file or directory in /home/tpapp/public_html/include/templates.php on line 19
+[02-Feb-2016 23:30:50 UTC] PHP Warning:  include(): Failed opening '/class/templates.class.php' for inclusion (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/tpapp/public_html/include/templates.php on line 19
+[02-Feb-2016 23:30:50 UTC] PHP Fatal error:  Class 'Templates' not found in /home/tpapp/public_html/include/templates.php on line 21
+[02-Feb-2016 23:31:15 UTC] PHP Warning:  include(/class/templates.class.php): failed to open stream: No such file or directory in /home/tpapp/public_html/include/templates.php on line 19
+[02-Feb-2016 23:31:15 UTC] PHP Warning:  include(): Failed opening '/class/templates.class.php' for inclusion (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/tpapp/public_html/include/templates.php on line 19
+[02-Feb-2016 23:31:15 UTC] PHP Fatal error:  Class 'Templates' not found in /home/tpapp/public_html/include/templates.php on line 21

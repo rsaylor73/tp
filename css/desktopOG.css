@@ -1,0 +1,202 @@
+body
+{
+}
+
+th, td {
+    padding: 5px;
+}
+
+
+/* Tablet Landscape */
+@media screen and (max-width: 1060px) {
+    #primary { width:67%; }
+    #secondary { width:30%; margin-left:3%;}  
+}
+
+/* Tabled Portrait */
+@media screen and (max-width: 768px) {
+    #primary { width:100%; }
+    #secondary { width:100%; margin:0; border:none; }
+}
+
+img { max-width: 100%; }
+
+
+#page_view {
+   position: absolute;
+   top: 185px;
+   left: 80px;
+   right: 80px;
+   height: 650px;
+   width: 80%;
+}
+
+#footer {
+   position: fixed;
+   bottom: 0px;
+   left:0px;
+   width:100%;
+   height: 50px;
+   background: #000033;
+}
+
+#dashboard_left {
+   position: absolute;
+   top: 185px;
+   left: 20px;
+   height: 650px;
+   width: 300px;
+}
+
+#dashboard_right {
+   position: absolute;
+   top: 185px;
+   left: 340px;
+   height: 650px;
+   width: 800px;
+}
+
+#myModal {
+   top:200px;
+   right:200px;
+   left: 200px;
+   height: 700px;
+   outline: none;
+}
+
+#myModal2 {
+   top:200px;
+   right:200px;
+   left: 200px;
+   height: 700px;
+   outline: none;
+}
+
+#header {
+   position: absolute;
+   top: 0px;
+   left: 0px;
+   right: 0px;
+   background-image: url("/img/bg2.jpeg");
+   background-position: center top;
+   background-repeat: no-repeat;
+   /*background-size: cover;*/
+   height: 175px;
+   /*background: #000000;*/
+}
+
+#logo {
+   position: absolute;
+   top: 20px;
+   left: 50px;
+}
+
+
+#nav {
+   position: absolute;
+   float: right;
+   top: 50px;
+   right: 50px;
+   width: 420px;
+}
+
+#middle {
+   position: absolute;
+   top: 175px;
+   left: 0px;
+   height: 650px;
+   width: 100%;
+   font: Verdana;
+   background-image: url("/img/events_page/bg3_events.jpg");
+   background-position: center top;
+   background-repeat: no-repeat;
+}
+
+#timeleft {
+	height: 75px;
+}
+
+#middlescreen {
+   position: absolute;
+   top: 175px;
+   left: 0px;
+   height: 650px;
+   width: 100%;
+   background-image: url("/img/bg3.jpg");
+   background-position: center top;
+   background-repeat: no-repeat;
+   /*background-size: cover;*/
+   /*opacity: 0.2;*/
+}
+
+#middlescreen_text {
+   position: absolute;
+   top: 175px;
+   left: 0px;
+   height: 650px;
+   width: 100%;
+
+}
+
+#adminquestionbox {
+   position: absolute;
+   top: 150px;
+   left: 150px;
+   height: 550px;
+   width: 80%;
+   background: #FFFFFF;
+}
+
+#questionbox_inner {
+   position: absolute;
+   top: 20px;
+   left: 20px;
+}
+
+.boldText {
+   font: 26px Verdana;
+   color: #2E5C9E;
+
+}
+
+.normalText {
+   font: 16px Verdana;
+   color: #000000;
+}
+
+.redText {
+	font: 17px Verdana;
+	color: #CB4E2D;
+}
+
+.glyphicon-refresh-animate {
+    -animation: spin .7s infinite linear;
+    -ms-animation: spin .7s infinite linear;
+    -webkit-animation: spinw .7s infinite linear;
+    -moz-animation: spinm .7s infinite linear;
+}
+ 
+@keyframes spin {
+    from { transform: scale(1) rotate(0deg);}
+    to { transform: scale(1) rotate(360deg);}
+}
+  
+@-webkit-keyframes spinw {
+    from { -webkit-transform: rotate(0deg);}
+    to { -webkit-transform: rotate(360deg);}
+}
+ 
+@-moz-keyframes spinm {
+    from { -moz-transform: rotate(0deg);}
+    to { -moz-transform: rotate(360deg);}
+}
+
+#container {
+    display: block; 
+    position:relative;
+    left: 19%;
+} 
+.ui-autocomplete {
+    position: absolute !important;
+}
+

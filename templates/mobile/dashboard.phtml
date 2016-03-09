@@ -1,0 +1,56 @@
+<?php
+// $result = auto complete non array
+include "include/settings.php";
+include "include/mysql.php";
+include "include/templates.php";
+
+$tickets->navigation();
+
+?>
+
+<div id="dashboard_right">
+
+<?php
+switch ($_GET['center']) {
+	case "new_details":
+	$tickets->new_details();
+	break;
+
+	case "edit_details":
+	$tickets->edit_details();
+	break;
+
+	case "delete_details":
+	$tickets->delete_details();
+	break;
+
+	case "edit_design":
+	$tickets->edit_design();
+	break;
+
+	case "edit_settings":
+	$tickets->edit_settings();
+	break;
+
+	case "manage_tickets":
+	$tickets->manage_tickets();
+	break;
+
+	case "edit_tickets":
+	$tickets->edit_tickets();
+	break;
+
+	default:
+	print '
+	Hi and welcome to your dashboard. To get started use the links to the left.
+	';
+	break;
+}
+
+?>
+
+<br><br><br>
+
+</div>
+
+

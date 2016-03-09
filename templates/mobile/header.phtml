@@ -1,0 +1,158 @@
+<?php
+// $result = auto complete non array
+include "include/settings.php";
+include "include/mysql.php";
+include "include/templates.php";
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="HandheldFriendly" content="true">
+
+    <title>Ticket Pointe | We get the pointe, Tickets!</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/mobile.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- jQuery -->
+    <!--<script src="js/jquery.min.js"></script>-->
+
+   <script src="jquery-ui-1.10.3/jquery-1.9.1.js"></script>
+   <script src="js/bootstrap.js"></script>
+   <link rel="stylesheet" href="jquery-ui-1.10.3/themes/base/jquery.ui.all.css">
+   <script src="jquery-ui-1.10.3/ui/jquery.ui.core.js"></script>
+   <script src="jquery-ui-1.10.3/ui/jquery.ui.widget.js"></script>
+   <script src="jquery-ui-1.10.3/ui/jquery.ui.datepicker.js"></script>
+   <script src="jquery-ui-1.10.3/ui/jquery.ui.menu.js"></script>
+   <script src="jquery-ui-1.10.3/ui/jquery.ui.autocomplete.js"></script>
+   <script src="jquery-ui-1.10.3/ui/jquery.ui.dialog.js"></script>
+   <script src='https://www.google.com/recaptcha/api.js'></script>
+
+  <script type="text/javascript" src="js/jquery.timepicker.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/jquery.timepicker.css" />
+  <script type="text/javascript" src="js/tinymce/tinymce.min.js"></script>
+
+<?php
+if ($_GET['section'] == "page_view") {
+?>
+  <script type="text/javascript" src="js/jssor.slider.mini.js"></script>
+  <script type="text/javascript" src="js/slider.js"></script>
+  <link href="css/slider.css" rel="stylesheet">
+<?php
+}
+?>
+
+
+	<?php
+	$template->tiny_init();
+	?>
+
+   <script>
+   $(function() {
+      $( "#start_date"	 ).datepicker({
+	dateFormat: "yy-mm-dd",
+	changeMonth: true,
+	changeYear: true
+      });
+      $( "#end_date"      ).datepicker({
+	dateFormat: "yy-mm-dd",
+        changeMonth: true,
+        changeYear: true
+      });
+   });
+
+
+   </script>
+
+
+<style>
+tr.noBorder td {border: 0; }
+</style>
+
+
+</head>
+
+<body>
+
+<center>
+<div id="header">
+	<div id="logo">
+  	      <img src="img/logom.png" height="85">
+<br>
+<br>
+		  </div>
+
+	<div id="nav">
+		<button type="button" class="btn btn-default btn-lg" onclick="document.location.href='index.php'">
+                Home
+                </button>
+
+                <button type="button" class="btn btn-default btn-lg" onclick="document.location.href='whyus.php'">
+                Why Us
+                </button>
+
+	</div>
+
+</div>
+</center>
+
+<!-- scripts -->
+                        <script>
+                                 function check_uu(myform) {
+                                        $.get('ajax/checkuu.php',
+                                        $(myform).serialize(),
+                                        function(php_msg) {
+                                                $("#checkuu").html(php_msg);
+                                        });
+                                 }
+
+                                 function check_email(myform) {
+                                        $.get('ajax/checkemail.php',
+                                        $(myform).serialize(),
+                                        function(php_msg) {
+                                                $("#checkemail").html(php_msg);
+                                        });
+                                 }
+
+                                 function check_pw(myform) {
+                                        $.get('ajax/checkpw.php',
+                                        $(myform).serialize(),
+                                        function(php_msg) {
+                                                $("#checkpw").html(php_msg);
+                                        });
+                                 }
+
+                                 function register(myform) {
+                                        $.get('ajax/register.php',
+                                        $(myform).serialize(),
+                                        function(php_msg) {
+                                                $("#registration").html(php_msg);
+                                        });
+                                 }
+                                 function login(myform) {
+                                        $.get('ajax/login.php',
+                                        $(myform).serialize(),
+                                        function(php_msg) {
+                                                $("#login").html(php_msg);
+                                        });
+                                 }
+
+                        </script>
+

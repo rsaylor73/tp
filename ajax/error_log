@@ -1,0 +1,4 @@
+[12-Feb-2016 21:12:57 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/tpapp/public_html/include/settings.php:37) in /home/tpapp/public_html/ajax/login.php on line 22
+[12-Feb-2016 21:12:57 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/tpapp/public_html/include/settings.php:37) in /home/tpapp/public_html/ajax/login.php on line 23
+[17-Feb-2016 00:30:20 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/tpapp/public_html/include/settings.php:37) in /home/tpapp/public_html/ajax/login.php on line 22
+[17-Feb-2016 00:30:20 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/tpapp/public_html/include/settings.php:37) in /home/tpapp/public_html/ajax/login.php on line 23

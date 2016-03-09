@@ -1,0 +1,7 @@
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteBase /
+
+RewriteRule ^([^?]*)$ /index.php?section=page_view&domain=$1 [L,QSA]
