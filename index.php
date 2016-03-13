@@ -69,6 +69,17 @@ if ($_GET['h'] != "no") {
 		}
 		switch ($section) {
 			case "dashboard":
+			case "profile":
+			case "create_checkin_user":
+			case "signout":
+			case "save_new_user":
+			case "save_update_user":
+			case "save_details":
+			case "update_design":
+			case "update_settings":
+			case "manage_tickets":
+			case "save_registration_form";
+			case "update_details":
 		                $file = $GLOBAL['path']  . "/templates/" . $dir . "/hq_header.phtml";
                 		$template->load_template($file,$data22);
 			break;
@@ -219,6 +230,17 @@ if ($_POST['section'] == "cart") {
 } else {
                 switch ($section) {
                         case "dashboard":
+			case "profile":
+			case "create_checkin_user":
+			case "signout":
+			case "save_new_user":
+			case "save_update_user":
+			case "save_details":
+			case "update_design":
+			case "update_settings":
+			case "manage_tickets":
+			case "save_registration_form";
+			case "update_details":
                                 $file = $GLOBAL['path']  . "/templates/" . $dir . "/hq_footer.phtml";
                                 $template->load_template($file,$data22);
                         break;

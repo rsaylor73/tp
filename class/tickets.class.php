@@ -34,12 +34,13 @@ class Tickets {
 
 	public function signoff() {
 		session_destroy();
-                print "<div id=\"dashboard_right\">";
-		print "<br><br>You have been logged out. Loading...<br><br>";
+                $this->navigation2();
+                print '<div class="row"><div class="col-md-8"><div class="row"><div class="col-md-8" id="ajax">';
 		?>
+		You have been signed off. Loading...
 		<meta http-equiv="refresh" content="3; url=index.php">
 		<?php
-		print "</div>";
+                print '</div></div></div></div>';
 	}
 
 
@@ -414,9 +415,9 @@ class Tickets {
 	}
 
 	public function update_profile() {
-                $this->navigation();
-
-                print "<div id=\"dashboard_right\">";
+		
+		$this->navigation2();
+		print '<div class="row"><div class="col-md-8"><div class="row"><div class="col-md-8" id="ajax">';
 
 		if ($_POST['ach_routing'] != "") {
 	                $ach_routing = $this->encrypt_decrypt('encrypt',$_POST['ach_routing']);
@@ -441,25 +442,47 @@ class Tickets {
 		}
 		$this->profile();
 
-		print "</div>";
+		print '</div></div></div></div>';
 	}
 
 	public function details() {
-                print "<h2>Event Details";
+                print "<h2>Events</h2>";
 
                 ?>
-                <button type="button" class="btn btn-default" onclick="document.location.href='index.php?section=dashboard&center=new_details'">
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add New Event Details
-                </button></h2>
-                <?php
 
+
+                <table width=100%>
+                <tr><td>
+
+		<?php
+		if ($_SESSION['event_details'] == "Yes") {
+		?>
+
+		<table width=200>
+		<tr><td width=200 height=250>
+                <button style="width:200px;height:285px;" type="button" class="btn btn-default" onclick="document.location.href='index.php?section=dashboard&center=new_details'">
+		<br><br>
+                &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-plus fa-5x" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;
+		<br><br><Br>
+                </button>
+		</td></tr>
+		</table>
+		<?php
+		}
+		?>
+		</td>
+
+                <?php
+		
 		$sql = "
 		SELECT
 			`l`.`location`,
 			`c`.`category`,
 			`e`.`title`,
 			`e`.`address`,
+			`e`.`cover_image`,
 			`e`.`id`,
+			`e`.`userID`,
 			DATE_FORMAT(`e`.`start_date`, '%m/%d/%Y') AS 'start_date',
 			DATE_FORMAT(`e`.`end_date`, '%m/%d/%Y') AS 'end_date'
 
@@ -472,26 +495,37 @@ class Tickets {
 			AND `e`.`userID` = '$_SESSION[id]'
 		";
 
-		print "<table class=\"table\">
-		<tr>
-			<td><b>Title</b></td>
-			<td><b>Category</b></td>
-			<td><b>Location</b></td>
-			<td><b>Start Date</b></td>
-			<td><b>End Date</b></td>
-			<td>&nbsp;</td>
-		</tr>";
 		$result = $this->new_mysql($sql);
 		while ($row = $result->fetch_assoc()) {
-			print "<tr><td>$row[title]</td><td>$row[category]</td><td>$row[location]</td><td>$row[start_date]</td><td>$row[end_date]</td>
-			<td>
+			if ($counter2 > 4) {
+				print "</tr><tr>";
+				$counter2 = "0";
+			}
+			print "<td>";
+			print "<table border=1 width=200>
+			<tr><td><table border=0 width=100%>";
+			if ($row['cover_image'] != "") {
+				print "<tr><td><img src=\"uploads/$row[userID]/cover/$row[id]/$row[cover_image]\" width=200 height=200></td></tr>";
+			} else {
+				print "<tr><td width=200 height=200><center>No Image</center></td></tr>";
+			}
+			print "<tr><td align=center>$row[title]</td></tr>
+			<tr><td align=center>$row[start_date] to $row[end_date]</td></tr>
+			<tr><td align=center>
+			";
+			if ($_SESSION['event_details'] == "Yes") {
+				print "
 				<input type=\"button\" class=\"btn btn-primary\" value=\"Edit\" onclick=\"document.location.href='index.php?section=dashboard&center=edit_details&id=$row[id]'\"> 
 				<input type=\"button\" class=\"btn btn-danger\" value=\"Delete\" onclick=\"if(confirm('WARNING: You are about to delete $row[title]')){document.location.href='index.php?section=dashboard&center=delete_details&id=$row[id]'};\"> 
+				";
+			}
+			print "
 			</td></tr>";
+			print "</table></td></tr>";
+			print "</table>";
+			print "</td>";
 			$found = "1";
-		}
-		if ($found != "1") {
-			print "<tr><td colspan=6>Sorry, there are no events. Please add one.</td></tr>";
+			$counter2++;
 		}
 		print "</table>";
 
@@ -512,8 +546,8 @@ class Tickets {
 
 	public function new_details() {
 		$form = "<input type=\"hidden\" name=\"section\" value=\"save_details\">";
-		$btn = "Save";
-		$this->details_template($form,$btn,$null);
+		$btn = "Next Step";
+		$this->details_template($form,$btn,$null,'1');
 	}
 
 	public function edit_details() {
@@ -522,7 +556,7 @@ class Tickets {
 		$sql = "SELECT * FROM `events` WHERE `id` = '$_GET[id]'";
 		$result = $this->new_mysql($sql);
 		$post = $result->fetch_assoc();
-                $this->details_template($form,$btn,$post);
+                $this->details_template($form,$btn,$post,$null);
 
 
 	}
@@ -784,8 +818,26 @@ class Tickets {
    }
 
 
-	public function details_template($form,$btn,$post) {
-                print "<h2>Event Details</h2>";
+	public function details_template($form,$btn,$post,$step) {
+
+
+		if ($step == "1") {
+
+			print '
+			<h2>New Event : Step 1 of 4</h2>
+			<nav>
+			  <ul class="pagination">
+			    <li class="active"><a href="javascript:void(0)">1 <span class="sr-only">(current)</span></a></li>
+			    <li class="disabled"><a href="javascript:void(0)">2 <span class="sr-only"></span></a></li>
+			    <li class="disabled"><a href="javascript:void(0)">3 <span class="sr-only"></span></a></li>
+			    <li class="disabled"><a href="javascript:void(0)">4 <span class="sr-only"></span></a></li>
+			  </ul>
+			</nav>
+			';
+
+		} else {
+	                print "<h2>Event Details</h2>";
+		}
 
 
 		$location = $this->get_locations($post['locationID']);
@@ -916,9 +968,8 @@ class Tickets {
 
 	public function save_details() {
 
-		$this->navigation();
-
-		print "<div id=\"dashboard_right\">";
+                $this->navigation2();
+                print '<div class="row"><div class="col-md-8"><div class="row"><div class="col-md-8" id="ajax">';
 
 		$sql = "INSERT INTO `events` 
 		(`userID`,`title`,`tagline`,`locationID`,`categoryID`,`start_date`,`end_date`,`start_time`,`end_time`,`description`,`address`,`templateID`,`more_info`,`registration`,`notifications`) VALUES 
@@ -926,18 +977,24 @@ class Tickets {
 		'$_POST[more_info]','$_POST[registration]','$_POST[notifications]')";
 		$result = $this->new_mysql($sql);
 		if ($result == "TRUE") {
-			print "<font color=green>The event was created.</font> <br>";
-			$this->details();
+
+			$eventID = $this->linkID->insert_id;
+			$_GET['id'] = $eventID;
+			$_GET['step'] = "2";
+			$this->edit_design();
+
+			//print "<font color=green>The event was created.</font> <br>";
+			//$this->details();
 		} else {
 			print "<br><br><font color=red>There was an error creating your event.</font><br><br>";
 		}
 
-		print "</div>";
+		print "</div></div></div></div>";
 	}
 
 	public function update_details() {
-                $this->navigation();
-                print "<div id=\"dashboard_right\">";
+                $this->navigation2();
+                print '<div class="row"><div class="col-md-8"><div class="row"><div class="col-md-8" id="ajax">';
 
 		$sql = "UPDATE `events` SET `title` = '$_POST[title]', `tagline` = '$_POST[tagline]', `locationID` = '$_POST[locationID]', `categoryID` = '$_POST[categoryID]', `start_date` = '$_POST[start_date]',
 		`end_date` = '$_POST[end_date]', `start_time` = '$_POST[start_time]', `end_time` = '$_POST[end_time]', `description` = '$_POST[description]' , `address` = '$_POST[address]', `templateID` = '$_POST[templateID]',
@@ -951,7 +1008,7 @@ class Tickets {
                         print "<br><br><font color=red>There was an error updating your event.</font><br><br>";
                 }
 
-		print "</div>";
+		print "</div></div></div></div>";
 
 	}
 
@@ -1038,7 +1095,25 @@ class Tickets {
 
 
 	public function edit_design() {
-		print "<h2>Edit Design</h2>";
+
+		if ($_GET['step'] == "2") {
+                        print '
+                        <h2>New Event : Step 2 of 4</h2>
+                        <nav>
+                          <ul class="pagination">
+                            <li class="disabled"><a href="javascript:void(0)">1 <span class="sr-only"></span></a></li>
+                            <li class="active"><a href="javascript:void(0)">2 <span class="sr-only">(current)</span></a></li>
+                            <li class="disabled"><a href="javascript:void(0)">3 <span class="sr-only"></span></a></li>
+                            <li class="disabled"><a href="javascript:void(0)">4 <span class="sr-only"></span></a></li>
+                          </ul>
+                        </nav>
+                        ';
+
+
+		} else {
+			print "<h2>Edit Design</h2>";
+		}
+
 		$sql = "
 		SELECT 
 			`events`.*,
@@ -1066,6 +1141,14 @@ class Tickets {
 			print "
 			<form action=\"index.php\" method=\"post\" enctype=\"multipart/form-data\">
 			<input type=\"hidden\" name=\"section\" value=\"update_design\">
+			";
+
+
+			if ($_GET['step'] == "2") {
+				print "<input type=\"hidden\" name=\"step\" value=\"3\">";
+			}
+
+			print "
 			<input type=\"hidden\" name=\"id\" value=\"$_GET[id]\">
 			<table class=\"table\">
 			<tr><td colspan=2><h3>Cover Image or Flyer</h3></td></tr>
@@ -1099,7 +1182,14 @@ class Tickets {
 			}
 			print "<tr><td colspan=2><h3>Video</h3></td></tr>
 			<tr><td colspan=2><textarea name=\"video\" cols=80 rows=5 placeholder=\"Insert Youtube or Vimeo embed code\">$row[video]</textarea></td></tr>
-			<tr><td colspan=2><input type=\"submit\" class=\"btn btn-primary\" value=\"Save\"></td></tr>
+			";
+
+			if ($_GET['step'] == "2") {
+				print "<tr><td colspan=2><input type=\"submit\" class=\"btn btn-primary\" value=\"Next Step\"></td></tr>";
+			} else {
+				print "<tr><td colspan=2><input type=\"submit\" class=\"btn btn-primary\" value=\"Save\"></td></tr>";
+			}
+			print "
 			</table>
 			</form>";
 
@@ -1200,13 +1290,20 @@ class Tickets {
 	
 
 
+                $this->navigation2();
+                print '<div class="row"><div class="col-md-8"><div class="row"><div class="col-md-8" id="ajax">';
 
-                $this->navigation();
+			if ($_POST['step'] == "3") {
+				$_GET['id'] = $_POST['id'];
+				$_GET['step'] = "3";
+				$this->edit_settings();
+			} else {
+				print "A total of $ok images was uploaded with no errors and $fail failed to upload.<br>";
+				$this->design();
+			}
 
-                print "<div id=\"dashboard_right\">";
-		print "A total of $ok images was uploaded with no errors and $fail failed to upload.<br>";
-		$this->design();
-		print "</div>";
+
+		print "</div></div></div></div>";
 
 
 	}
@@ -1291,7 +1388,23 @@ class Tickets {
 
 	public function edit_settings() {
                 $srv_settings = $this->get_settings();
-		print "<h2>Event Settings";
+
+		if ($_GET['step'] == "3") {
+                        print '
+                        <h2>New Event : Step 3 of 4</h2>
+                        <nav>
+                          <ul class="pagination">
+                            <li class="disabled"><a href="javascript:void(0)">1 <span class="sr-only"></span></a></li>
+                            <li class="disabled"><a href="javascript:void(0)">2 <span class="sr-only"></span></a></li>
+                            <li class="active"><a href="javascript:void(0)">3 <span class="sr-only">(current)</span></a></li>
+                            <li class="disabled"><a href="javascript:void(0)">4 <span class="sr-only"></span></a></li>
+                          </ul>
+                        </nav>
+                        ';
+
+		} else {
+			print "<h2>Event Settings";
+		}
 
 		$sql = "SELECT * FROM `events` WHERE `userID` = '$_SESSION[id]' AND `id` = '$_GET[id]'";
 		$result = $this->new_mysql($sql);
@@ -1307,6 +1420,7 @@ class Tickets {
 			<form action=\"index.php\" method=\"post\" name=\"myform\">
 			<input type=\"hidden\" name=\"section\" value=\"update_settings\">
 			<input type=\"hidden\" name=\"id\" value=\"$_GET[id]\">
+			<input type=\"hidden\" name=\"step\" value=\"4\">
 			<table class=\"table\">
 				<tr>
 					<td valign=top>Event Page *</td>
@@ -1318,7 +1432,13 @@ class Tickets {
 					<td>Homepage</td><td><input type=\"text\" value=\"$row[homepage]\" name=\"homepage\" id=\"homepage\" onblur=\"check_dns(this.form)\">.$srv_settings[8]</td>
 					<br><div id=\"dns\" style=\"display:inline\"></div>
 				</tr>
-				<tr><td colspan=2><input type=\"submit\" value=\"Save\" class=\"btn btn-primary\"></td></tr>
+				";
+		                if ($_GET['step'] == "3") {
+					print "<tr><td colspan=2><input type=\"submit\" value=\"Next Step\" class=\"btn btn-primary\"></td></tr>";
+				} else {
+					print "<tr><td colspan=2><input type=\"submit\" value=\"Save\" class=\"btn btn-primary\"></td></tr>";
+				}
+			print "
 	
 			</table>
 			</form>
@@ -1348,9 +1468,8 @@ class Tickets {
 
 	public function update_settings() {
 		$srv_settings = $this->get_settings();
-                $this->navigation();
-                print "<div id=\"dashboard_right\">";
-
+                $this->navigation2();
+                print '<div class="row"><div class="col-md-8"><div class="row"><div class="col-md-8" id="ajax">';
 
 		$found_owner = "0";
 		$sql = "SELECT * FROM `parked_domains` WHERE `parked_domain` = '$_POST[homepage]'";
@@ -1397,7 +1516,7 @@ class Tickets {
                 	        //print "The domain was created.\n";
 				$sql2 = "INSERT INTO `parked_domains` (`userID`,`parked_domain`) VALUES ('$_SESSION[id]','$_POST[homepage]')";
 				$result2 = $this->new_mysql($sql2);
-				print "<br><font color=green>The domain was created sucessfully.<br></font>";
+				//print "<br><font color=green>The domain was created sucessfully.<br></font>";
 	                } else {
         	                print "<br><font color=red>The domain failed to be created.</font><br>\n";
 				print "<pre>";
@@ -1408,14 +1527,27 @@ class Tickets {
 		}
                 $sql = "UPDATE `events` SET `event_page` = '$_POST[event_page]', `homepage` = '$_POST[homepage]' WHERE `userID` = '$_SESSION[id]' AND `id` = '$_POST[id]'";
 		$result = $this->new_mysql($sql);
+
 		if ($result == "TRUE") {
-			print "The event settings was saved.<br>";
+			if ($_POST['step'] == "4") {
+				//
+
+			} else {
+				print "The event settings was saved.<br>";
+			}
 		} else {
 			print "The event settings failed to update.<br>";
 		}
-		$this->event_settings();
 
-		print "</div>";
+		if ($_POST['step'] == "4") {
+                                $_GET['id'] = $_POST['id'];
+                                $_GET['step'] = "4";
+                                $this->manage_tickets();
+		} else {
+			$this->event_settings();
+		}
+
+		print "</div></div></div></div>";
 	}
 
 	public function edit_tickets() {
@@ -1425,7 +1557,21 @@ class Tickets {
                         $title = $row['title'];
                 }
 
-                print "<h2>Edit Tickets ($title)</h2>";
+		if ($_GET['step'] == "4") {
+                        print '
+                        <h2>New Event : Step 4 of 4</h2>
+                        <nav>
+                          <ul class="pagination">
+                            <li class="disabled"><a href="javascript:void(0)">1 <span class="sr-only"></span></a></li>
+                            <li class="disabled"><a href="javascript:void(0)">2 <span class="sr-only"></span></a></li>
+                            <li class="disabled"><a href="javascript:void(0)">3 <span class="sr-only"></span></a></li>
+                            <li class="active"><a href="javascript:void(0)">4 <span class="sr-only">(current)</span></a></li>
+                          </ul>
+                        </nav>
+                        ';
+		} else {
+			print "<h2>Edit Tickets ($title)</h2>";
+		}
 
 		$sql = "SELECT * FROM `tickets` WHERE `id` = '$_GET[item]' AND `userID` = '$_SESSION[id]'";
                 $result = $this->new_mysql($sql);
@@ -1517,7 +1663,21 @@ class Tickets {
 		}
 
 		if ($enable_donation == "No") {
-	                print "<h2>Manage Tickets ($title)</h2>";
+			if ($_GET['step'] == "4") {
+                        print '
+                        <h2>New Event : Step 4 of 4</h2>
+                        <nav>
+                          <ul class="pagination">
+                            <li class="disabled"><a href="javascript:void(0)">1 <span class="sr-only"></span></a></li>
+                            <li class="disabled"><a href="javascript:void(0)">2 <span class="sr-only"></span></a></li>
+                            <li class="disabled"><a href="javascript:void(0)">3 <span class="sr-only"></span></a></li>
+                            <li class="active"><a href="javascript:void(0)">4 <span class="sr-only">(current)</span></a></li>
+                          </ul>
+                        </nav>
+                        ';
+			} else {
+		                print "<h2>Manage Tickets ($title)</h2>";
+			}
 	
 		print "
 		<form name=\"myform\">
@@ -1810,7 +1970,6 @@ class Tickets {
 	}
 
 	public function social() {
-		print "<h2>Social</h2>";
 
                 $sql = "SELECT * FROM `social` WHERE `userID` = '$_SESSION[id]'";
                 $result = $this->new_mysql($sql);
@@ -1852,6 +2011,8 @@ class Tickets {
 		<div id=\"social_div\">
 		";
 
+                print "<h2>Social</h2>";
+
 		print "<table class=\"table\">
 		<tr>
 			<td colspan=2>Please select the social platform(s) that you would like visitors to have the ability to share:</td>
@@ -1862,6 +2023,7 @@ class Tickets {
 		<tr><td><img src=\"img/tumblr.png\" alt=\"Tumbler\" title=\"Tumbler\"></td><td><select name=\"tumbler\">$tumbler<option>Yes</option><option>No</option></select></td></tr>
 		<tr><td><img src=\"img/twitter.png\" alt=\"Twitter\" title=\"Twitter\"></td><td><select name=\"twitter\">$twitter<option>Yes</option><option>No</option></select></td></tr>
 		<tr><td></td><td><input type=\"button\" value=\"Save\" onclick=\"update_social(this.form)\" class=\"btn btn-primary\"></td></tr>";
+		print "</table>";
 		print "</div></form>";
 
 		?>
@@ -1870,7 +2032,7 @@ class Tickets {
 		        $.get('ajax/load.php?type=update_social',
 		        $(myform).serialize(),
 		        function(php_msg) {
-		                $("#dashboard_right").html(php_msg);
+		                $("#social_div").html(php_msg);
 		        });
 		}
 		</script>
@@ -4012,9 +4174,8 @@ class Tickets {
                         die;
                 }
 
-                $this->navigation();
-
-                print "<div id=\"dashboard_right\">";
+                $this->navigation2();
+                print '<div class="row"><div class="col-md-8"><div class="row"><div class="col-md-8" id="ajax">';
 
 		// check for errors
 		$sql = "SELECT `uuname` FROM `users` WHERE `uuname` = '$_POST[uuname]'";
@@ -4080,7 +4241,7 @@ class Tickets {
 		}
 
 		$this->users($msg);
-		print "</div>";
+		print "</div></div></div></div>";
 
 	}
 
@@ -4127,9 +4288,9 @@ class Tickets {
 	}
 
 	public function save_update_user() {
-                $this->navigation();
 
-                print "<div id=\"dashboard_right\">";
+                $this->navigation2();
+                print '<div class="row"><div class="col-md-8"><div class="row"><div class="col-md-8" id="ajax">';
 
 		// check email
 		$sql = "SELECT `email` FROM `users` WHERE `email` = '$_POST[email]' AND `id` != '$_POST[id]'";
@@ -4151,7 +4312,7 @@ class Tickets {
                         $msg = "<font color=red><br>The user failed to update.<br><br></font>";
                 }
 		$this->users($msg);
-		print "</div>";
+		print "</div></div></div></div>";
 
 	}
 
@@ -4251,9 +4412,8 @@ class Tickets {
 	}
 
 	public function save_registration_form() {
-                $this->navigation();
-
-                print "<div id=\"dashboard_right\">";
+                $this->navigation2();
+                print '<div class="row"><div class="col-md-8"><div class="row"><div class="col-md-8" id="ajax">';
 
 		$sql = "DELETE FROM `registration` WHERE `eventID` = '$_POST[eventID]' AND `userID` = '$_SESSION[id]'";
 		$result = $this->new_mysql($sql);
@@ -4270,7 +4430,7 @@ class Tickets {
 			print "<br><font color=red>There was an error saving the form.</font><br>";
 		}
 
-		print "</div>";
+		print "</div></div></div></div>";
 	}
 
 	public function checkin_users() {
@@ -4342,9 +4502,8 @@ class Tickets {
 	}
 
 	public function create_checkin_user() {
-                $this->navigation();
-
-                print "<div id=\"dashboard_right\">";
+                $this->navigation2();
+                print '<div class="row"><div class="col-md-8"><div class="row"><div class="col-md-8" id="ajax">';
 
 		$sql = "SELECT * FROM `checkin_users` WHERE `email` = '$_POST[email]'";
 		$result = $this->new_mysql($sql);
@@ -4383,8 +4542,18 @@ class Tickets {
 			print "<br><font color=red>There was an error creating the user.</font><br>";
 		}
 		$this->checkin_users();	
-		print "</div>";
+                print '</div></div></div></div>';
 	}
+
+	public function navigation2() {
+		$file = "templates/desktop/hq_nav.phtml";
+		if (file_exists($file)) {
+                        include "$file";
+                }
+
+
+	}
+
 
         public function navigation() {
 
