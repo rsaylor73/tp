@@ -534,7 +534,7 @@ class Tickets {
             }
 			print "<tr><td align=center>$row[title]</td></tr>
 			<tr><td align=center>$row[start_date] to $row[end_date]</td></tr>
-			<tr><td align=center>
+			<tr><td align=center valign=bottom>
 			";
 			if ($_SESSION['event_details'] == "Yes") {
 				print "
