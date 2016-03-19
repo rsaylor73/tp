@@ -457,12 +457,14 @@ class Tickets {
                    $width = "50";
                    $height = "50";
                    $height2 = "82";
-                   $col = "2"; 
+                   $col = "1"; 
+                   $fa = "fa-1x";
                 } else {
                     $width = "200";
                     $height = "250";
                     $height2 = "285";
-                    $col = "4";
+                    $col = "3";
+                    $fa = "fa-5x";
                 }
 
                 print "<h2>Events : $device</h2>";
@@ -481,7 +483,7 @@ class Tickets {
 		<tr><td width=<?=$width;?> height=<?=$height;?>>
                 <button style="width:<?=$width;?>px;height:<?=$height2;?>px;" type="button" class="btn btn-default" onclick="document.location.href='index.php?section=dashboard&center=new_details'">
 		<br><br>
-                &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-plus fa-5x" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-plus <?=$fa;?>" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;
 		<br><br><Br>
                 </button>
 		</td></tr>
