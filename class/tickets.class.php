@@ -525,11 +525,13 @@ class Tickets {
 			print "<td>";
 			print "<table border=1 width=$width>
 			<tr><td><table border=0 width=100%>";
-			if ($row['cover_image'] != "") {
-				print "<tr><td><img src=\"uploads/$row[userID]/cover/$row[id]/$row[cover_image]\" width=$width height=$height></td></tr>";
-			} else {
-				print "<tr><td width=$width height=$height><center>No Image</center></td></tr>";
-			}
+            if ($device == "0") {
+			    if ($row['cover_image'] != "") {
+				    print "<tr><td><img src=\"uploads/$row[userID]/cover/$row[id]/$row[cover_image]\" width=$width height=$height></td></tr>";
+			     } else {
+				    print "<tr><td width=$width height=$height><center>No Image</center></td></tr>";
+			     }
+            }
 			print "<tr><td align=center>$row[title]</td></tr>
 			<tr><td align=center>$row[start_date] to $row[end_date]</td></tr>
 			<tr><td align=center>
