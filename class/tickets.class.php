@@ -454,15 +454,15 @@ class Tickets {
 	public function details() {
                 $device = $this->device_type();
                 if ($device == "1") {
-                   $width = "50";
-                   $height = "50";
-                   $height2 = "82";
+                   $width = "100";
+                   $height = "150";
+                   $height2 = "182";
                    $col = "1"; 
                    $fa = "fa-3x";
                 } else {
                     $width = "200";
                     $height = "250";
-                    $height2 = "285";
+                    $height2 = "300";
                     $col = "3";
                     $fa = "fa-5x";
                 }
