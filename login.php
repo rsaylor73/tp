@@ -48,7 +48,7 @@ print '
     <div id="page-inner">
         <div class="row">
             <div class="col-md-8">
-                <h1 class="page-head-line">HQ</h1>
+                <h1 class="page-head-line">HQ Login</h1>
             </div>
         </div>
 
@@ -132,7 +132,6 @@ input[type=submit]:hover {
 
 </style>
 <div id="page_view" style="text-align:center">
-<h2>Login</h2>
 
                         <div id="login">
 			<?=$msg;?>
