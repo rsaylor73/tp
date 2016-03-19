@@ -520,7 +520,7 @@ class Tickets {
 		while ($row = $result->fetch_assoc()) {
 			if ($counter2 > $col) {
 				print "</tr><tr>";
-				$counter2 = "0";
+				$counter2 = "-1";
 			}
 			print "<td>";
 			print "<table border=1 width=$width height=$height>
