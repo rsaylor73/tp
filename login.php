@@ -27,6 +27,31 @@ $file = $GLOBAL['path']  . "/templates/" . $dir . "/hq_header.phtml";
 $template->load_template($file,$null);
 
 print '
+<nav class="navbar-default navbar-side" role="navigation">
+<div class="sidebar-collapse">
+    <form name="myform">
+    <ul class="nav" id="main-menu">
+        <li>
+            <div class="user-img-div">
+                <div class="inner-text">
+                    <?php echo "$_SESSION[fname] $_SESSION[lname]";?> 
+                </div>
+            </div>
+        </li>
+    </ul>
+    </form>
+</div>
+</nav>
+
+<!-- /. NAV SIDE  -->
+<div id="page-wrapper">
+    <div id="page-inner">
+        <div class="row">
+            <div class="col-md-8">
+                <h1 class="page-head-line">HQ</h1>
+            </div>
+        </div>
+
                 <div class="row">
                     <div class="col-md-8">
                         <div class="row">
