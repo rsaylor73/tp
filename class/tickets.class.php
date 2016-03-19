@@ -480,7 +480,7 @@ class Tickets {
 		?>
 
 		<table width=<?=$width;?>>
-		<tr><td width=<?=$width;?> height=<?=$height2;?>>
+		<tr><td width=<?=$width;?> height=<?=$height;?>>
                 <button style="width:<?=$width;?>px;height:<?=$height2;?>px;" type="button" class="btn btn-default" onclick="document.location.href='index.php?section=dashboard&center=new_details'">
 		<br><br>
                 &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-plus <?=$fa;?>" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;
