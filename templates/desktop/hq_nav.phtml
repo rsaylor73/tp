@@ -32,7 +32,7 @@ if ($_SESSION['resellerID'] == "0") {
             <a href="index.php?section=dashboard"><i class="fa fa-dashboard "></i>HQ</a>
         </li>
         <li>
-            <a href="javascript:void(0)" onclick="load_profile(this.form)"><i class="fa fa-user "></i>My Profile</a>
+            <a href="javascript:void(0)" onclick="load_profile(this.form)" data-toggle="collapse" data-target=".sidebar-collapse"><i class="fa fa-user "></i>My Profile</a>
         </li>
         <li>
             <a href="javascript:void(0)" onclick="load_details(this.form)" data-toggle="collapse" data-target=".sidebar-collapse"><i class="fa fa-ticket "></i>Events</a>
@@ -56,13 +56,13 @@ if ($_SESSION['resellerID'] == "0") {
 
         </li>
         <li>
-           <a href="javascript:void(0)" onclick="load_checkin(this.form)"><i class="fa fa-users "></i>Check-In Users</a>
+           <a href="javascript:void(0)" onclick="load_checkin(this.form)" data-toggle="collapse" data-target=".sidebar-collapse"><i class="fa fa-users "></i>Check-In Users</a>
         </li>
         <li>
-            <a href="javascript:void(0)" onclick="users(this.form)"><i class="fa fa-user "></i>Manage Users</a>
+            <a href="javascript:void(0)" onclick="users(this.form)" data-toggle="collapse" data-target=".sidebar-collapse"><i class="fa fa-user "></i>Manage Users</a>
         </li>
         <li>
-            <a href="index.php?section=signout"><i class="fa fa-sign-out "></i>Logout</a>
+            <a href="index.php?section=signout" data-toggle="collapse" data-target=".sidebar-collapse"><i class="fa fa-sign-out "></i>Logout</a>
         </li>
     </ul>
 	</form>
