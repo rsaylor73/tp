@@ -26,6 +26,13 @@ if ($type) {
 $file = $GLOBAL['path']  . "/templates/" . $dir . "/hq_header.phtml";
 $template->load_template($file,$null);
 
+print '
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-8" id="ajax">
+';
+
 if ($_POST['lg'] == "login") {
 	$sql = "SELECT * FROM `users` WHERE `uuname` = '$_POST[uuname]' AND BINARY `uupass` = '$_POST[uupass]'";
 	$result = $tickets->new_mysql($sql);
@@ -179,6 +186,7 @@ input[type=submit]:hover {
 <?php
 
 //$file = $GLOBAL['path']  . "/templates/" . $dir . "/footer.phtml";
+print '</div></div></div></div>';
 $file = $GLOBAL['path']  . "/templates/" . $dir . "/hq_footer.phtml";
 $template->load_template($file,$null);
 ?>
