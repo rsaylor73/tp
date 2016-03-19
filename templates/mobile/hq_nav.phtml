@@ -1,0 +1,120 @@
+<?php
+if ($_SESSION['resellerID'] == "0") {
+    $event_details = "Yes";
+	$_SESSION['event_details'] = $event_details;
+    $event_design = "Yes";
+    $social = "Yes";
+    $event_settings = "Yes";
+    $create_tickets = "Yes";
+    $checkin = "Yes";
+} else {
+    $event_details = $_SESSION['event_details'];
+    $event_design = $_SESSION['event_design'];
+    $social = $_SESSION['social'];
+    $event_settings = $_SESSION['event_settings'];
+    $create_tickets = $_SESSION['create_tickets'];
+    $_SESSION['id'] = $_SESSION['resellerID'];
+}
+?>
+
+<nav class="navbar-default navbar-side" role="navigation">
+<div class="sidebar-collapse">
+    <form name="myform">
+    <ul class="nav" id="main-menu">
+        <li>
+            <div class="user-img-div">
+                <div class="inner-text">
+                    <?php echo "$_SESSION[fname] $_SESSION[lname]";?> 
+                </div>
+            </div>
+        </li>
+        <li>
+            <a href="index.php?section=dashboard"><i class="fa fa-dashboard "></i>HQ</a>
+        </li>
+        <li>
+            <a href="javascript:void(0)" onclick="load_profile(this.form)" data-toggle="collapse" data-target=".sidebar-collapse"><i class="fa fa-user "></i>My Profile</a>
+        </li>
+        <li>
+            <a href="javascript:void(0)" onclick="load_details(this.form)" data-toggle="collapse" data-target=".sidebar-collapse"><i class="fa fa-ticket "></i>Events</a>
+        </li>
+
+		<?php if ($event_design == "Yes") { ?>
+		<li><a href="javascript:void(0)" onclick="document.location.href='index.php?section=dashboard&center=design'"><i class="fa fa-camera "></i>Design</a></li>
+		<?php } ?>
+
+		<?php if ($social == "Yes") { ?>
+        <li><a href="javascript:void(0)" onclick="document.location.href='index.php?section=dashboard&center=social'"><i class="fa fa-share-square "></i>Social</a></li>
+		<?php } ?>
+
+		<?php if ($event_settings == "Yes") { ?>
+        <li><a href="javascript:void(0)" onclick="document.location.href='index.php?section=dashboard&center=event_settings'"><i class="fa fa-bars "></i>Settings</a></li>
+		<?php } ?>
+
+		<?php if ($create_tickets == "Yes") { ?>
+        <li><a href="javascript:void(0)" onclick="document.location.href='index.php?section=dashboard&center=tickets'"><i class="fa fa-money "></i>Tickets</a></li>
+		<?php } ?>
+
+        </li>
+        <li>
+           <a href="javascript:void(0)" onclick="load_checkin(this.form)" data-toggle="collapse" data-target=".sidebar-collapse"><i class="fa fa-users "></i>Check-In Users</a>
+        </li>
+        <li>
+            <a href="javascript:void(0)" onclick="users(this.form)" data-toggle="collapse" data-target=".sidebar-collapse"><i class="fa fa-user "></i>Manage Users</a>
+        </li>
+        <li>
+            <a href="index.php?section=signout" data-toggle="collapse" data-target=".sidebar-collapse"><i class="fa fa-sign-out "></i>Logout</a>
+        </li>
+    </ul>
+	</form>
+</div>
+</nav>
+
+<!-- /. NAV SIDE  -->
+<div id="page-wrapper">
+    <div id="page-inner">
+        <div class="row">
+            <div class="col-md-8">
+                <h1 class="page-head-line">HQ</h1>
+            </div>
+        </div>
+
+
+<script>        
+function logout(myform) {
+        $.get('ajax/load.php?type=logout',
+        $(myform).serialize(),
+        function(php_msg) {
+                $("#ajax").html(php_msg);
+        });     
+}              
+function load_profile(myform) {
+        $.get('ajax/load.php?type=profile',
+        $(myform).serialize(),
+        function(php_msg) {
+                $("#ajax").html(php_msg);
+        });     
+}               
+function load_checkin(myform) {
+        $.get('ajax/load.php?type=checkin',
+        $(myform).serialize(),
+        function(php_msg) {
+                $("#ajax").html(php_msg);
+        });     
+}               
+
+function load_details(myform) {
+        $.get('ajax/load.php?type=details',
+        $(myform).serialize(),
+        function(php_msg) {
+                $("#ajax").html(php_msg);
+        });
+}
+function users(myform) {
+        $.get('ajax/load.php?type=users',
+        $(myform).serialize(),
+        function(php_msg) {
+                $("#ajax").html(php_msg);
+        });
+}
+</script>
+
