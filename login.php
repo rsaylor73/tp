@@ -22,7 +22,8 @@ if ($type) {
         $dir = "desktop";
 }
 
-$file = $GLOBAL['path']  . "/templates/" . $dir . "/header.phtml";
+//$file = $GLOBAL['path']  . "/templates/" . $dir . "/header.phtml";
+$file = $GLOBAL['path']  . "/templates/" . $dir . "/hq_header.phtml";
 $template->load_template($file,$null);
 
 if ($_POST['lg'] == "login") {
@@ -177,6 +178,7 @@ input[type=submit]:hover {
 
 <?php
 
-$file = $GLOBAL['path']  . "/templates/" . $dir . "/footer.phtml";
+//$file = $GLOBAL['path']  . "/templates/" . $dir . "/footer.phtml";
+$file = $GLOBAL['path']  . "/templates/" . $dir . "/hq_footer.phtml";
 $template->load_template($file,$null);
 ?>
