@@ -9,7 +9,7 @@ include "include/templates.php";
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Responsive Bootstrap Advance Admin Template</title>
+    <title>Ticket Pointe</title>
 
     <!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
@@ -23,10 +23,36 @@ include "include/templates.php";
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
     <script type="text/javascript" src="js/tinymce/tinymce.min.js"></script>
 
+    <script src="jquery-ui-1.10.3/jquery-1.9.1.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <link rel="stylesheet" href="jquery-ui-1.10.3/themes/base/jquery.ui.all.css">
+    <script src="jquery-ui-1.10.3/ui/jquery.ui.core.js"></script>
+    <script src="jquery-ui-1.10.3/ui/jquery.ui.widget.js"></script>
+    <script src="jquery-ui-1.10.3/ui/jquery.ui.datepicker.js"></script>
+    <script src="jquery-ui-1.10.3/ui/jquery.ui.menu.js"></script>
+    <script src="jquery-ui-1.10.3/ui/jquery.ui.autocomplete.js"></script>
+    <script src="jquery-ui-1.10.3/ui/jquery.ui.dialog.js"></script>
+
         <?php
         $template->tiny_init();
         ?>
 
+<script>
+   $(function() {
+      $( "#start_date"   ).datepicker({
+    dateFormat: "yy-mm-dd",
+    changeMonth: true,
+    changeYear: true
+      });
+      $( "#end_date"      ).datepicker({
+    dateFormat: "yy-mm-dd",
+        changeMonth: true,
+        changeYear: true
+      });
+   });
+
+
+   </script>
 
 </head>
 <body>
