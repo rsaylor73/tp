@@ -456,7 +456,7 @@ class Tickets {
                 if ($device == "1") {
                    $width = "100";
                    $height = "150";
-                   $height2 = "132";
+                   $height2 = "150";
                    $col = "1"; 
                    $fa = "fa-3x";
                 } else {
@@ -479,8 +479,8 @@ class Tickets {
 		if ($_SESSION['event_details'] == "Yes") {
 		?>
 
-		<table width="<?=$width;?>" height="<?=$height;?>">
-		<tr><td width="<?=$width;?>" height="<?=$height;?>">
+		<table width="<?=$width;?>" height="<?=$height2;?>">
+		<tr><td width="<?=$width;?>" height="<?=$height2;?>">
                 <button style="width:<?=$width;?>px;height:<?=$height;?>px;" type="button" class="btn btn-default" onclick="document.location.href='index.php?section=dashboard&center=new_details'">
 		<br><br>
                 &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-plus <?=$fa;?>" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;
