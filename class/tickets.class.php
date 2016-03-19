@@ -523,7 +523,7 @@ class Tickets {
 				$counter2 = "0";
 			}
 			print "<td>";
-			print "<table border=1 width=$width>
+			print "<table border=1 width=$width height=$height>
 			<tr><td><table border=0 width=100%>";
             if ($device == "0") {
 			    if ($row['cover_image'] != "") {
