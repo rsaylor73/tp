@@ -453,6 +453,18 @@ class Tickets {
 
 	public function details() {
                 $device = $this->device_type();
+                if ($device == "1") {
+                   $width = "50";
+                   $height = "50";
+                   $height2 = "82"
+                   $col = "2"; 
+                } else {
+                    $width = "200";
+                    $height = "250";
+                    $height2 = "285";
+                    $col = "4";
+                }
+
                 print "<h2>Events : $device</h2>";
 
                 ?>
@@ -465,9 +477,9 @@ class Tickets {
 		if ($_SESSION['event_details'] == "Yes") {
 		?>
 
-		<table width=200>
-		<tr><td width=200 height=250>
-                <button style="width:200px;height:285px;" type="button" class="btn btn-default" onclick="document.location.href='index.php?section=dashboard&center=new_details'">
+		<table width=<?=$width;?>>
+		<tr><td width=<?=$width;?> height=<?=$height;?>>
+                <button style="width:<?=$width;?>px;height:<?=$height2;?>px;" type="button" class="btn btn-default" onclick="document.location.href='index.php?section=dashboard&center=new_details'">
 		<br><br>
                 &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-plus fa-5x" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;
 		<br><br><Br>
@@ -504,17 +516,17 @@ class Tickets {
 
 		$result = $this->new_mysql($sql);
 		while ($row = $result->fetch_assoc()) {
-			if ($counter2 > 4) {
+			if ($counter2 > $col) {
 				print "</tr><tr>";
 				$counter2 = "0";
 			}
 			print "<td>";
-			print "<table border=1 width=200>
+			print "<table border=1 width=$width>
 			<tr><td><table border=0 width=100%>";
 			if ($row['cover_image'] != "") {
-				print "<tr><td><img src=\"uploads/$row[userID]/cover/$row[id]/$row[cover_image]\" width=200 height=200></td></tr>";
+				print "<tr><td><img src=\"uploads/$row[userID]/cover/$row[id]/$row[cover_image]\" width=$width height=$height></td></tr>";
 			} else {
-				print "<tr><td width=200 height=200><center>No Image</center></td></tr>";
+				print "<tr><td width=$width height=$height><center>No Image</center></td></tr>";
 			}
 			print "<tr><td align=center>$row[title]</td></tr>
 			<tr><td align=center>$row[start_date] to $row[end_date]</td></tr>
