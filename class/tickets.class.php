@@ -456,7 +456,7 @@ class Tickets {
                 if ($device == "1") {
                    $width = "50";
                    $height = "50";
-                   $height2 = "82"
+                   $height2 = "82";
                    $col = "2"; 
                 } else {
                     $width = "200";
