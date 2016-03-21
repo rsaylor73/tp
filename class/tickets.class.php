@@ -462,7 +462,7 @@ class Tickets {
                 } else {
                     $width = "200";
                     $height = "250";
-                    $height2 = "350";
+                    $height2 = "282";
                     $col = "3";
                     $fa = "fa-5x";
                 }
@@ -481,7 +481,7 @@ class Tickets {
 
 		<table width="<?=$width;?>" height="<?=$height2;?>">
 		<tr><td width="<?=$width;?>" height="<?=$height2;?>">
-                <button style="width:<?=$width;?>px;height:<?=$height;?>px;" type="button" class="btn btn-default" onclick="document.location.href='index.php?section=dashboard&center=new_details'">
+                <button style="width:<?=$width;?>px;height:<?=$height2;?>px;" type="button" class="btn btn-default" onclick="document.location.href='index.php?section=dashboard&center=new_details'">
 		<br><br>
                 &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-plus <?=$fa;?>" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;
 		<br><br><Br>
