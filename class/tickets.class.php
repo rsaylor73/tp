@@ -816,7 +816,7 @@ class Tickets {
 
       if ($device == "1") {
         // mobile
-        $width = "450";
+        $width = "400";
         $height = "400";
       } else {
         // desktop
@@ -854,6 +854,9 @@ class Tickets {
       $graph->xaxis->title->Set('Month');
       $graph->yaxis->title->Set($side_title);
       $graph->xaxis->SetTickLabels(array('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'));
+      if ($device == "1") {
+        $graph->xaxis->SetLabelAngle(50);
+      }
 
       $graph->title->SetFont(FF_FONT1,FS_BOLD);
       $graph->yaxis->title->SetFont(FF_FONT1,FS_BOLD);
