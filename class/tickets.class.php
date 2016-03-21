@@ -648,6 +648,8 @@ class Tickets {
 	}
 
 	public function detail_report() {
+        $device = $this->device_type();
+
 		$sql = "SELECT `title` FROM `events` WHERE `id` = '$_GET[id]' AND `userID` = '$_SESSION[id]'";
 		$result = $this->new_mysql($sql);
 		while ($row = $result->fetch_assoc()) {
@@ -693,25 +695,41 @@ class Tickets {
 			// get percentage
 			$per_sold = ($total_tickets_sold / $total_tickets_avail) * 100;
 
+            if ($device == "1") {
+                // moble
+                $width = "300";
+                $w1 = "20";
+                $w2 = "150";
+                $w3 = "130";
+
+            } else {
+                // desktop
+                $width = "500";
+                $w1 = "50";
+                $w2 = "150";
+                $w3 = "130";
+
+            }
+
 			// New detailed report
-			print "<table border=\"0\" width=\"500\">
+			print "<table border=\"0\" width=\"$width\">
 			<tr><td colspan=3><b>Tickets Sold</b></td></tr>
 
 			<tr>
-				<td width=\"50\">&nbsp;</td>
-				<td width=\"300\"><b>Total</b></td>
-				<td width=\"150\">&nbsp;</td>
+				<td width=\"$w1\">&nbsp;</td>
+				<td width=\"$w2\"><b>Total</b></td>
+				<td width=\"$w3\">&nbsp;</td>
 			</tr>
 			<tr valign=top>
-				<td width=\"50\">&nbsp;</td>
-				<td width=\"300\">
+				<td width=\"$w1\">&nbsp;</td>
+				<td width=\"$w2\">
 
 				<div class=\"progress\">
 					<div class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"$per_sold\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: $per_sold%;\">$per_sold%</div>
 				</div>
 
 				</td>
-				<td width=\"150\">$total_tickets_sold/$total_tickets_avail</td>
+				<td width=\"$w3\">$total_tickets_sold/$total_tickets_avail</td>
 			</tr>
 			";
 			$sql3 = "SELECT `id` FROM `tickets` WHERE `eventID` = '$_GET[id]' ORDER BY `name` ASC";
@@ -794,6 +812,18 @@ class Tickets {
 	}
 
    public function bar_graph($data,$title,$side_title) {
+      $device = $this->device_type();
+
+      if ($device == "1") {
+        // mobile
+        $width = "300";
+        $height = "300";
+      } else {
+        // desktop
+        $width = "800";
+        $height = "400";
+      }
+
       require_once ('jpgraph/src/jpgraph.php');
       require_once ('jpgraph/src/jpgraph_bar.php');
 
@@ -801,7 +831,7 @@ class Tickets {
 	//$data = array(2,5,3,8,9,2,4,7);
 
       // Create the graph. These two calls are always required
-      $graph = new Graph(800,400);
+      $graph = new Graph($width,$height);
       $graph->SetScale('textlin');
 
       // Add a drop shadow
