@@ -462,7 +462,7 @@ class Tickets {
                 } else {
                     $width = "200";
                     $height = "250";
-                    $height2 = "320";
+                    $height2 = "330";
                     $col = "3";
                     $fa = "fa-5x";
                 }
