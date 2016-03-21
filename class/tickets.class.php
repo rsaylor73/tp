@@ -462,12 +462,12 @@ class Tickets {
                 } else {
                     $width = "200";
                     $height = "250";
-                    $height2 = "320";
+                    $height2 = "350";
                     $col = "3";
                     $fa = "fa-5x";
                 }
 
-                print "<h2>Events : $device</h2>";
+                print "<h2>Events</h2>";
 
                 ?>
 
