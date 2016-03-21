@@ -23,34 +23,71 @@ include "include/templates.php";
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
     <script type="text/javascript" src="js/tinymce/tinymce.min.js"></script>
 
-    <script src="jquery-ui-1.10.3/jquery-1.9.1.js"></script>
-    <script src="js/bootstrap.js"></script>
-    <link rel="stylesheet" href="jquery-ui-1.10.3/themes/base/jquery.ui.all.css">
-    <script src="jquery-ui-1.10.3/ui/jquery.ui.core.js"></script>
-    <script src="jquery-ui-1.10.3/ui/jquery.ui.widget.js"></script>
-    <script src="jquery-ui-1.10.3/ui/jquery.ui.datepicker.js"></script>
-    <script src="jquery-ui-1.10.3/ui/jquery.ui.menu.js"></script>
-    <script src="jquery-ui-1.10.3/ui/jquery.ui.autocomplete.js"></script>
-    <script src="jquery-ui-1.10.3/ui/jquery.ui.dialog.js"></script>
+   <script src="jquery-ui-1.10.3/jquery-1.9.1.js"></script>
+   <script src="js/bootstrap.js"></script>
+   <link rel="stylesheet" href="jquery-ui-1.10.3/themes/base/jquery.ui.all.css">
+   <script src="jquery-ui-1.10.3/ui/jquery.ui.core.js"></script>
+   <script src="jquery-ui-1.10.3/ui/jquery.ui.widget.js"></script>
+   <script src="jquery-ui-1.10.3/ui/jquery.ui.datepicker.js"></script>
+   <script src="jquery-ui-1.10.3/ui/jquery.ui.menu.js"></script>
+   <script src="jquery-ui-1.10.3/ui/jquery.ui.autocomplete.js"></script>
+   <script src="jquery-ui-1.10.3/ui/jquery.ui.dialog.js"></script>
+   <script src='https://www.google.com/recaptcha/api.js'></script>
+
+  <script type="text/javascript" src="js/jquery.timepicker.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/jquery.timepicker.css" />
+  <script type="text/javascript" src="js/tinymce/tinymce.min.js"></script>
+
+  <script>
+  $(function() {
+    var availableTags = [
+   <?=$result;?>
+    ];
+    $( "#search_area" ).autocomplete({
+      source: availableTags,
+      appendTo: "#container",
+      position: { my : "right bottom", at: "right bottom" },
+      //<!-- Added SELECT event -kjg //-->
+      select: function (event, ui) {
+        $( "#search_area" ).val(ui.item.label);
+                document.getElementById('search_area').value = ui.item.label;
+        redirect_page()
+        },
+      //<!-- END //-->
+      minLength: 1
+    });
+  });
+  </script>
+
+
+<?php
+if ($_GET['section'] == "page_view") {
+?>
+  <script type="text/javascript" src="js/jssor.slider.mini.js"></script>
+  <script type="text/javascript" src="js/slider.js"></script>
+  <link href="css/slider.css" rel="stylesheet">
+<?php
+}
+?>
+
 
         <?php
         $template->tiny_init();
         ?>
 
-<script>
+   <script>
    $(function() {
       $( "#start_date"   ).datepicker({
-    dateFormat: "yy-mm-dd",
-    changeMonth: true,
-    changeYear: true
+        dateFormat: "yy-mm-dd",
+        changeMonth: true,
+        changeYear: true
       });
       $( "#end_date"      ).datepicker({
-    dateFormat: "yy-mm-dd",
+        dateFormat: "yy-mm-dd",
         changeMonth: true,
         changeYear: true
       });
    });
-
 
    </script>
 
