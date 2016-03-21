@@ -1083,6 +1083,7 @@ class Tickets {
 	}
 
 	public function design() {
+        $device = $this->device_type();
 
 		print "<h2>Event Design</h2>";
 
@@ -1138,7 +1139,7 @@ class Tickets {
 			<td>$slideshow</td>
 			<td>$video</td>
                         <td>
-                                <input type=\"button\" class=\"btn btn-primary\" value=\"Edit or Add Design\" onclick=\"document.location.href='index.php?section=dashboard&center=edit_design&id=$row[id]'\">
+                                <input type=\"button\" class=\"btn btn-primary\" value=\"Edit\" onclick=\"document.location.href='index.php?section=dashboard&center=edit_design&id=$row[id]'\">
                         </td></tr>";
                         $found = "1";
                 }
