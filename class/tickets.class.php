@@ -1152,6 +1152,7 @@ class Tickets {
 
 
 	public function edit_design() {
+        $device = $this->device_type();
 
 		if ($_GET['step'] == "2") {
                         print '
@@ -1237,10 +1238,12 @@ class Tickets {
 					<td><input type=\"file\" name=\"$img\"></td>
 				</tr>";
 			}
+            /*
 			print "<tr><td colspan=2><h3>Video</h3></td></tr>
 			<tr><td colspan=2><textarea name=\"video\" cols=80 rows=5 placeholder=\"Insert Youtube or Vimeo embed code\">$row[video]</textarea></td></tr>
 			";
-
+            */
+            
 			if ($_GET['step'] == "2") {
 				print "<tr><td colspan=2><input type=\"submit\" class=\"btn btn-primary\" value=\"Next Step\"></td></tr>";
 			} else {
