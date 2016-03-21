@@ -1472,7 +1472,7 @@ class Tickets {
                         <td>$event_page</td>
                         <td>$homepage</td>
                         <td>
-                                <input type=\"button\" class=\"btn btn-primary\" value=\"Edit or Add Settings\" onclick=\"document.location.href='index.php?section=dashboard&center=edit_settings&id=$row[id]'\">
+                                <input type=\"button\" class=\"btn btn-primary\" value=\"Edit\" onclick=\"document.location.href='index.php?section=dashboard&center=edit_settings&id=$row[id]'\">
                         </td></tr>";
                         $found = "1";
                 }
