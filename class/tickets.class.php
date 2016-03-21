@@ -1206,18 +1206,35 @@ class Tickets {
 				print "<input type=\"hidden\" name=\"step\" value=\"3\">";
 			}
 
-			print "
-			<input type=\"hidden\" name=\"id\" value=\"$_GET[id]\">
-			<table class=\"table\">
-			<tr><td colspan=2><h3>Cover Image or Flyer</h3></td></tr>
-			<tr>
-				<td>
-				$cover
-				</td>
-				<td><input type=\"file\" name=\"cover_image\"><br>Please size image as <b>$row[cover_photo_dimentions]</b></td>
-			</tr>
-			<tr><td colspan=2><h3>Slideshow</h3></td></tr>
-			";
+            if ($device == "0") {
+			     print "
+			     <input type=\"hidden\" name=\"id\" value=\"$_GET[id]\">
+			     <table class=\"table\">
+			     <tr><td colspan=2><h3>Cover Image or Flyer</h3></td></tr>
+			     <tr>
+				    <td>
+				        $cover
+				    </td>
+				    <td><input type=\"file\" name=\"cover_image\"><br>Please size image as <b>$row[cover_photo_dimentions]</b></td>
+			     </tr>
+			     <tr><td colspan=2><h3>Slideshow</h3></td></tr>
+			     ";
+            } else {
+                 print "
+                 <input type=\"hidden\" name=\"id\" value=\"$_GET[id]\">
+                 <table class=\"table\">
+                 <tr><td><h3>Cover Image or Flyer</h3></td></tr>
+                 <tr>
+                    <td>
+                        $cover
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type=\"file\" name=\"cover_image\"><br>Please size image as <b>$row[cover_photo_dimentions]</b></td>
+                 </tr>
+                 <tr><td><h3>Slideshow</h3></td></tr>
+                 ";                
+            }
 			for ($x=1; $x < 6; $x++) {
 				$img = "slide";
 				$img .= $x;
@@ -1226,28 +1243,49 @@ class Tickets {
 	                                $slide = "
         	                        <a href=\"uploads/".$_SESSION['id']."/slide/".$_GET['id']."/".$row[$img]."\" target=_blank>
                 	                <img src=\"uploads/".$_SESSION['id']."/slide/".$_GET['id']."/".$row[$img]."\" width=200></a>";
+                                    if ($device == "1") {
+                                        $slide .= "<br>";
+                                    }
 				} else {
 					$slide = "Please upload a photo";
 				}
 
-
-				print "<tr>
-					<td>
-					Image $x $slide
-					</td>
-					<td><input type=\"file\" name=\"$img\"></td>
-				</tr>";
+                if ($device == "0") {
+				    print "<tr>
+					    <td>
+					    Image $x $slide
+					    </td>
+					    <td><input type=\"file\" name=\"$img\"></td>
+				    </tr>";
+                } else {
+                    print "<tr>
+                        <td>
+                        Image $x $slide
+                        </td>
+                        </tr>
+                        <tr>
+                        <td><input type=\"file\" name=\"$img\"></td>
+                    </tr>";
+                }
 			}
             /*
 			print "<tr><td colspan=2><h3>Video</h3></td></tr>
 			<tr><td colspan=2><textarea name=\"video\" cols=80 rows=5 placeholder=\"Insert Youtube or Vimeo embed code\">$row[video]</textarea></td></tr>
 			";
             */
-            
+
 			if ($_GET['step'] == "2") {
-				print "<tr><td colspan=2><input type=\"submit\" class=\"btn btn-primary\" value=\"Next Step\"></td></tr>";
+                if ($device == "1") {
+				    print "<tr><td><input type=\"submit\" class=\"btn btn-primary\" value=\"Next Step\"></td></tr>";
+                } else {
+                    print "<tr><td colspan=2><input type=\"submit\" class=\"btn btn-primary\" value=\"Next Step\"></td></tr>";
+                }
 			} else {
-				print "<tr><td colspan=2><input type=\"submit\" class=\"btn btn-primary\" value=\"Save\"></td></tr>";
+                if ($device == "1") {
+				    print "<tr><td><input type=\"submit\" class=\"btn btn-primary\" value=\"Save\"></td></tr>";
+                } else {
+                    print "<tr><td colspan=2><input type=\"submit\" class=\"btn btn-primary\" value=\"Save\"></td></tr>";
+                }
 			}
 			print "
 			</table>
