@@ -816,7 +816,7 @@ class Tickets {
 
       if ($device == "1") {
         // mobile
-        $width = "400";
+        $width = "420";
         $height = "400";
       } else {
         // desktop
