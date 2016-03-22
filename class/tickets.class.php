@@ -1841,6 +1841,10 @@ class Tickets {
 		$sql = "SELECT * FROM `tickets` WHERE `eventID` = '$_GET[id]' AND `userID` = '$_SESSION[id]' ORDER BY `name` ASC";
 		$result = $this->new_mysql($sql);
 		while ($row = $result->fetch_assoc()) {
+                if (strlen($row['name']) > 20) {
+                    $row['name'] = substr($row['name'], 0,30);
+                    $row['name'] .= " ...";
+                }
 		        print "<tr><td>$row[name]</td><td>$row[qty]</td><td>$row[price]</td>";
                 if ($device == "0") {
                     print "<td>
