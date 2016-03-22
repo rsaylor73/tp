@@ -1848,7 +1848,8 @@ class Tickets {
                     <input type=\"button\" class=\"btn btn-danger\" value=\"Delete\" onclick=\"if(confirm('WARNING: You are about to delete $row[name]')){document.location.href='index.php?section=dashboard&center=manage_tickets&id=$_GET[id]&delete=y&item=$row[id]'};\">
 				</td></tr>";
                 } else {
-                    print "</tr><tr colspan=2>
+                    print "</tr>
+                    <tr><td colspan=2>
                     <input type=\"button\" class=\"btn btn-primary\" value=\"Edit\" onclick=\"document.location.href='index.php?section=dashboard&center=edit_tickets&id=$_GET[id]&item=$row[id]'\">
                     <input type=\"button\" class=\"btn btn-danger\" value=\"Delete\" onclick=\"if(confirm('WARNING: You are about to delete $row[name]')){document.location.href='index.php?section=dashboard&center=manage_tickets&id=$_GET[id]&delete=y&item=$row[id]'};\">
                     </td></tr>
