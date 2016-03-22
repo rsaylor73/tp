@@ -1649,6 +1649,7 @@ class Tickets {
 	}
 
 	public function edit_tickets() {
+        $device = $this->device_type();
                 $sql = "SELECT * FROM `events` WHERE `id` = '$_GET[id]' AND `userID` = '$_SESSION[id]'";
                 $result = $this->new_mysql($sql);
                 while ($row = $result->fetch_assoc()) {
@@ -1668,13 +1669,14 @@ class Tickets {
                         </nav>
                         ';
 		} else {
-			print "<h2>Edit Tickets ($title)</h2>";
+			print "<h2>Edit Tickets<br>$title</h2>";
 		}
 
 		$sql = "SELECT * FROM `tickets` WHERE `id` = '$_GET[item]' AND `userID` = '$_SESSION[id]'";
                 $result = $this->new_mysql($sql);
 		$row = $result->fetch_assoc();
 
+        if ($device == "0") {
                 print "
                 <form name=\"myform\" action=\"index.php\" method=\"get\">
                 <input type=\"hidden\" name=\"id\" value=\"$_GET[id]\">
@@ -1692,6 +1694,29 @@ class Tickets {
                 </table>
                 </form>
 		";
+        } else {
+                 print "
+                <form name=\"myform\" action=\"index.php\" method=\"get\">
+                <input type=\"hidden\" name=\"id\" value=\"$_GET[id]\">
+                <input type=\"hidden\" name=\"item\" value=\"$_GET[item]\">
+                <input type=\"hidden\" name=\"section\" value=\"dashboard\">
+                <input type=\"hidden\" name=\"center\" value=\"manage_tickets\">
+                <input type=\"hidden\" name=\"up\" value=\"y\">
+                <table class=\"table\">
+                <tr><td>Ticket Name:</td></tr>
+                <tr><td><input type=\"text\" name=\"name\" id=\"name\" value=\"$row[name]\" size=40></td></tr>
+                <tr><td>More Info:</td></tr>
+                <tr><td><input type=\"text\" name=\"more_info\" id=\"more_info\" value=\"$row[more_info]\" size=40></td></tr>
+                <tr><td>Quantity:</td></tr>
+                <tr><td><input type=\"text\" name=\"qty\" id=\"qty\" value=\"$row[qty]\" size=40 onkeypress=\"validate(event)\"></td></tr>
+                <tr><td>Price:</td></tr>
+                <tr><td>$<input tpye=\"text\" name=\"price\" id=\"price\" value=\"$row[price]\" size=40 onkeypress=\"return isNumberKey(event)\"></td></tr>
+                <tr><td><font color=blue>A ticket must have a price or the visitor will not be able to checkout. If you would like to set a ticket as free set the price to 0.</font></td></tr>
+                <tr><td><input type=\"submit\" value=\"Update Tickets\" class=\"btn btn-primary\"></td></tr>
+                </table>
+                </form>
+        ";           
+        }
 
 	}
 
