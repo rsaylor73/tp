@@ -1775,7 +1775,7 @@ class Tickets {
                         </nav>
                         ';
 			} else {
-		                print "<h2>Manage Tickets ($title)</h2>";
+		                print "<h2>Manage Tickets<br>$title</h2>";
 			}
 	
         if ($device == "0") {
@@ -1824,7 +1824,7 @@ class Tickets {
 
             <div id=\"ticket_list\">
             <table class=\"table\">
-            <tr><td><b>Name</b></td><td><b>Quantity</b></td><td><b>Price</b></td><td>&nbsp;</td></tr>
+            <tr><td><b>Name</b></td><td><b>Quantity</b></td><td><b>Price</b></td></tr>
             ";
         }
 
@@ -1841,11 +1841,19 @@ class Tickets {
 		$sql = "SELECT * FROM `tickets` WHERE `eventID` = '$_GET[id]' AND `userID` = '$_SESSION[id]' ORDER BY `name` ASC";
 		$result = $this->new_mysql($sql);
 		while ($row = $result->fetch_assoc()) {
-		        print "<tr><td>$row[name]</td><td>$row[qty]</td><td>$row[price]</td><td>
-
-                                <input type=\"button\" class=\"btn btn-primary\" value=\"Edit\" onclick=\"document.location.href='index.php?section=dashboard&center=edit_tickets&id=$_GET[id]&item=$row[id]'\">
-                                <input type=\"button\" class=\"btn btn-danger\" value=\"Delete\" onclick=\"if(confirm('WARNING: You are about to delete $row[name]')){document.location.href='index.php?section=dashboard&center=manage_tickets&id=$_GET[id]&delete=y&item=$row[id]'};\">
+		        print "<tr><td>$row[name]</td><td>$row[qty]</td><td>$row[price]</td>";
+                if ($device == "0") {
+                    print "<td>
+                    <input type=\"button\" class=\"btn btn-primary\" value=\"Edit\" onclick=\"document.location.href='index.php?section=dashboard&center=edit_tickets&id=$_GET[id]&item=$row[id]'\">
+                    <input type=\"button\" class=\"btn btn-danger\" value=\"Delete\" onclick=\"if(confirm('WARNING: You are about to delete $row[name]')){document.location.href='index.php?section=dashboard&center=manage_tickets&id=$_GET[id]&delete=y&item=$row[id]'};\">
 				</td></tr>";
+                } else {
+                    print "</tr><tr colspan=2>
+                    <input type=\"button\" class=\"btn btn-primary\" value=\"Edit\" onclick=\"document.location.href='index.php?section=dashboard&center=edit_tickets&id=$_GET[id]&item=$row[id]'\">
+                    <input type=\"button\" class=\"btn btn-danger\" value=\"Delete\" onclick=\"if(confirm('WARNING: You are about to delete $row[name]')){document.location.href='index.php?section=dashboard&center=manage_tickets&id=$_GET[id]&delete=y&item=$row[id]'};\">
+                    </td></tr>
+                    ";
+                } 
 		        $found = "1";
 		}
 		if ($found != "1") {
