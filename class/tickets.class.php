@@ -1778,14 +1778,21 @@ class Tickets {
 		                print "<h2>Manage Tickets ($title)</h2>";
 			}
 	
+        if ($device == "0") {
+            $size = "40";
+        } else {
+            $size = "20";
+        }
+
+        if ($device == "0") {
 		print "
 		<form name=\"myform\">
 		<input type=\"hidden\" name=\"id\" value=\"$_GET[id]\">
 		<table class=\"table\">
-		<tr><td>Ticket Name:</td><td><input type=\"text\" name=\"name\" id=\"name\" size=40></td></tr>
-		<tr><td>More Info:</td><td><input type=\"text\" name=\"more_info\" size=40></td></tr>
-		<tr><td>Quantity:</td><td><input type=\"text\" name=\"qty\" id=\"qty\" size=40 onkeypress=\"validate(event)\"></td></tr>
-		<tr><td>Price:</td><td>$<input tpye=\"text\" name=\"price\" id=\"price\" size=40 onkeypress=\"return isNumberKey(event)\"></td></tr>
+		<tr><td>Ticket Name:</td><td><input type=\"text\" name=\"name\" id=\"name\" size=$size></td></tr>
+		<tr><td>More Info:</td><td><input type=\"text\" name=\"more_info\" size=$size></td></tr>
+		<tr><td>Quantity:</td><td><input type=\"text\" name=\"qty\" id=\"qty\" size=$size onkeypress=\"validate(event)\"></td></tr>
+		<tr><td>Price:</td><td>$<input tpye=\"text\" name=\"price\" id=\"price\" size=$size onkeypress=\"return isNumberKey(event)\"></td></tr>
                 <tr><td colspan=2><font color=blue>A ticket must have a price or the visitor will not be able to checkout. If you would like to set a ticket as free set the price to 0.</font></td></tr>
 		<tr><td>&nbsp;</td><td><input type=\"button\" value=\"Add Tickets\" class=\"btn btn-primary\" onclick=\"add_tickets(this.form)\"></td></tr>
 		</table>
@@ -1796,6 +1803,30 @@ class Tickets {
 		<table class=\"table\">
 		<tr><td><b>Name</b></td><td><b>Quantity</b></td><td><b>Price</b></td><td>&nbsp;</td></tr>
 		";
+        } else {
+            print "
+            <form name=\"myform\">
+            <input type=\"hidden\" name=\"id\" value=\"$_GET[id]\">
+            <table class=\"table\">
+            <tr><td>Ticket Name:</td></tr>
+            <tr><td><input type=\"text\" name=\"name\" id=\"name\" size=$size></td></tr>
+            <tr><td>More Info:</td></tr>
+            <tr><td><input type=\"text\" name=\"more_info\" size=$size></td></tr>
+            <tr><td>Quantity:</td></tr>
+            <tr><td><input type=\"text\" name=\"qty\" id=\"qty\" size=$size onkeypress=\"validate(event)\"></td></tr>
+            <tr><td>Price:</td></tr>
+            <tr><td>$<input tpye=\"text\" name=\"price\" id=\"price\" size=$size onkeypress=\"return isNumberKey(event)\"></td></tr>
+            <tr><td><font color=blue>A ticket must have a price or the visitor will not be able to checkout. If you would like to set a ticket as free set the price to 0.</font></td></tr>
+            <tr><td><input type=\"button\" value=\"Add Tickets\" class=\"btn btn-primary\" onclick=\"add_tickets(this.form)\"></td></tr>
+            </table>
+            </form>
+            <hr>
+
+            <div id=\"ticket_list\">
+            <table class=\"table\">
+            <tr><td><b>Name</b></td><td><b>Quantity</b></td><td><b>Price</b></td><td>&nbsp;</td></tr>
+            ";
+        }
 
 		if ($_GET['up'] == "y") {
 			$sql = "UPDATE `tickets` SET `name` = '$_GET[name]', `qty` = '$_GET[qty]', `price` = '$_GET[price]', `more_info` = '$_GET[more_info]' WHERE `id` = '$_GET[item]' AND `userID` = '$_SESSION[id]'";
