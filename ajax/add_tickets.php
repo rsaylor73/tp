@@ -17,17 +17,37 @@ $result = $tickets->new_mysql($sql);
 
 $sql = "SELECT * FROM `tickets` WHERE `eventID` = '$_GET[id]' AND `userID` = '$_SESSION[id]' ORDER BY `name` ASC";
 $result = $tickets->new_mysql($sql);
+
+$device = $tickets->device_type();
+
+if ($device == "0") {
 print "
                 <table class=\"table\">
                 <tr><td><b>Name</b></td><td><b>Quantity</b></td><td><b>Price</b></td><td>&nbsp;</td></tr>
 ";
+} else {
+print "
+                <table class=\"table\">
+                <tr><td><b>Name</b></td><td><b>Quantity</b></td><td><b>Price</b></td></tr>
+";	
+}
 while ($row = $result->fetch_assoc()) {
-	print "<tr><td>$row[name]</td><td>$row[qty]</td><td>$row[price]</td><td>
+	print "<tr><td>$row[name]</td><td>$row[qty]</td><td>$row[price]</td>";
+	if ($device == "0") {
+		print "
+		<td>
+        <input type=\"button\" class=\"btn btn-primary\" value=\"Edit\" onclick=\"document.location.href='index.php?section=dashboard&center=edit_tickets&id=$_GET[id]&item=$row[id]'\">
+        <input type=\"button\" class=\"btn btn-danger\" value=\"Delete\" onclick=\"if(confirm('WARNING: You are about to delete $row[name]')){document.location.href='index.php?section=dashboard&center=manage_tickets&id=$_GET[id]&delete=y&item=$row[id]'};\">
 
-                                <input type=\"button\" class=\"btn btn-primary\" value=\"Edit\" onclick=\"document.location.href='index.php?section=dashboard&center=edit_tickets&id=$_GET[id]&item=$row[id]'\">
-                                <input type=\"button\" class=\"btn btn-danger\" value=\"Delete\" onclick=\"if(confirm('WARNING: You are about to delete $row[name]')){document.location.href='index.php?section=dashboard&center=manage_tickets&id=$_GET[id]&delete=y&item=$row[id]'};\">
+		</td></tr>";
+	} else {
+		print "
+		</tr><tr><td colspan=3>
+        <input type=\"button\" class=\"btn btn-primary\" value=\"Edit\" onclick=\"document.location.href='index.php?section=dashboard&center=edit_tickets&id=$_GET[id]&item=$row[id]'\">
+        <input type=\"button\" class=\"btn btn-danger\" value=\"Delete\" onclick=\"if(confirm('WARNING: You are about to delete $row[name]')){document.location.href='index.php?section=dashboard&center=manage_tickets&id=$_GET[id]&delete=y&item=$row[id]'};\">
 
-	</td></tr>";
+		</td></tr>";	
+	}
 	$found = "1";
 }
 if ($found != "1") {
