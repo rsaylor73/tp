@@ -33,7 +33,7 @@ print "
 }
 while ($row = $result->fetch_assoc()) {
 	if (strlen($row['name']) > 20) {
-		$row['name'] = substr($row['name'], 0,30);
+		$row['name'] = substr($row['name'], 0,20);
 		$row['name'] .= " ...";
 	}
 	print "<tr><td>$row[name]</td><td>$row[qty]</td><td>$row[price]</td>";
