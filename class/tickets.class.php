@@ -1897,7 +1897,7 @@ class Tickets {
 			<input type=\"hidden\" name=\"part\" value=\"donate\">
 
 			<input type=\"checkbox\" name=\"enable-donation\" value=\"checked\" $c1> Enable Donations
-			<br>Donation Goal Amount: $<input type=\"text\" name=\"donation_goal\" value=\"$donation_goal\" size=20> <input type=\"submit\" value=\"Save\" class=\"btn btn-primary\">
+			<br>Donation Goal Amount: <br>$<input type=\"text\" name=\"donation_goal\" value=\"$donation_goal\" size=20> <input type=\"submit\" value=\"Save\" class=\"btn btn-primary\">
 			</form>
 			";
 		}
