@@ -1733,6 +1733,7 @@ class Tickets {
 	}
 
 	public function manage_tickets() {
+        $device = $this->device_type();
 
 		$check_tax = $this->check_tax_id();
 		if ($check_tax == "") {
@@ -1820,20 +1821,19 @@ class Tickets {
 		        print "<tr><td colspan=4>No results</td></tr>";
 		}
 
+        print "</table>";
 
-		print "
-		</table>
+        if ($device == "0") {
+		      print "
+		      <h2>Embed Payment for your web site</h2>
+		      Copy and paste the code below into your website.<br>
+		      <textarea cols=120 rows=5>
+                <iframe src=\"https://www.$settings[8]/tickets_iframe.php?id=$_GET[id]\" style=\"border:0px #FFFFFF none;\" name=\"myiFrame\" scrolling=\"yes\" frameborder=\"0\" marginheight=\"0px\" marginwidth=\"0px\" height=\"700px\" width=\"900px\"></iframe>
+                </textarea><br><br>
+                ";
+        }
 
-		<h2>Embed Payment for your web site</h2>
-		Copy and paste the code below into your website.<br>
-		<textarea cols=120 rows=5>
-<iframe src=\"https://www.$settings[8]/tickets_iframe.php?id=$_GET[id]\" style=\"border:0px #FFFFFF none;\" name=\"myiFrame\" scrolling=\"yes\" frameborder=\"0\" marginheight=\"0px\" marginwidth=\"0px\" height=\"700px\" width=\"900px\"></iframe>
-
-
-		</textarea><br><br>
-
-		</div>
-		";
+		print "</div>";
 
 		} 
 
