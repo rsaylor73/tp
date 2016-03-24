@@ -134,6 +134,8 @@ if ($_GET['section'] == "search") {
 
 
 if ($_GET['section'] == "dashboard") {
+	$is_logged = $tickets::check_login();
+	print "Test: $is_logged<br>";
         //$file = $GLOBAL['path']  . "/templates/" . $dir . "/dashboard.phtml";
         //$template->load_template($file,$null);
 
