@@ -9,6 +9,8 @@ include_once "../include/mysql.php";
 include $GLOBAL['path']."/class/tickets.class.php";
 $tickets = new Tickets($linkID);
 
+$device = $tickets->device_type();
+
 $sql = "SELECT * FROM `users` WHERE `uuname` = '$_GET[uuname]' AND BINARY `uupass` = '$_GET[uupass]'";
 $result = $tickets->new_mysql($sql);
 while ($row = $result->fetch_assoc()) {
@@ -52,9 +54,15 @@ if ($ok != "1") {
                                 <td><input type="text" name="uuname" id="uuname" size=30 value="<?=$_COOKIE['uuname'];?>"></td>
                                 <td><input type="password" name="uupass" id="uupass" size=30></td>
                                 </tr>
+                                <?php
+                                        if ($device == "0") {
+                                ?>
                                 <tr>
                                 <td colspan=2 align="center"><input type="checkbox" name="rememberme" value="checked" <?=$_COOKIE['rememberme'];?> onclick="return confirm('By clicking OK you understand this will place a cookie on your machine. If this is a public computer you should click cancel.')"> Remember Me</td>
                                 </tr>
+                                <?php
+                                        }
+                                ?>
                                 <tr>
                                 <td colspan=2 align="center"><a href="forgot_password.php">Forgot Password?</a></td>
                                 </tr>
