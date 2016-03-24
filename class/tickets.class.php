@@ -4601,6 +4601,8 @@ class Tickets {
 	}
 
 	public function checkin_users() {
+        $device = $this->device_type();
+
 		if ($_SESSION['id'] == "") {
 			print "<br><font color=red>Your session has timed out. Please log back in.</font><bR>";
 			die;
@@ -4610,19 +4612,38 @@ class Tickets {
 		print "<h2>Check-In Users</h2>";
 		print "This section is used to create users for the Ticket Point Check-In app to be used at the event. You can add a user or delete a user. If you need to edit a user you would simple delete then re-add the user.<br>";
 
-		print "<form action=\"index.php\" method=\"post\">
-		<input type=\"hidden\" name=\"section\" value=\"create_checkin_user\">
-		<table class=\"table\">
-		<tr><td>First Name</td><td><input type=\"text\" name=\"firstname\" size=40 required></td></tr>
-		<tr><td>Last Name:</td><td><input type=\"text\" name=\"lastname\" size=40 required></td></tr>
-		<tr><td>Phone Number:</td><td><input type=\"text\" name=\"phonenumber\" size=40></td></tr>
-		<tr><td>Email:</td><td><input type=\"text\" name=\"email\" size=40 required></td></tr>
-		<tr><td>Password:</td><td><input type=\"text\" name=\"password\" size=40 required></td></tr>
-		<tr><td colspan=2><input type=\"submit\" value=\"Create User\" class=\"btn btn-success\"></td></tr>
-		</table>
-		</form>
-		";
-
+        if ($device == "0") {
+    		print "<form action=\"index.php\" method=\"post\">
+	   	    <input type=\"hidden\" name=\"section\" value=\"create_checkin_user\">
+		    <table class=\"table\">
+		    <tr><td>First Name</td><td><input type=\"text\" name=\"firstname\" size=40 required></td></tr>
+		    <tr><td>Last Name:</td><td><input type=\"text\" name=\"lastname\" size=40 required></td></tr>
+		    <tr><td>Phone Number:</td><td><input type=\"text\" name=\"phonenumber\" size=40></td></tr>
+		    <tr><td>Email:</td><td><input type=\"text\" name=\"email\" size=40 required></td></tr>
+		    <tr><td>Password:</td><td><input type=\"text\" name=\"password\" size=40 required></td></tr>
+		    <tr><td colspan=2><input type=\"submit\" value=\"Create User\" class=\"btn btn-success\"></td></tr>
+		    </table>
+		    </form>
+		    ";
+        } else {
+            print "<form action=\"index.php\" method=\"post\">
+            <input type=\"hidden\" name=\"section\" value=\"create_checkin_user\">
+            <table class=\"table\">
+            <tr><td>First Name</td></tr>
+            <tr><td><input type=\"text\" name=\"firstname\" size=40 required></td></tr>
+            <tr><td>Last Name:</td></tr>
+            <tr><td><input type=\"text\" name=\"lastname\" size=40 required></td></tr>
+            <tr><td>Phone Number:</td></tr>
+            <tr><td><input type=\"text\" name=\"phonenumber\" size=40></td></tr>
+            <tr><td>Email:</td></tr>
+            <tr><td><input type=\"text\" name=\"email\" size=40 required></td></tr>
+            <tr><td>Password:</td></tr>
+            <tr><td><input type=\"text\" name=\"password\" size=40 required></td></tr>
+            <tr><td><input type=\"submit\" value=\"Create User\" class=\"btn btn-success\"></td></tr>
+            </table>
+            </form>
+            ";            
+        }
 
 		$sql = "SELECT * FROM `checkin_users` WHERE `resellerID` = '$_SESSION[id]'";
 		$result = $this->new_mysql($sql);
