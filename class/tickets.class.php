@@ -38,7 +38,7 @@ class Tickets {
                 print '<div class="row"><div class="col-md-8"><div class="row"><div class="col-md-8" id="ajax">';
 		?>
 		You have been signed off. Loading...
-		<meta http-equiv="refresh" content="3; url=index.php">
+		<meta http-equiv="refresh" content="3; url=hq">
 		<?php
                 print '</div></div></div></div>';
 	}
