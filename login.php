@@ -8,11 +8,13 @@ include_once "include/settings.php";
 include_once "include/mysql.php";
 include_once "include/templates.php";
 
+/*
 if ($_SERVER['HTTP_HOST'] != $GLOBAL['domain']) {
         $sub = explode(".",$_SERVER['HTTP_HOST']);
         $redirect = "http://".$GLOBAL['domain']."/".$sub[0];
         header("Location: $redirect");
 }
+*/
 
 // Do desktop or mobile
 $type = $template->isMobile();
@@ -25,6 +27,8 @@ if ($type) {
 //$file = $GLOBAL['path']  . "/templates/" . $dir . "/header.phtml";
 $file = $GLOBAL['path']  . "/templates/" . $dir . "/hq_header.phtml";
 $template->load_template($file,$null);
+$device = $tickets->device_type();
+
 
 print '
 <nav class="navbar-default navbar-side" role="navigation">
@@ -147,9 +151,15 @@ input[type=submit]:hover {
                                 <td><input type="text" name="uuname" id="uuname" size=30 value="<?=$_COOKIE['uuname'];?>"></td>
                                 <td><input type="password" name="uupass" id="uupass" size=30></td>
                                 </tr>
+                                <?php
+                                if ($device == "0") {
+                                ?>
                                 <tr>
                                 <td colspan=2 align="center"><input type="checkbox" name="rememberme" value="checked" <?=$_COOKIE['rememberme'];?> onclick="return confirm('By clicking OK you understand this will place a cookie on your machine. If this is a public computer you should click cancel.')"> Remember Me</td>
                                 </tr>
+                                <?php
+                                }
+                                ?>
                                 <tr>
                                 <td colspan=2 align="center"><a href="forgot_password.php">Forgot Password?</a></td>
                                 </tr>

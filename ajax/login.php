@@ -58,7 +58,7 @@ if ($ok != "1") {
                                         if ($device == "0") {
                                 ?>
                                 <tr>
-                                <td colspan=2 align="center"><input type="checkbox" name="rememberme" value="checked" <?=$_COOKIE['rememberme'];?> onclick="return confirm('By clicking OK you understand this will place a cookie on your machine. If this is a public computer you should click cancel.')"> Remember Me <?=$device;?></td>
+                                <td colspan=2 align="center"><input type="checkbox" name="rememberme" value="checked" <?=$_COOKIE['rememberme'];?> onclick="return confirm('By clicking OK you understand this will place a cookie on your machine. If this is a public computer you should click cancel.')"> Remember Me</td>
                                 </tr>
                                 <?php
                                         }
