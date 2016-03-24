@@ -4581,40 +4581,49 @@ class Tickets {
 
         print "<input type=\"button\" class=\"btn btn-success\" value=\"Add New User\" onclick=\"document.location.href='index.php?section=dashboard&center=new_user'\"><br><hr>";
 
-        print "<table class=\"table\">
-        <tr>
-            <td><b>Name</b></td>
-            <td><b>Username</b></td>
-            <td><b>Details</b></td>
-            <td><b>Design</b></td>
-            <td><b>Social</b></td>
-            <td><b>Settings</b></td>
-            <td><b>Tickets</b></td>
-            <td>&nbsp;</td>
-        </tr>";
+        print "<table class=\"table\">";
+
         $sql = "SELECT * FROM `users` WHERE `resellerID` = '$_SESSION[id]' ORDER BY `lname` ASC, `fname` ASC";
         $result = $this->new_mysql($sql);
         while ($row = $result->fetch_assoc()) {
-            print "<tr>
-            <td>$row[fname] $row[lname]</td>
-            <td>$row[uuname]</td>
-            <td>$row[event_details]</td>
-            <td>$row[event_design]</td>
-            <td>$row[social]</td>
-            <td>$row[event_settings]</td>
-            <td>$row[create_tickets]</td>
+            print "
+            <tr>
+                <td colspan=2><h3>$row[fname] $row[lname]</h3></td>
+            </tr>
+            <tr>
+                <td><b>Details:</b></td>
+                <td>$row[event_details]</td>
+            </tr>
+            <tr>
+                <td><b>Design:</b></td>
+                <td>$row[event_design]</td>
+            </tr>
+            <tr>
+                <td><b>Social:</b></td>
+                <td>$row[social]</td>
+            </tr>
+            <tr>
+                <td><b>Settings:</b></td>
+                <td>$row[event_settings]</td>
+            </tr>
+            <tr>
+                <td><b>Tickets:</b></td>
+                <td>$row[create_tickets]</td>
+            </tr>
+            <tr>
             <td>
                 <input type=\"button\" class=\"btn btn-danger\" value=\"Delete\" 
                 onclick=\"if(confirm('WARNING: You are about to delete $row[fname] $row[lname]')){document.location.href='index.php?section=dashboard&center=users&act=delete&id=$row[id]'};\">&nbsp;
                 <input type=\"button\" class=\"btn btn-primary\" value=\"Edit\"
                 onclick=\"document.location.href='index.php?section=dashboard&center=edit_user&id=$row[id]'\">
             </td>
-            </tr>";
+            </tr>
+            <tr><td><hr></td></tr>";
             $found = "1";
         }
 
         if ($found != "1") {
-            print "<tr><td colspan=8><center><font color=blue>You do not have any users.</font></center></td></tr>";
+            print "<tr><td colspan=2><center><font color=blue>You do not have any users.</font></center></td></tr>";
         }
         print "</table>";
 
