@@ -135,6 +135,21 @@ if ($_GET['section'] == "search") {
 
 if ($_GET['section'] == "dashboard") {
 	$is_logged = $tickets->check_login();
+	if ($is_logged == "FALSE") {
+		print "
+	<script>
+        setTimeout(function()
+        {
+	        window.location.replace('login')
+        }
+        ,0);
+
+	</script>
+
+		";
+
+		die;
+	}
 	print "Test: $is_logged<br>";
         //$file = $GLOBAL['path']  . "/templates/" . $dir . "/dashboard.phtml";
         //$template->load_template($file,$null);
