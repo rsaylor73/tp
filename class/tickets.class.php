@@ -875,6 +875,12 @@ class Tickets {
 
 
 	public function details_template($form,$btn,$post,$step) {
+        $device = $this->device_type();
+        if ($device == "0") {
+            $size = "40";
+        } else {
+            $device = "20";
+        }
 
 
 		if ($step == "1") {
@@ -915,11 +921,11 @@ class Tickets {
 		<table class=\"table\">
 		<tr>
 			<td width=\"200\">Title:</td>
-			<td><input type=\"text\" name=\"title\" value=\"$post[title]\" size=40></td>
+			<td><input type=\"text\" name=\"title\" value=\"$post[title]\" size=$size></td>
 		</tr>
 		<tr>
 			<td>Tagline:</td>
-			<td><input type=\"text\" name=\"tagline\" value=\"$post[tagline]\" size=40></td>
+			<td><input type=\"text\" name=\"tagline\" value=\"$post[tagline]\" size=$size></td>
 		</tr>
 		<tr>
 			<td>Desktop Template:</td>
@@ -931,7 +937,7 @@ class Tickets {
 		</tr>
 		<tr>
 			<td>Event Address:</td>
-			<td><input type=\"text\" name=\"address\" placeholder=\"Example: 67 South St, Raleigh, NC\" size=40 value=\"$post[address]\"></td>
+			<td><input type=\"text\" name=\"address\" placeholder=\"Example: 67 South St, Raleigh, NC\" size=$size value=\"$post[address]\"></td>
 		</tr>
 		<tr>
 			<td>Category:</td>
@@ -955,11 +961,11 @@ class Tickets {
 		</tr>
 
 		<tr>
-			<td colspan=2>Enable Email Notifications&nbsp;&nbsp; <input type=\"checkbox\" name=\"notifications\" value=\"Yes\" $notifications>&nbsp;<i>Alerts on payments and registration</i></td>
+			<td colspan=2>Enable Email Notifications<br><input type=\"checkbox\" name=\"notifications\" value=\"Yes\" $notifications>&nbsp;<i>Alerts on payments and registration</i></td>
 		</tr>
 
 		<tr>
-			<td colspan=2>Enable Registration?&nbsp;&nbsp;<input type=\"checkbox\" name=\"registration\" value=\"Yes\" $registration> <input type=\"button\" class=\"btn btn-success\" value=\"Manage Form\" onclick=\"window.open('index.php?section=dashboard&center=registration&id=$post[id]')\">&nbsp;<i>Please enable the Registration Desktop Theme</i></td>
+			<td colspan=2>Enable Registration?<br><input type=\"checkbox\" name=\"registration\" value=\"Yes\" $registration> <input type=\"button\" class=\"btn btn-success\" value=\"Manage Form\" onclick=\"window.open('index.php?section=dashboard&center=registration&id=$post[id]')\">&nbsp;<i>Please enable the Registration Desktop Theme</i></td>
 		</tr>
 		";
 
