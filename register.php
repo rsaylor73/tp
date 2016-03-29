@@ -22,8 +22,43 @@ if ($type) {
         $dir = "desktop";
 }
 
-$file = $GLOBAL['path']  . "/templates/" . $dir . "/header.phtml";
+//$file = $GLOBAL['path']  . "/templates/" . $dir . "/header.phtml";
+$file = $GLOBAL['path']  . "/templates/" . $dir . "/hq_header.phtml";
 $template->load_template($file,$null);
+$device = $tickets->device_type();
+
+
+print '
+<nav class="navbar-default navbar-side" role="navigation">
+<div class="sidebar-collapse">
+    <form name="myform">
+    <ul class="nav" id="main-menu">
+        <li>
+            <div class="user-img-div">
+                <div class="inner-text">
+                    <?php echo "$_SESSION[fname] $_SESSION[lname]";?> 
+                </div>
+            </div>
+        </li>
+    </ul>
+    </form>
+</div>
+</nav>
+
+<!-- /. NAV SIDE  -->
+<div id="page-wrapper">
+    <div id="page-inner">
+        <div class="row">
+            <div class="col-md-8">
+                <h1 class="page-head-line">HQ Login</h1>
+            </div>
+        </div>
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-8" id="ajax">
+';
 
 ?>
 <div id="page_view" style="text-align:center">
@@ -115,6 +150,7 @@ $template->load_template($file,$null);
 
 <?php
 
-$file = $GLOBAL['path']  . "/templates/" . $dir . "/footer.phtml";
+print '</div></div></div></div>';
+$file = $GLOBAL['path']  . "/templates/" . $dir . "/hq_footer.phtml";
 $template->load_template($file,$null);
 ?>

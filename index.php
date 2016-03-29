@@ -87,6 +87,11 @@ if ($_GET['h'] != "no") {
                 		$template->load_template($file,$data22);
 			break;
 
+			case "register":
+		                $file = $GLOBAL['path']  . "/templates/" . $dir . "/header_old.phtml";
+        		        $template->load_template($file,$data22);
+			break;
+
 			default:
 						if ($_GET['section'] != "page_view") {
 		                $file = $GLOBAL['path']  . "/templates/" . $dir . "/header.phtml";
