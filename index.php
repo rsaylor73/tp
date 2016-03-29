@@ -8,6 +8,15 @@ include_once "include/settings.php";
 include_once "include/mysql.php";
 include_once "include/templates.php";
 
+if ($_GET['section'] == "page_view") {
+	if ($dir == "desktop") {
+		$tickets->page_view();
+	} else {
+		$tickets->page_view();
+	}
+	die;
+}
+
 if ($_SERVER['HTTP_HOST'] != $GLOBAL['domain']) {
         $sub = explode(".",$_SERVER['HTTP_HOST']);
 
@@ -231,13 +240,7 @@ if ($_GET['section'] == "signout") {
 	$tickets->signoff();
 }
 
-if ($_GET['section'] == "page_view") {
-	if ($dir == "desktop") {
-		$tickets->page_view();
-	} else {
-		$tickets->page_view_mobile();
-	}
-}
+
 
 if ($_POST['section'] == "profile") {
 	$tickets->update_profile();
