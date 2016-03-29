@@ -123,7 +123,7 @@ $cover = "uploads/$row[userID]/cover/$row[id]/$row[cover_image]";
                                                 if ($row[$var] != "") {
                                                         print "
                                                         <div class=\"col-md-1\">
-                                                        <img src=\"uploads/$row[userID]/slide/$row[id]/$row[$var]\" width=75% />
+                                                        <img src=\"uploads/$row[userID]/slide/$row[id]/$row[$var]\" width=\"200\" />
                                                         </div>
                                                         ";
                                                 }
