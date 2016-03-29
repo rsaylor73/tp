@@ -163,7 +163,7 @@ $cover = "uploads/$row[userID]/cover/$row[id]/$row[cover_image]";
 
 <div class="google_map">
 
-                               <iframe width="300" height="250" frameborder="0" style="border:0"
+                               <iframe width="100%" height="400" frameborder="0" style="border:0"
                                 src="https://www.google.com/maps/embed/v1/place?q=<?=$row['address']?>&key=AIzaSyD4rJhKUws_jnA1h8NttpfBsxWX4TwNWcY">
                                 </iframe>
 
