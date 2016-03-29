@@ -1,140 +1,192 @@
-<div id="middle">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title> Ticket Pointe Event Page</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="keywords" content="">
+<meta name="description" content="">
+<!-- 
+ROMNA Template
+http://www.templatemo.com/free-website-templates/
+-->
+<!-- STYLESHEET CSS FILES -->
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/animate.min.css">
+<link rel="stylesheet" href="css/font-awesome.min.css">
+<link rel="stylesheet" href="css/templatemo-style.css">
 
 
-	<center>
+<style>
+/* home section */
+#home {
+
+<?php 
+$cover = "uploads/$row[userID]/cover/$row[id]/$row[cover_image]";
+?>
+
+    background: url('<?=$cover;?>') 50% 0 repeat-y fixed;
+    color: #ffffff;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    height: 700px;
+    text-align: center;
+}
+</style>
 
 
-	
-	<table border=0 width=930 bgcolor="#fefefe" cellspacing="5" cellpadding="5">
-	<tr>
-	<!-- COVER PIC / TITLE PLACE and TIME -->
-	
-	<td valign="top" width="100%" align="center"><img src="uploads/<?=$row['userID']?>/cover/<?=$row['id']?>/<?=$row['cover_image']?>" width="930" height="620" border="0"></img></td>
-	</tr>
-	<tr>
-	<!-- clock -->
-	<td valign="top" width="100%" align="center"><br><br>
-		<div id="timeleft"></div>
-		      <script type="text/javascript">
-		      function refreshDiv() {
-		         $('#timeleft').load('check_time.php?id=<?=$_GET['id']?>', function(){ /* callback code here */ });
+</head>
 
-		      }
-		      setInterval(refreshDiv, 4000);
-		      </script>
+<body data-spy="scroll" data-target=".navbar-collapse" data-offset="50">
+<!-- preloader section -->
+<div class="preloader">
+  <div class="sk-spinner sk-spinner-rotating-plane"></div>
+</div>
 
-	</td>
-	</tr>
-	</table>
 
-        <table border=0 width=930 bgcolor="#fefefe" cellspacing="5" cellpadding="5">
-	<tr bgcolor="#DEDEDE">
-		<td width="360">	
-		<table border=0 width=100%>	
-		<tr>
-			<td valign="top" width="100%" align="left" valign=top>
-			<!-- slide show -->
-                         <div id="jssor_1" style="position: relative; margin: 0 auto; top: 0px; left: 0px; width: 360px; height: 274px; overflow: hidden; visibility: hidden;">
-                                        <!-- Loading Screen -->
-                                        <div data-u="loading" style="position: absolute; top: 0px; left: 0px;">
-                                        <div style="filter: alpha(opacity=70); opacity: 0.7; position: absolute; display: block; top: 0px; left: 0px; width: 100%; height: 100%;"></div>
-                                        <div style="position:absolute;display:block;background:url('img/loading.gif') no-repeat center center;top:0px;left:0px;width:100%;height:100%;"></div>
-                                </div>
-                                <div data-u="slides" style="cursor: default; position: relative; top: 0px; left: 0px; width: 360px; height: 274px; overflow: hidden;">
+
+<!-- home section -->
+<section id="home">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+
+        </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+
+
+
+<!-- navigation section -->
+<div class="navbar navbar-default navbar-static-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="icon icon-bar"></span> <span class="icon icon-bar"></span> <span class="icon icon-bar"></span> </button>
+      <a class="navbar-brand">Countdown*</a></div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#home" class="smoothScroll">HOME</a></li>
+        <li><a href="#details" class="smoothScroll">DETAILS</a></li>
+        <li><a href="#map" class="smoothScroll">MAP</a></li>
+        <li><a href="#tickets" class="smoothScroll">TICKETS</a></li>
+        <li><a href="#share" class="smoothScroll">SHARE</a></li>
+        <li><a href="#contact" class="smoothScroll">CONTACT</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- details section -->
+<section id="details">
+  <div class="container">
+    <div class="row">
+      
+
+        <div class="col-md-12  col-sm-12 col-xs-12 title">
+          <h2><?=$row['title']?></h2>
+           <h5><?=$row['tagline']?></h5>
+          <hr>
+
+          <h5><?=$row['start_date']?> to <?=$row['end_date']?></h5>
+          <h5><?=$row['start_time']?> to <?=$row['end_time']?></h5>
+          
+          <p><?=$row['description']?>
+          </p>
+        </div>
+
+          <div class="col-md-4  col-sm-3 col-xs-1"> 
+
+          </div>
+
+        <div class="col-md-5  col-sm-6 col-xs-10 center"> 
+
                                         <?php
                                         for ($x=1; $x < 6; $x++) {
                                                 $var = "slide";
                                                 $var .= $x;
                                                 if ($row[$var] != "") {
                                                         print "
-                                                        <div data-p=\"112.50\" style=\"display: none;\">
-                                                        <img data-u=\"image\" src=\"uploads/$row[userID]/slide/$row[id]/$row[$var]\" />
-                                                        </div>
+                                                        
+                                                        <img class=\"img-responsive\" alt=\"slide show\" src=\"uploads/$row[userID]/slide/$row[id]/$row[$var]\" />
+                                                        
                                                         ";
                                                 }
                                         }
                                         ?>
 
-                                        <!-- Bullet Navigator -->
-                                        <div data-u="navigator" class="jssorb01" style="bottom:16px;right:10px;">
-                                                <div data-u="prototype" style="width:12px;height:12px;"></div>
-                                        </div>
-                                        <!-- Arrow Navigator -->
-                                        <span data-u="arrowleft" class="jssora02l" style="top:123px;left:8px;width:55px;height:55px;" data-autocenter="2"></span>
-                                        <span data-u="arrowright" class="jssora02r" style="top:123px;right:8px;width:55px;height:55px;" data-autocenter="2"></span>
-                                        </div>
-			</td>
-			<!-- end slide show -->
-			</tr>
-	                <tr bgcolor="#DEDEDE">
-			<td valign="top" width="100%" align="left">
+          
+        </div>
 
-                        <input type="button" class="btn btn-default" value="Add To Calendar"
-                        onclick="window.open('ical.php?r=<?=$rand2?>&id=<?=$row['id'];?>')">
-                        &nbsp;&nbsp;
-                        <a href="mailto:<?=$row['email'];?>?subject=<?=$row['title'];?>"><span class="btn btn-default">Contact Organizer</span></a>
-                        &nbsp;<?=$page_views;?> views
-			<br><br>
+        <div class="col-md-3  col-sm-3 col-xs-1"> 
 
-                                                        <?php
-                                                        $sql2 = "SELECT * FROM `social` WHERE `userID` = '$row[userID]'";
-                                                        $result2 = $this->new_mysql($sql2);
-                                                        while ($row2 = $result2->fetch_assoc()) {
-                                                                if ($row['homepage'] != "") {
-                                                                        $url = "http://" . $row['homepage'] . "." . $settings[8];
-                                                                } else {
-                                                                        $url = $settings[1] . "index.php?section=page_view&id=$_GET[id]"; // To Do
-                                                                }
-                                                                if ($row2['facebook'] == "Yes") {
-                                                                        $this->social_link("facebook",$url,$row['title'],$row['tagline']);
-                                                                }
-                                                                if ($row2['google'] == "Yes") {
-                                                                        $this->social_link("google",$url,$row['title'],$row['tagline']);
-                                                                }
-                                                                if ($row2['linkedin'] == "Yes") {
-                                                                        $this->social_link("linkedin",$url,$row['title'],$row['tagline']);
-                                                                }
-                                                                if ($row2['tumbler'] == "Yes") {
-                                                                        $this->social_link("tumbler",$url,$row['title'],$row['tagline']);
-                                                                }
-                                                                if ($row2['twitter'] == "Yes") {
-                                                                        $this->social_link("twitter",$url,$row['title'],$row['tagline']);
-                                                                }
-                                        
-                                                        }
-                                                
-                                                        ?>
-
-				<br><br>
+        </div>
+       
+    </div>
 
 
-                                <iframe width="300" height="250" frameborder="0" style="border:0"
+
+  </div>
+</section>
+
+
+<!-- map section -->
+<section id="map">
+<div class="container">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12 title">
+      <br>
+      <br>
+      <h2>Location</h2>
+      <hr>
+ <?=$row['location'];?>
+      
+      
+      </div>
+      </div>
+      </div>
+
+<div class="google_map">
+
+                               <iframe width="300" height="250" frameborder="0" style="border:0"
                                 src="https://www.google.com/maps/embed/v1/place?q=<?=$row['address']?>&key=AIzaSyD4rJhKUws_jnA1h8NttpfBsxWX4TwNWcY">
                                 </iframe>
-                        <br>
-			</td>
-			</tr>
-			</table>
-			</td>
-			
-		<!-- EVENT TITLE / DESCRIPTION -->
-						
-			<td valign="top" width="570"align="left" valign="top">
-			<font face="arial" size="2">
-			<center><b><h2><?=$row['title']?></h2></b></center>
-			<center><h3><?=$row['tagline']?></h3></center>
-			<center><?=$row['start_date']?> to <?=$row['end_date']?><br></center>
-			<center><?=$row['start_time']?> to <?=$row['end_time']?><br></center>
-			<?=$row['location']?><br>
-			<br>
-			<br>
-			<?=$row['description']?>
-			</font>
-			<br>
-			<br>
-		
-	
-		<!-- TICKET INFO and PRICE OPTIONS / PURCHASE BUTTON / REGISTER FOR EVENT BUTTON -->	
+
+</div>
+</section>
+
+<!-- tickets section -->
+<section id="tickets"> 
+
+  <div class="container">
+    <div class="col-md-12 col-sm-12 col-xs-12 title">
+      <h2>Tickets</h2>
+      <hr>
+     
+    </div>
+
+    <div class="col-md-3  col-sm-3 "> 
+
+          </div>
+
+        <div class="col-md-6  col-sm-6 col-xs-12 center"> 
+
+<!-- TICKET INFO and PRICE OPTIONS / PURCHASE BUTTON / REGISTER FOR EVENT BUTTON -->    
 
 
                                                         <?php
@@ -220,14 +272,116 @@
                                                                 print "
                                                                 <form action=\"registration.php\" style=\"display:inline\" method=\"post\"><input type=\"hidden\" name=\"id\" value=\"$row[id]\">&nbsp;&nbsp;<input type=\"submit\" class=\"btn btn-success\" value=\"Register For Event\"></form>";
                                                         }
-							?>	
+                            ?>  
 
-			</td>
-			<tr></tr>	
-		</table>
-	</td>
-	</table>
-	<br><br><br><br><br>	
-	
-	</center>
+            </td>
+            <tr></tr>   
+        </table>
+    </td>
+    </table>
+    <!-- end tickets -->
+        </div>
+
+        <div class="col-md-3  col-sm-3 ">
+        </div>
+
+      
+    </div>
+
+
+  </div>
 </div>
+
+</section>
+<!-- share section -->
+
+<section id="share">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12 title">
+        <h2 class="wow fadeIn" data-wow-delay="0.9s">Share</h2>
+
+                                                        <?php
+                                                        $sql2 = "SELECT * FROM `social` WHERE `userID` = '$row[userID]'";
+                                                        $result2 = $this->new_mysql($sql2);
+                                                        while ($row2 = $result2->fetch_assoc()) {
+                                                                if ($row['homepage'] != "") {
+                                                                        $url = "http://" . $row['homepage'] . "." . $settings[8];
+                                                                } else {
+                                                                        $url = $settings[1] . "index.php?section=page_view&id=$_GET[id]"; // To Do
+                                                                }
+                                                                if ($row2['facebook'] == "Yes") {
+                                                                        $this->social_link("facebook",$url,$row['title'],$row['tagline']);
+                                                                }
+                                                                if ($row2['google'] == "Yes") {
+                                                                        $this->social_link("google",$url,$row['title'],$row['tagline']);
+                                                                }
+                                                                if ($row2['linkedin'] == "Yes") {
+                                                                        $this->social_link("linkedin",$url,$row['title'],$row['tagline']);
+                                                                }
+                                                                if ($row2['tumbler'] == "Yes") {
+                                                                        $this->social_link("tumbler",$url,$row['title'],$row['tagline']);
+                                                                }
+                                                                if ($row2['twitter'] == "Yes") {
+                                                                        $this->social_link("twitter",$url,$row['title'],$row['tagline']);
+                                                                }
+                                        
+                                                        }
+                                                
+                                                        ?>
+
+<!--
+        <ul class="social-icon">
+          <li><a href="#" class="fa fa-facebook wow bounceIn" data-wow-delay="0.3s"></a></li>
+          <li><a href="#" class="fa fa-google-plus wow bounceIn" data-wow-delay="0.6s"></a></li>
+          <li><a href="#" class="fa fa-linkedin wow bounceIn" data-wow-delay="0.9s"></a></li>
+          <li><a href="#" class="fa fa-tumblr wow bounceIn" data-wow-delay="0.9s"></a></li>
+          <li><a href="#" class="fa fa-twitter wow bounceIn" data-wow-delay="0.9s"></a></li>
+          </ul>
+          -->
+      </div>
+</section>
+
+
+
+
+<!-- contact section -->
+<section id="contact">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-offset-3 col-md-6 col-md-offset-3  col-sm-offset-2 col-sm-8 col-sm-offset-2 title">
+        <h2>Contact Us</h2>
+        <hr>
+       
+      </div>
+      <div class="col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8 contact-form wow fadeInUp" data-wow-delay="0.9s">
+
+<a href="mailto:<?=$row['email'];?>?subject=<?=$row['title'];?>"><span class="btn btn-default">Contact Organizer</span></a>
+
+        <!--
+        <form action="#" method="post">
+          <input type="text" class="form-control" placeholder="Name">
+          <input type="email" class="form-control" placeholder="Email">
+          <textarea class="form-control" placeholder="Message" rows="6"></textarea>
+          <input type="submit" class="form-control" value="SEND EMAIL">
+        </form>
+        -->
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+<!-- JAVASCRIPT JS FILES --> 
+<script src="js/jquery.js"></script> 
+<script src="js/bootstrap.min.js"></script> 
+<script src="js/nivo-lightbox.min.js"></script> 
+<script src="js/smoothscroll.js"></script> 
+<script src="js/jquery.sticky.js"></script> 
+<script src="js/jquery.parallax.js"></script> 
+<script src="js/wow.min.js"></script> 
+<script src="js/custom.js"></script>
+</body>
+</html>

@@ -2363,16 +2363,7 @@ class Tickets {
 		";
 		$result = $this->new_mysql($sql);
 		while ($row = $result->fetch_assoc()) {
-			if ($row['filename'] == "") {
-				include "view_desktop_default.php";
-			} else {
-				if (file_exists($row['filename'])) {
-					include "$row[filename]";
-				} else {
-		                        include "view_desktop_default.php";
-				}
-			}
-			//include "view_desktop_upbeat.php";
+            include "view_desktop_upbeat.php";
 		}
 	}
 

@@ -85,8 +85,10 @@ if ($_GET['h'] != "no") {
 			break;
 
 			default:
+						if ($_GET['section'] != "page_view") {
 		                $file = $GLOBAL['path']  . "/templates/" . $dir . "/header.phtml";
         		        $template->load_template($file,$data22);
+        		    	}
 			break;
 		}
 	}
@@ -263,8 +265,10 @@ if ($_POST['section'] == "cart") {
                         break;
 
 			default:
+					if ($_GET['section'] != "page_view") {
 			        $file = $GLOBAL['path']  . "/templates/" . $dir . "/footer.phtml";
 			        $template->load_template($file,$null);
+			    	}
 			break;
 		}
 }
