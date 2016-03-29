@@ -111,7 +111,19 @@ $cover = "uploads/$row[userID]/cover/$row[id]/$row[cover_image]";
         </div>
 
           <div class="col-md-4  col-sm-3 col-xs-1"> 
-
+                                    <?php
+                                        for ($x=1; $x < 6; $x++) {
+                                                $var = "slide";
+                                                $var .= $x;
+                                                if ($row[$var] != "") {
+                                                        print "
+                                                        
+                                                        <img src=\"uploads/$row[userID]/slide/$row[id]/$row[$var]\" width=50% />
+                                                        
+                                                        ";
+                                                }
+                                        }
+                                        ?>
           </div>
 
         <!--<div class="col-md-5  col-sm-6 col-xs-10 center"> -->
