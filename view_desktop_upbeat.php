@@ -77,7 +77,7 @@ $cover = "uploads/$row[userID]/cover/$row[id]/$row[cover_image]";
     <div class="navbar-header">
       <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="icon icon-bar"></span> <span class="icon icon-bar"></span> <span class="icon icon-bar"></span> </button>
 
-            <div class="navbar-brand" id="timeleft"></div>
+            <div class="navbar-brand" id="timeleft">test test test</div>
               <script type="text/javascript">
               function refreshDiv() {
                  $('#timeleft').load('check_time.php?id=<?=$_GET['id']?>', function(){ /* callback code here */ });
