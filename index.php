@@ -30,16 +30,10 @@ if ($_SERVER['HTTP_HOST'] != $GLOBAL['domain']) {
 
 	if ($sub[0] != "ticketpointe") {
 	        $redirect = $http.$GLOBAL['domain']."/".$sub[0];
-		print "<br><br><br>
-		<br><br><br>
-                <br><br><br>
-                <br><br><br>
-                <br><br><br>
-                <br><br><br>
 
-		<center><h2>Loading...</h2></center><br><br><bR>";
 		$_GET['h'] = "no";
 		print "<meta http-equiv=\"refresh\" content=\"1;url=$redirect\">";
+		die;
         	//header("Location: $redirect");
 	}
 }
