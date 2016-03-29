@@ -122,8 +122,8 @@ $cover = "uploads/$row[userID]/cover/$row[id]/$row[cover_image]";
                                                 $var .= $x;
                                                 if ($row[$var] != "") {
                                                         print "
-                                                        <div class=\"col-md-1\">
-                                                        <img src=\"uploads/$row[userID]/slide/$row[id]/$row[$var]\" width=50% />
+                                                        <div class=\"col-md-2\">
+                                                        <img src=\"uploads/$row[userID]/slide/$row[id]/$row[$var]\"  />
                                                         </div>
                                                         ";
                                                 }
