@@ -114,7 +114,8 @@ $cover = "uploads/$row[userID]/cover/$row[id]/$row[cover_image]";
 
           </div>
 
-        <div class="col-md-5  col-sm-6 col-xs-10 center"> 
+        <!--<div class="col-md-5  col-sm-6 col-xs-10 center"> -->
+        <div class="col-md-5 center"> 
 
                                         <?php
                                         for ($x=1; $x < 6; $x++) {
