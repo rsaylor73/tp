@@ -77,6 +77,7 @@ $cover = "uploads/$row[userID]/cover/$row[id]/$row[cover_image]";
     <div class="navbar-header">
       <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="icon icon-bar"></span> <span class="icon icon-bar"></span> <span class="icon icon-bar"></span> </button>
 
+<!--
             <div class="navbar-brand" id="timeleft">test test test</div>
               <script type="text/javascript">
               function refreshDiv() {
@@ -85,9 +86,9 @@ $cover = "uploads/$row[userID]/cover/$row[id]/$row[cover_image]";
               }
               setInterval(refreshDiv, 4000);
               </script>
+-->
 
-
-      <!--<a class="navbar-brand">Countdown*</a></div>-->
+      <a class="navbar-brand">Countdown*</a></div>
     <div class="collapse navbar-collapse">
       <ul class="nav navbar-nav navbar-right">
         <li><a href="#home" class="smoothScroll">HOME</a></li>
