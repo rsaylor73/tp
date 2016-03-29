@@ -123,7 +123,7 @@ $cover = "uploads/$row[userID]/cover/$row[id]/$row[cover_image]";
                                                 if ($row[$var] != "") {
                                                         print "
                                                         
-                                                        <img class=\"img-responsive\" alt=\"slide show\" src=\"uploads/$row[userID]/slide/$row[id]/$row[$var]\" />
+                                                        <img class=\"img-responsive\" alt=\"slide show\" src=\"uploads/$row[userID]/slide/$row[id]/$row[$var]\" width=50% />
                                                         
                                                         ";
                                                 }
