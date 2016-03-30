@@ -109,11 +109,23 @@ $cover = "uploads/$row[userID]/cover/$row[id]/$row[cover_image]";
   <div class="container">
     <div class="row">
       
+	<div class="col-md-12  col-sm-12 col-xs-12 center">
+            <center><div class="navbar-brand" id="timeleft"></div></center><br>
+              <script type="text/javascript">
+              function refreshDiv() {
+                 $('#timeleft').load('check_time.php?id=<?=$_GET['id']?>', function(){ /* callback code here */ });
+
+              }
+              setInterval(refreshDiv, 4000);
+              </script>
+	</div>
 
         <div class="col-md-12  col-sm-12 col-xs-12 title">
+	<br><br>
           <h2><?=$row['title']?></h2>
            <h5><?=$row['tagline']?></h5>
           <hr>
+
 
           <h5><?=$row['start_date']?> to <?=$row['end_date']?></h5>
           <h5><?=$row['start_time']?> to <?=$row['end_time']?></h5>
@@ -133,15 +145,45 @@ $cover = "uploads/$row[userID]/cover/$row[id]/$row[cover_image]";
                                                 $var = "slide";
                                                 $var .= $x;
                                                 if ($row[$var] != "") {
-                                                        print "
-                                                        <div class=\"col-md-1\">
-                                                        <img src=\"uploads/$row[userID]/slide/$row[id]/$row[$var]\" width=\"75%\" />
-                                                        </div>
+							if ($x == "1") {
+								$active = "item active";
+								$active2 = "class=\"active\"";
+							} else {
+								$active = "item";
+								$active2 = "";
+							}
+							$slider .= "<div class=\"$active\">\n
+                                                        <img src=\"uploads/$row[userID]/slide/$row[id]/$row[$var]\"/>\n
+                                                        </div>\n
                                                         ";
+							$y = $x - 1;
+
+							$slider2 .= "<li data-target=\"#myCarousel\" data-slide-to=\"$y\"$active2></li>\n";
                                                 }
                                         }
                                         ?>
+	<div class="col-md-5  col-sm-6 col-xs-10 center">
+		<div id="myCarousel" class="carousel slide" data-ride="carousel">
+			<ol class="carousel-indicators">
+			<?=$slider2;?>
+			</ol>
+			<div class="carousel-inner" role="listbox">
+			<?=$slider;?>
+			</div>
+<!-- Left and right controls -->
+  <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+</div>
 
+
+	</div>
           
         <div class="col-md-3  col-sm-3 col-xs-1"> 
 

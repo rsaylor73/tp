@@ -27,7 +27,7 @@ if ($_SERVER['HTTP_HOST'] != $GLOBAL['domain']) {
 		$http = "https://";
 	}
 
-	if ($sub[0] != "www") {
+	if ($sub[0] != "ticketpointe") {
 	        $redirect = $http.$GLOBAL['domain']."/".$sub[0];
 
 		$_GET['h'] = "no";
