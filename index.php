@@ -159,7 +159,6 @@ if ($_GET['section'] == "dashboard") {
 
 		die;
 	}
-	print "Test: $is_logged<br>";
         //$file = $GLOBAL['path']  . "/templates/" . $dir . "/dashboard.phtml";
         //$template->load_template($file,$null);
 

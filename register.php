@@ -50,7 +50,7 @@ print '
     <div id="page-inner">
         <div class="row">
             <div class="col-md-8">
-                <h1 class="page-head-line">HQ Login</h1>
+                <h1 class="page-head-line">HQ Register</h1>
             </div>
         </div>
 
@@ -62,7 +62,6 @@ print '
 
 ?>
 <div id="page_view" style="text-align:center">
-<h2>Register</h2>
                         <div id="registration">
                         <form name="myform">
                                 <div class="modal-body">
