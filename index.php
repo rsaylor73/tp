@@ -7,7 +7,6 @@ $sesID = session_id();
 include_once "include/settings.php";
 include_once "include/mysql.php";
 include_once "include/templates.php";
-
 if ($_GET['section'] == "page_view") {
 	if ($dir == "desktop") {
 		$tickets->page_view();
@@ -28,7 +27,7 @@ if ($_SERVER['HTTP_HOST'] != $GLOBAL['domain']) {
 		$http = "https://";
 	}
 
-	if ($sub[0] != "ticketpointe") {
+	if ($sub[0] != "www") {
 	        $redirect = $http.$GLOBAL['domain']."/".$sub[0];
 
 		$_GET['h'] = "no";
