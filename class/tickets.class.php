@@ -383,6 +383,14 @@ class Tickets {
 			$row['ach_number'] = $this->encrypt_decrypt('decrypt',$row['ach_number']);
 			$row['tax_id'] = $this->encrypt_decrypt('decrypt',$row['tax_id']);
 
+            // Mask data
+            $tax_id_len = strlen($row['tax_id']);
+            $tax_id_4 = substr($row['tax_id'], -4);
+            $i = $tax_id_len - 4;
+            for ($y=0; $y < $i; $y++) {
+                $mask .= "*";
+            }
+            $tax_id = $mask . $tax_id_4;
 
 			$default = "<option selected value=\"$row[payment_method]\">$row[payment_method] (Default)</option>";
 			print "
@@ -398,7 +406,7 @@ class Tickets {
 			<tr><td colspan=2><textarea name=\"mail_by_check\" cols=80 rows=4 placeholder=\"Please type in your address\">$row[mail_by_check]</textarea></td></tr>
 
 			<tr><td colspan=2><br><b>In order to receive payments your Tax ID is required. Please enter in your Tax ID below. If you do not have a Tax ID then your SSN number is required.</b></td></tr>
-			<tr><td>Tax ID:</td><td><input type=\"text\" name=\"tax_id\" value=\"$row[tax_id]\" size=40></td></tr>			
+			<tr><td>Tax ID:</td><td><input type=\"text\" name=\"tax_id\" value=\"$tax_id\" size=40></td></tr>			
 
 			";
 			}
