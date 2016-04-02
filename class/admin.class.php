@@ -1322,7 +1322,7 @@ class Admin {
 
 		while ($row = $result->fetch_assoc()) {
 			print "<tr><td>Username:</td><td>$row[uuname]</td></tr>
-			<!--<tr><td>Password:</td><td><input type=\"text\" name=\"uupass\" value=\"$row[uupass]\" size=40></td></tr>-->
+			<tr><td>Password:</td><td><input type=\"text\" name=\"uupass\" value=\"$row[uupass]\" size=40></td></tr>
 			<tr><td>Email:</td><td><input type=\"text\" name=\"email\" value=\"$row[email]\" size=40></td></tr>
 			<tr><td>Account Type:</td><td><select name=\"account_type\"><option selected value=\"$row[account_type]\">$row[description]</option>$account_types</select></td></tr>
 			<tr><td>Active:</td><td><select name=\"active\"><option selected>$row[active]</option><option>Yes</option><option>No</option></select></td></tr>
@@ -1333,7 +1333,7 @@ class Admin {
 	}
 
 	public function update_user() {
-		$sql = "UPDATE `users` SET `email` = '$_POST[email]', `active` = '$_POST[active]', `account_type` = '$_POST[account_type]' WHERE `id` = '$_POST[id]'";
+		$sql = "UPDATE `users` SET `email` = '$_POST[email]', `uupass` = '$_POST[uupass]', `active` = '$_POST[active]', `account_type` = '$_POST[account_type]' WHERE `id` = '$_POST[id]'";
                 $result = $this->new_mysql($sql);
 		if ($result == "TRUE") {
 			print "<br><font color=green>The user was updated.</font><br>";
