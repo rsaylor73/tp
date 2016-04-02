@@ -1016,9 +1016,11 @@ class Tickets {
 			<td colspan=2><textarea name=\"description\" id=\"tiny\" cols=60 rows=20>$post[description]</textarea></td>
 		</tr>
 
-		<tr><td colspan=2>More Info:</td></tr>
+		<!--
+        <tr><td colspan=2>More Info:</td></tr>
 		<tr><td colspan=2><textarea name=\"more_info\" id=\"tiny2\" cols=60 rows=20>$post[more_info]</textarea></td></tr>
-
+        -->
+        
 		<tr><td colspan=2><input type=\"submit\" value=\"$btn\" class=\"btn btn-primary\"></td></tr>
 		</table>
 		</form>
