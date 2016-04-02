@@ -436,8 +436,8 @@ class Tickets {
 		$this->navigation2();
 		print '<div class="row"><div class="col-md-8"><div class="row"><div class="col-md-8" id="ajax">';
 
-		if ($_POST['ach_number'] != "") {
-	                $ach_number = $this->encrypt_decrypt('encrypt',$_POST['ach_number']);
+		if ($_POST['ach_routing'] != "") {
+	                $ach_routing = $this->encrypt_decrypt('encrypt',$_POST['ach_routing']);
 		}
 
         if (substr($_POST['ach_number'], 0,1) != "*") {
