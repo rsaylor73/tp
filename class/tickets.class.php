@@ -392,6 +392,7 @@ class Tickets {
             }
             $tax_id = $mask . $tax_id_4;
 
+            $mask = "";
             $ach_number_len = strlen($row['ach_number']);
             $ach_number_4 = substr($row['ach_number'], -4);
             $i = $ach_number_len - 4;
@@ -408,7 +409,7 @@ class Tickets {
 
 			<tr><td colspan=2><br><b>If you selected ACH as your payment method please enter in your banks routing number and account number below. By entering in your banking details you authorize an Electronic Payment into your bank account.</b></td></tr>
 			<tr><td>Routing Number:</td><td><input type=\"text\" name=\"ach_routing\" value=\"$row[ach_routing]\" size=40></td></tr>
-			<tr><td>Account Number:</td><td><input type=\"text\" name=\"ach_number\" value=\"$ach_number  $row[ach_number]\" size=40></td></tr>
+			<tr><td>Account Number:</td><td><input type=\"text\" name=\"ach_number\" value=\"$ach_number\" size=40></td></tr>
 
 			<tr><td colspan=2><br><b>If you selected Check as your payment method please enter in your address below:</b></td></tr>
 			<tr><td colspan=2><textarea name=\"mail_by_check\" cols=80 rows=4 placeholder=\"Please type in your address\">$row[mail_by_check]</textarea></td></tr>
