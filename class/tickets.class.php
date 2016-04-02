@@ -401,6 +401,15 @@ class Tickets {
             }
             $ach_number = $mask . $ach_number_4;
 
+            $mask = "";
+            $ach_routing_len = strlen($row['ach_routing']);
+            $ach_routing_4 = substr($row['ach_routing'], -4);
+            $i = $ach_routing_len - 4;
+            for ($y=0; $y < $i; $y++) {
+                $mask .= "*";
+            }
+            $ach_routing = $mask . $ach_routing_4;
+
 			$default = "<option selected value=\"$row[payment_method]\">$row[payment_method] (Default)</option>";
 			print "
 			<tr><td>Payment Method:</td><td><select name=\"payment_method\">$default<option>PayPal</option><option>ACH</option><option>Check</option></select>
@@ -408,7 +417,7 @@ class Tickets {
 			<tr><td>PayPal Email:</td><td><input type=\"text\" name=\"paypal_email\" value=\"$row[paypal_email]\" size=40></td></tr>
 
 			<tr><td colspan=2><br><b>If you selected ACH as your payment method please enter in your banks routing number and account number below. By entering in your banking details you authorize an Electronic Payment into your bank account.</b></td></tr>
-			<tr><td>Routing Number:</td><td><input type=\"text\" name=\"ach_routing\" value=\"$row[ach_routing]\" size=40></td></tr>
+			<tr><td>Routing Number:</td><td><input type=\"text\" name=\"ach_routing\" value=\"$ach_routing\" size=40></td></tr>
 			<tr><td>Account Number:</td><td><input type=\"text\" name=\"ach_number\" value=\"$ach_number\" size=40></td></tr>
 
 			<tr><td colspan=2><br><b>If you selected Check as your payment method please enter in your address below:</b></td></tr>
