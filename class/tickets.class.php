@@ -436,19 +436,22 @@ class Tickets {
 		$this->navigation2();
 		print '<div class="row"><div class="col-md-8"><div class="row"><div class="col-md-8" id="ajax">';
 
-		if ($_POST['ach_routing'] != "") {
-	                $ach_routing = $this->encrypt_decrypt('encrypt',$_POST['ach_routing']);
-		}
 		if ($_POST['ach_number'] != "") {
 	                $ach_number = $this->encrypt_decrypt('encrypt',$_POST['ach_number']);
 		}
-		if ($_POST['tax_id'] != "") {
-	                $tax_id = $this->encrypt_decrypt('encrypt',$_POST['tax_id']);
-		}
+
+        if (substr($_POST['ach_number'], 0,1) != "*") {
+            $ach_number = $this->encrypt_decrypt('encrypt',$_POST['ach_number']);
+            $ach_number_sql = ", `ach_number` = '$ach_number'";
+        }
+        if (substr($_POST['tax_id'], 0,1) != "*") {
+            $tax_id = $this->encrypt_decrypt('encrypt',$_POST['tax_id']);
+            $tax_id_sql = ", `tax_id` = '$tax_id'";
+        }
 
 
 		$sql = "UPDATE `users` SET `fname` = '$_POST[fname]', `lname` = '$_POST[lname]', `email` = '$_POST[email]', `uupass` = '$_POST[uupass]', `paypal_email` = '$_POST[paypal_email]',
-		`payment_method` = '$_POST[payment_method]', `ach_routing` = '$ach_routing', `ach_number` = '$ach_number', `mail_by_check` = '$_POST[mail_by_check]', `tax_id` = '$tax_id'
+		`payment_method` = '$_POST[payment_method]', `ach_routing` = '$ach_routing' $ach_number_sql, `mail_by_check` = '$_POST[mail_by_check]' $tax_id_sql
 		WHERE `uuname` = '$_SESSION[uuname]'
 		";
 		$result = $this->new_mysql($sql);
