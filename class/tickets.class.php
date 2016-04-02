@@ -1020,7 +1020,7 @@ class Tickets {
         <tr><td colspan=2>More Info:</td></tr>
 		<tr><td colspan=2><textarea name=\"more_info\" id=\"tiny2\" cols=60 rows=20>$post[more_info]</textarea></td></tr>
         -->
-        
+
 		<tr><td colspan=2><input type=\"submit\" value=\"$btn\" class=\"btn btn-primary\"></td></tr>
 		</table>
 		</form>
@@ -2687,10 +2687,10 @@ class Tickets {
 		Amount: $$_SESSION[amount]<br>";
 
 		print "<br>
-                <input type=\"button\" name=\"more_info\" id=\"more_info\" class=\"btn btn-success\" value=\"More Info\" onclick=\"
+                <!--<input type=\"button\" name=\"more_info\" id=\"more_info\" class=\"btn btn-success\" value=\"More Info\" onclick=\"
                         document.getElementById('display_more_info').style.display='inline';
                         document.getElementById('more_info').style.display='none';
-                \">
+                \">-->
                 </form>
 
                 <div id=\"display_more_info\" style=\"display:none\"><br>$more_info<br>
@@ -2903,10 +2903,10 @@ class Tickets {
 		print "
 		<input type=\"hidden\" name=\"act\" value=\"apply_code\">
 		Discount Code: <input type=\"text\" name=\"discount\" size=20> <input type=\"submit\" class=\"btn btn-primary\" value=\"Apply Discount\"> &nbsp;&nbsp;
-		<input type=\"button\" name=\"more_info\" id=\"more_info\" class=\"btn btn-success\" value=\"More Info\" onclick=\"
+		<!--<input type=\"button\" name=\"more_info\" id=\"more_info\" class=\"btn btn-success\" value=\"More Info\" onclick=\"
 			document.getElementById('display_more_info').style.display='inline';
 			document.getElementById('more_info').style.display='none';
-		\">
+		\">-->
 		</form>
 
 		<div id=\"display_more_info\" style=\"display:none\"><br>$more_info<br>
@@ -3125,10 +3125,10 @@ class Tickets {
                 Discount Code: <input type=\"text\" name=\"discount\" size=20> <input type=\"submit\" class=\"btn btn-primary\" value=\"Apply Discount\">
 
 		&nbsp;&nbsp;
-                <input type=\"button\" name=\"more_info\" id=\"more_info\" class=\"btn btn-success\" value=\"More Info\" onclick=\"
+                <!-- <input type=\"button\" name=\"more_info\" id=\"more_info\" class=\"btn btn-success\" value=\"More Info\" onclick=\"
                         document.getElementById('display_more_info').style.display='inline';
                         document.getElementById('more_info').style.display='none';
-                \">
+                \"> -->
                 </form>
 
                 <div id=\"display_more_info\" style=\"display:none\"><br>$more_info<br>
