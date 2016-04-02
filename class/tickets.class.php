@@ -127,9 +127,10 @@ class Tickets {
 		LIMIT 8
 		";
 
+		$html .= "<table><tr>";
+
 		$result = $this->new_mysql($sql);
 		while ($row = $result->fetch_assoc()) {
-			$counter++;
                         if ($row['homepage'] != "") {
                                 $link = "<a href=\"http://$row[homepage].$settings[8]\"><font color=#096FBB>$row[title]</font></a>";
                                 $link1 = "<a href=\"http://$row[homepage].$settings[8]\">";
@@ -146,20 +147,23 @@ class Tickets {
 				$cover = "<tr><td colspan=2><center>$link1<img src=\"uploads/$row[userID]/cover/$row[id]/$row[cover_image]\" width=\"300\" height=\"200\"></center>$link2</td></tr>";
 			}
 
-			if ($counter == "5") {
-				$html .= "<br>";
+			if ($counter == "4") {
+				$html .= "</tr><tr>";
+				$counter = 0;
 			}
 
-			$html .= "<table border=0 width=300  style=\"display: inline\">
+			$html .= "<td><table border=0 width=300  style=\"display: inline\">
 			$cover
 			<tr bgcolor=#FFFFFF><td colspan=2><center>$link</center></td></tr>
 			<tr bgcolor=#FFFFFF><td colspan=2><center><i class=\"fa fa-map-marker\" font color=\"#99A9C2\"></i> <font color=#99A9C2>$row[location]</font></td></tr>
 			<tr bgcolor=#EFEFEF><td align=left><i class=\"fa fa-calendar fa-lg\" style=\"color:#99A9C2\"></i> $row[start_date]</td><td align=right><i class=\"fa fa-eye fa-lg\"></i> $views</td></tr>
-			</table>&nbsp;&nbsp;";
-
+			</table></td>";
+			$counter++;
 			
 			
 		}
+		$html .= "</tr></table>";
+
 		if ($html == "") {
 			$html = "No upcoming events...";
 		} else {
