@@ -3163,6 +3163,8 @@ class Tickets {
 
 	public function cancel() {
 		session_destroy();
+		$_SESSION['time1'] = "";
+		$_SESSION['time2'] = "";
                 print "<div id=\"page_view\">";
 
 		print "<h2>Inactive Order</h2><br>

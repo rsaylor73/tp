@@ -8,6 +8,15 @@ include_once "include/settings.php";
 include_once "include/mysql.php";
 include_once "include/templates.php";
 
+// Do desktop or mobile
+$type = $template->isMobile();
+if ($type) {
+        $dir = "mobile";
+} else {
+        $dir = "desktop";
+}
+
+
 function ensure2Digit($number) {
     if($number < 10) {
         //$number = '0' . $number;
@@ -42,11 +51,13 @@ function secondsToTime($ss) {
    $time_left2 = secondsToTime($time_left);
 
    if ($time_left < 0) {
+	if ($type == "desktop") {
 	?>
 	<script>
 	document.location.href='index.php?section=cancel';
 	</script>
 	<?php
+	}
   } else {
 	   print "$time_left2";
    }
