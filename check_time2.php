@@ -52,10 +52,13 @@ function secondsToTime($ss) {
 
    if ($time_left < 0) {
 	if ($type == "desktop") {
+	//         document.location.href='index.php?section=cancel';
+
 	?>
 	<script>
-	document.location.href='index.php?section=cancel';
+	document.getElementById('ck').disabled=true;
 	</script>
+	<font color=red>The cart has expired. Please click back if you wish to re-add the ticket(s)</font>
 	<?php
 	}
   } else {

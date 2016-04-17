@@ -106,6 +106,7 @@ class Tickets {
                 $settings = $this->get_settings();
 		$date = date("Ymd");
 		$today = date("Y-m-d", strtotime($date . "-14 days"));
+		$end_date = date("Y-m-d");
 		$sql = "
                 SELECT
                         `events`.`title`,
@@ -123,7 +124,8 @@ class Tickets {
                 WHERE
                         `events`.`event_page` = 'public'
                         AND `events`.`locationID` = `location`.`id`
-			AND `events`.`start_date` > '$today'
+			#AND `events`.`start_date` > '$today'
+			AND `events`.`end_date` >= '$end_date'
 		LIMIT 8
 		";
 
@@ -2869,7 +2871,11 @@ class Tickets {
 
 	                        print "<tr><td colspan=4>Total:</td><td>$".number_format($grand_total,2,'.',',')."</td></tr>";
 				print "<tr><td colspan=5>To make any changes click back or if you are ready click check out.</td></tr>
-				<tr><td colspan=4><div id=\"timeleft\"></div></td><td><input type=\"checkbox\" name=\"terms\" value=\"checked\" required> I agree to the <a href=\"terms.php\" target=_blank>terms</a>&nbsp;<input type=\"submit\" class=\"btn btn-primary\" value=\"Check Out\">
+				<tr><td colspan=4><div id=\"timeleft\"></div></td><td><input type=\"checkbox\" name=\"terms\" value=\"checked\" required>&nbsp;
+
+				I acknowledge that I have read and agree with Ticket Pointe's <a href=\"terms.html\">terms of service</a>.&nbsp;&nbsp;
+
+				<input type=\"submit\" class=\"btn btn-primary\" id=\"ck\" value=\"Check Out\">
 				";
 			}
 
@@ -2888,7 +2894,9 @@ class Tickets {
 
 		} else {
 			if ($number > 0) {
-                                print "<tr><td colspan=4>&nbsp;</td><td><input type=\"checkbox\" name=\"terms\" value=\"checked\" required> I agree to the <a href=\"terms.php\">terms</a>&nbsp;&nbsp;<input type=\"submit\" class=\"btn btn-primary\" value=\"Check Out\"></td></tr>";
+                                print "<tr><td colspan=4>&nbsp;</td><td><input type=\"checkbox\" name=\"terms\" value=\"checked\" required>&nbsp;
+                                 I acknowledge that I have read and agree with Ticket Pointe's <a href=\"terms.html\">terms of service</a>.<br>
+			&nbsp;&nbsp;<input type=\"submit\" class=\"btn btn-primary\" id=\"ck\" value=\"Check Out\"></td></tr>";
 			} else {
 				print "<tr><td colspan=5>Sorry, you did not add any tickets to your cart.</td></tr>";
 			}
@@ -2927,6 +2935,8 @@ class Tickets {
 	}
 
         public function cart_iframe() {
+		$device = $this->device_type();
+
                 $sql = "
                 SELECT
                         DATE_FORMAT(`events`.`start_date`, '%m/%d/%Y') AS 'start_date',
@@ -2968,13 +2978,24 @@ class Tickets {
                 <input type=\"hidden\" name=\"section\" value=\"checkout\">
                 <input type=\"hidden\" name=\"id\" value=\"$_POST[id]\">
                 <input type=\"hidden\" name=\"viewID\" value=\"$_POST[viewID]\">
-                <table class=\"table\">
-                <tr>
-                        <td><b>Ticket</b></td>
-                        <td><b>Price</b></td>
-                        <td><b>QTY</b></td>
-                        <td><b>Amount</b></td>
-                </tr>";
+		";
+
+		if ($device == "0") {
+			print "
+        	        <table class=\"table\">
+                	<tr>
+                        	<td><b>Ticket</b></td>
+	                        <td><b>Price</b></td>
+        	                <td><b>QTY</b></td>
+				<td><b>Email</b></td>
+                	        <td><b>Amount</b></td>
+	                </tr>";
+		} else {
+                        print "
+                        <table class=\"table\">
+			";
+		}
+
                 $sql = "SELECT * FROM `tickets` WHERE `eventID` = '$_POST[id]'";
                 $result = $this->new_mysql($sql);
                 while ($row = $result->fetch_assoc()) {
@@ -3003,25 +3024,20 @@ class Tickets {
                                 }
                                 $total_sold = $total_sold + $_POST[$i];
                                 if ($total_sold > $total_qty) {
-                                        print "<tr><td colspan=4><font color=red>You have selected a quantity that is greater then what is available for <b>$row[name]</b>. Please click back and select a lesser quantity.</font></td></tr>";
+					if ($device == "0") {
+	                                        print "<tr><td colspan=4><font color=red>You have selected a quantity that is greater then what is available for <b>$row[name]</b>. Please click back and select a lesser quantity.</font></td></tr>";
+					} else {
+						print "<tr><td><font color=red>You have selected a quantity that is greater then what is available for <b>$row[name]</b>. Please click back and select a lesser quantity.</font></td></tr>";
+					}
                                         $err = "1";
                                 } else {
-
-
-					/*
-                                        print "<input type=\"hidden\" name=\"$i\" value=\"$_POST[$i]\">";
-                                        $amount = $row['price'] * $_POST[$i];
-                                        print "<tr><td>$row[name]</td><td>$$row[price]</td><td>$_POST[$i]</td><td>$".number_format($amount,2,'.',',')."</td></tr>";
-                                        $total = $total + $amount;
-                                        $number++;
-					*/
-
-
                                         print "<input type=\"hidden\" name=\"$i\" value=\"$_POST[$i]\">";
                                         $amount = $row['price'] * $_POST[$i];
 
                                         for ($y=0; $y < $_POST[$i]; $y++) {
-                                                print "<tr>
+							if ($device == "0") {
+							// begin
+                                        	        print "<tr>
                                                         <td>$row[name]</td>
                                                         <td>$$row[price]</td>
                                                         <td><input type=\"text\" name=\"name_$row[id]_$y\" id=\"name_$row[id]_$y\" required> <a href=\"javascript:void(0)\" onclick=\"copy_name()\" size=40>Copy To All Tickets</a></td>
@@ -3036,11 +3052,37 @@ class Tickets {
                                                         print "
                                                         <td><input type=\"text\" name=\"email_$row[id]_$y\" id=\"email_$row[id]_$y\" required> <a href=\"javascript:void(0)\" onclick=\"copy_email()\" size=60>Copy To All Tickets</a></td></td>
                                                         <td>$".number_format($amount,2,'.',',')."</td>
-                                                </tr>";
+	                                                </tr>";
 
-                                                if ($row['more_info'] != "") {
-                                                        print "<tr><td colspan=5>$row[more_info]</td></tr>";
-                                                }
+        	                                        if ($row['more_info'] != "") {
+                	                                        //print "<tr><td colspan=5>$row[more_info]</td></tr>";
+                        	                        }
+							// end
+							} else {
+                                                        // begin
+                                                        print "
+							<tr><td>$row[name]</td></tr>
+                                                        <tr><td>Price: $$row[price]</td></tr>
+                                                        <tr><td>QTY: <input type=\"text\" name=\"name_$row[id]_$y\" id=\"name_$row[id]_$y\" required size=\"10\"><br>
+								<a href=\"javascript:void(0)\" onclick=\"copy_name()\" size=40>Copy To All Tickets</a></td></tr>
+                                                        ";
+                                                        $y2 = $y + 1;
+                                                        if ($y2 < $_POST[$i]) {
+                                                                $d_email .= "document.getElementById('email_$row[id]_$y2').value = document.getElementById('email_$row[id]_$y').value;\n";
+                                                                $d_name .= "document.getElementById('name_$row[id]_$y2').value = document.getElementById('name_$row[id]_$y').value;\n";
+
+                                                        }
+                                                        print "
+                                                        <tr><td>Email: <input type=\"text\" name=\"email_$row[id]_$y\" id=\"email_$row[id]_$y\" required size=\"10\"><br>
+							 <a href=\"javascript:void(0)\" onclick=\"copy_email()\" size=60>Copy To All Tickets</a></td></td></tr>
+                                                        <tr><td>Amount: $".number_format($amount,2,'.',',')."</td></tr>
+                                                        ";
+
+                                                        if ($row['more_info'] != "") {
+                                                               // print "<tr><td colspan=5>$row[more_info]</td></tr>";
+                                                        }
+                                                        // end
+							}
 
                                         }
                                         $total = $total + $amount;
@@ -3081,17 +3123,30 @@ class Tickets {
                         }
 			if ($err != "1") {
 	                        $fees = $this->get_fees($total,$number);
+				if ($device == "0") {
         	                print "<tr><td colspan=3>Service Fee's</td><td>$".number_format($fees,2,'.',',')."</td></tr>";
+				} else {
+                                print "<tr><td>Service Fee: $".number_format($fees,2,'.',',')."</td></tr>";
+				}
                 	        $grand_total = $total + $fees;
 
 	                        if ($total_discount != "") {
+					if ($device == "0") {
         	                        print "<tr><td colspan=3>Discount:</td><td>$".number_format($total_discount,2,'.',',')."</td></tr>";
+					} else {
+                                        print "<tr><td>Discount: $".number_format($total_discount,2,'.',',')."</td></tr>";
+					}
                 	        }
-
+				if ($device == "0") {
 	                        print "<tr><td colspan=3>Total:</td><td>$".number_format($grand_total,2,'.',',')."</td></tr>";
         	                print "<tr><td colspan=4>To make any changes click back or if you are ready click check out.</td></tr>
-                	        <tr><td colspan=3><div id=\"timeleft\"></div></td><td><input type=\"submit\" class=\"btn btn-primary\" value=\"Check Out\">
+                	        <tr><td colspan=3><div id=\"timeleft\"></div></td><td><input type=\"submit\" class=\"btn btn-primary\" id=\"ck\" value=\"Check Out\"></td></tr>
 	                        ";
+				} else {
+                                print "<tr><td>Total: $".number_format($grand_total,2,'.',',')."</td></tr>";
+                                print "<tr><td>To make any changes click back or if you are ready click check out.</td></tr>
+                                <tr><td><div id=\"timeleft\"></div><input type=\"submit\" class=\"btn btn-primary\" id=\"ck\" value=\"Check Out\"></td></tr>";
+				}
 			}
                         ?>
                       <script type="text/javascript">
@@ -3103,14 +3158,19 @@ class Tickets {
                       </script>
                         <?php
 
-                        print "
-                        </td></tr>";
-
                 } else {
                         if ($number > 0) {
-                                print "<tr><td colspan=3>&nbsp;</td><td><input type=\"submit\" class=\"btn btn-primary\" value=\"Check Out\"></td></tr>";
+				if ($device == "0") {
+                                print "<tr><td colspan=3>&nbsp;</td><td><input type=\"submit\" class=\"btn btn-primary\" id=\"ck\" value=\"Check Out\"></td></tr>";
+				} else {
+                                print "<tr><td><input type=\"submit\" class=\"btn btn-primary\" id=\"ck\" value=\"Check Out\"></td></tr>";
+				}
                         } else {
+				if ($device == "0") {
                                 print "<tr><td colspan=4>Sorry, you did not add any tickets to your cart.</td></tr>";
+				} else {
+                                print "<tr><td>Sorry, you did not add any tickets to your cart.</td></tr>";
+				}
                         }
                 }
                 print "</table>";
@@ -3129,10 +3189,6 @@ class Tickets {
                 Discount Code: <input type=\"text\" name=\"discount\" size=20> <input type=\"submit\" class=\"btn btn-primary\" value=\"Apply Discount\">
 
 		&nbsp;&nbsp;
-                <!-- <input type=\"button\" name=\"more_info\" id=\"more_info\" class=\"btn btn-success\" value=\"More Info\" onclick=\"
-                        document.getElementById('display_more_info').style.display='inline';
-                        document.getElementById('more_info').style.display='none';
-                \"> -->
                 </form>
 
                 <div id=\"display_more_info\" style=\"display:none\"><br>$more_info<br>
@@ -3223,7 +3279,7 @@ class Tickets {
                         $grand_total = $total + $fees;
                         print "<tr><td colspan=3>Total:</td><td>$".number_format($grand_total,2,'.',',')."</td></tr>";
                         print "<tr><td colspan=4>To make any changes click back or if you are ready click check out.</td></tr>
-                        <tr><td colspan=3>&nbsp;</td><td><input type=\"submit\" class=\"btn btn-primary\" value=\"Check Out\"></td></tr>";
+                        <tr><td colspan=3>&nbsp;</td><td><input type=\"submit\" class=\"btn btn-primary\" id=\"ck\" value=\"Check Out\"></td></tr>";
 
                 } else {
                         print "<tr><td colspan=4>Sorry, you did not add any tickets to your cart.</td></tr>";
@@ -4155,6 +4211,7 @@ class Tickets {
                 $settings = $this->get_settings();
                 $state = $this->get_states();
 		$_SESSION['token'] = rand(50,1000);
+
 
                 ?>
 	    <form id="myCCForm" action="<?=$post_to;?>" method="post">
