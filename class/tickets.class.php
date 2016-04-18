@@ -3063,7 +3063,7 @@ class Tickets {
                                                         print "
 							<tr><td>$row[name]</td></tr>
                                                         <tr><td>Price: $$row[price]</td></tr>
-                                                        <tr><td>QTY: <input type=\"text\" name=\"name_$row[id]_$y\" id=\"name_$row[id]_$y\" required size=\"10\"><br>
+                                                        <tr><td>Name: <input type=\"text\" name=\"name_$row[id]_$y\" id=\"name_$row[id]_$y\" required size=\"10\"><br>
 								<a href=\"javascript:void(0)\" onclick=\"copy_name()\" size=40>Copy To All Tickets</a></td></tr>
                                                         ";
                                                         $y2 = $y + 1;

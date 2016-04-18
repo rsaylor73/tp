@@ -177,6 +177,7 @@ class Admin {
 			AND `cart`.`name` LIKE '%$_POST[name]%'
 			AND `cart`.`email` LIKE '%$_POST[email]%'
 			AND `cart`.`eventID` = `events`.`id`
+			AND `cart`.`status` = 'Paid'
 		";
 
 		print "<table class=\"table\">
