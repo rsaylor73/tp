@@ -690,7 +690,7 @@ class Tickets {
 		$result = $this->new_mysql($sql);
 		while ($row = $result->fetch_assoc()) {
 			print "<h2>$row[title] : Detailed Report</h2>";
-			print "<input type=\"button\" class=\"btn btn-success\" value=\"Download Ticket List\" onclick=\"window.open('download.php?id=$row[id]')\"><br>";
+			print "<input type=\"button\" class=\"btn btn-success\" value=\"Download Ticket List\" onclick=\"window.open('download_all.php?id=$_GET[id]')\"><br>";
 			// get total qty
 			$sql2 = "
 			SELECT 

@@ -23,13 +23,58 @@ if ($type) {
         $dir = "desktop";
 }
 
-$file = $GLOBAL['path']  . "/templates/" . $dir . "/header2.phtml";
-$template->load_template($file,$null);
+//$file = $GLOBAL['path']  . "/templates/" . $dir . "/header2.phtml";
+//$template->load_template($file,$null);
 
-print "
-        <div id=\"cart_iframe\">
-	<div id=\"cart_iframe_inner\">
-        <img src=\"img/logo80.png\" width=50%><br><br>";
+?>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Ticket Pointe</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+   <style>
+   #ticket_table{
+	padding-top: 5px;
+   }
+
+   #check_out{
+	padding-top:10px;
+   }
+   </style>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <!-- header with logo -->
+    <section id="head">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+           
+            <h4>Ticket Information</h4>
+
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+
+<?php
+
+
 
 
 if (($_GET['section'] == "") && ($_POST['section'] == "")) {
@@ -43,12 +88,28 @@ if (($_GET['section'] == "") && ($_POST['section'] == "")) {
 	switch ($dir) {
 	case "desktop":
 	print "
-	<form name=\"myform\" action=\"tickets_iframe.php\" method=\"post\" target=\"_blank\">
+	<form name=\"myform\" action=\"tickets_iframe_checkout.php\" method=\"post\" target=\"_blank\">
 	<input type=\"hidden\" name=\"id\" value=\"$_GET[id]\">
 	<input type=\"hidden\" name=\"section\" value=\"cart\">
 	<input type=\"hidden\" name=\"viewID\" value=\"$viewID\">
-	<table class=\"table\">
-	<tr><td><b>Ticket:</b></td><td><b>Price:</b></td><td><b>Quantity:</b></td></tr>";
+
+   <section id=\"ticket_table\">
+      <div class=\"container\">
+        <div class=\"row\">
+          
+          <div class=\"table-responsive\">          
+            <table class=\"table\">
+              <thead>
+                <tr>
+                  <th>Ticket Type</th>
+                  <th>Price</th>
+                  <th>Quanity</th>
+                  
+                </tr>
+              </thead>
+		<tbody>
+	";
+
 	while ($row2 = $result2->fetch_assoc()) {
 
                                                                 // check qty
@@ -76,10 +137,46 @@ if (($_GET['section'] == "") && ($_POST['section'] == "")) {
 	}
 	if ($found != "1") {
 		print "<tr><td colspan=3><font color=blue>Sorry, but tickets are not yet available.</font></td></tr>";
+		print "</tbody></table></div></div></div></section>";
 	} else {
-		print "<tr><td colspan=3><input type=\"submit\" class=\"btn btn-primary\" value=\"Purchase Tickets\"></td></tr>";
+		print "
+		</tbody></table></div></div></div></section>
+		<section id=\"check_out\">
+		<hr>
+		";
+		?>
+      <div class="container">
+        <div class="row">
+            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+              
+              <input class="btn btn-primary btn-responsive" type="submit" value="Purchase Tickets">
+
+              <img class="img-responsive" src="img/credit_cards.png" alt="cards">
+                 
+            </div>
+
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+              
+            </div>
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                    
+                </div>
+            
+                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+            
+                    </div>
+                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                        <img class="img-responsive" src="img/exclusively.png" alt="logo">
+                    </div>
+      
+      </div>
+
+
+
+    </section>
+		<?php
 	}
-	print "</table>
+	print "
 	</form>
 	";
 	break;
@@ -93,7 +190,7 @@ if (($_GET['section'] == "") && ($_POST['section'] == "")) {
 	</style>
 	';
         print "
-        <form name=\"myform\" action=\"tickets_iframe.php\" method=\"post\" target=\"_blank\">
+        <form name=\"myform\" action=\"tickets_iframe_checkout.php\" method=\"post\" target=\"_blank\">
         <input type=\"hidden\" name=\"id\" value=\"$_GET[id]\">
         <input type=\"hidden\" name=\"section\" value=\"cart\">
         <input type=\"hidden\" name=\"viewID\" value=\"$viewID\">
@@ -151,5 +248,4 @@ if ($_POST['section'] == "payment") {
 if ($_POST['section'] == "free") {
 	$tickets->free_iframe();
 }
-print "</div></div>";
 ?>

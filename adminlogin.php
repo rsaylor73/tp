@@ -18,7 +18,7 @@ while ($row = $result->fetch_assoc()) {
 
 if ($found == "1") {
         $settings = $tickets->get_settings();
-        print "You have been logged in. Click <a href=\"$settings[1]admin.php?action=dashboard\">here</a> to continue.<br>";
+        print "You have been logged in. Click <a href=\"http://$settings[1]/admin.php?action=dashboard\">here</a> to continue.<br>";
 } else {
         $admin->login('<font color=red>The username and or password was incorrect.</font>');
 }
