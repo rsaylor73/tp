@@ -87,14 +87,11 @@ if ($_GET['h'] != "no") {
 			break;
 
 			case "register":
+			case "free":
+			case "payment":
+			case "checkout":
 		                $file = $GLOBAL['path']  . "/templates/" . $dir . "/header_old.phtml";
         		        $template->load_template($file,$data22);
-			break;
-
-			case "checkout":
-                                $file = $GLOBAL['path']  . "/templates/" . $dir . "/header_old.phtml";
-                                $template->load_template($file,$data22);
-
 			break;
 
 			default:
@@ -271,6 +268,9 @@ if ($_POST['section'] == "cart") {
                         break;
 
 			case "checkout":
+			case "free":
+			case "payment":
+			// none displayed
 
 			break;
 

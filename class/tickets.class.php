@@ -2173,7 +2173,10 @@ class Tickets {
 			$subj = "Payout request for $title on Ticket Pointe";
 			$msg = "Admin,<br>The event holder is requesting a payout for $title. Please log into your admin area to complete this request.<br>";
 	                $settings = $this->get_settings();
-                        mail($settings[2],$subj,$msg,$settings[3]);
+
+                        $this->send_email($settings[2],$subj,$msg);
+
+                        //mail($settings[2],$subj,$msg,$settings[3]);
 			print "<br>Your request for a payout is processing.<br>";
 			// RBS
 		}
@@ -2986,7 +2989,7 @@ class Tickets {
                 	<tr>
                         	<td><b>Ticket</b></td>
 	                        <td><b>Price</b></td>
-        	                <td><b>QTY</b></td>
+        	                <td><b>Name</b></td>
 				<td><b>Email</b></td>
                 	        <td><b>Amount</b></td>
 	                </tr>";
@@ -3257,7 +3260,7 @@ class Tickets {
                 <tr>
                         <td><b>Ticket</b></td>
                         <td><b>Price</b></td>
-                        <td><b>QTY</b></td>
+                        <td><b>Name</b></td>
                         <td><b>Amount</b></td>
                 </tr>";
                 $sql = "SELECT * FROM `tickets` WHERE `eventID` = '$_POST[id]'";
@@ -3651,7 +3654,8 @@ class Tickets {
 		while ($row = $result->fetch_assoc()) {
 			$subj = "New $payment_type on Ticket Pointe";
 			$msg = "$row[fname] $row[lname],<br><br>You have received a new $payment_type payment for $row[title]";
-			mail($row['email'],$subj,$msg,$settings[3]);
+                        $this->send_email($row['email'],$subj,$msg);
+			//mail($row['email'],$subj,$msg,$settings[3]);
 		}
 	}
 
@@ -3678,7 +3682,8 @@ class Tickets {
                 while ($row = $result->fetch_assoc()) {
                         $subj = "New registration on Ticket Pointe";
                         $msg = "$row[fname] $row[lname],<br><br>You have received a new registration for $row[title]";
-                        mail($row['email'],$subj,$msg,$settings[3]);
+                        $this->send_email($row['email'],$subj,$msg);
+                        //mail($row['email'],$subj,$msg,$settings[3]);
 		}
 
 	}
@@ -3687,7 +3692,10 @@ class Tickets {
                 $settings = $this->get_settings();
                 $sesID = session_id();
 
-		//if ($_POST['section'] == "free") {
+		//print "<pre>";
+		//print_r($_POST);
+		//print "</pre>";
+
 			// split the current order into seperate orders
 			$ok = "0";
 			$sql = "SELECT * FROM `cart` WHERE `sessionID` = '$sesID' AND `viewID` = '$_POST[viewID]'";
@@ -3726,26 +3734,82 @@ class Tickets {
 					$html = $this->qr_code($sesID,$orderID);
 		                        $subj = "Your tickets from Ticket Pointe";
                 		        $msg = "$name,<br><br>Thank you for ordering your tickets from Ticket Pointe. Please check your email for your tickets. If the email is not delivered please check your spam folder.<br>$html";
-		                        mail($email,$subj,$msg,$settings[3]);
+		                        //mail($email,$subj,$msg,$settings[3]);
+					$this->send_email($email,$subj,$msg);
 		                        $this->payment_notification('cart',$_POST['id']);
-
 				}
 
 			}
 			if ($ok == $qty2) {
 				session_destroy();
-	                        echo "Thanks for your Order! Please check your email for your tickets.";
+	                        //echo "Thanks for your Order! Please check your email for your tickets.";
 				$sql4 = "DELETE FROM `cart` WHERE `viewID` = '$_POST[viewID]' AND `sessionID` = '$sesID'";
 				$result4 = $this->new_mysql($sql4);
-	                        $url = "index.php?section=page_view&id=$_POST[id]";
-        	                print "<br>Loading please wait... <a href=\"$url\">Click here if the page does not load.</a><br>";
-                	        print "<meta http-equiv=\"refresh\" content=\"2;url=$url\">";
+	                        //$url = "index.php?section=page_view&id=$_POST[id]";
+        	                //print "<br>Loading please wait... <a href=\"$url\">Click here if the page does not load.</a><br>";
+                	        //print "<meta http-equiv=\"refresh\" content=\"2;url=$url\">";
 
 			} else {
-				print "<font color=red>Your order has processed but there was an unknown error. Please report your order # $_POST[viewID]-$sesID to the admin.</font><br>";
+				//print "<font color=red>Your order has processed but there was an unknown error. Please report your order # $_POST[viewID]-$sesID to the admin.</font><br>";
 			}
 
-		//}
+		echo "Thanks for your Order! Please check your email for your tickets.";
+		$url = "index.php?section=page_view&id=$_POST[id]";
+		print "<br>Loading please wait... <a href=\"$url\">Click here if the page does not load.</a><br>";
+		print "<meta http-equiv=\"refresh\" content=\"2;url=$url\">";
+
+
+	}
+
+	public function send_email($email,$subj,$msg) {
+
+		require_once('PHPMailer/PHPMailerAutoload.php');
+
+		//Create a new PHPMailer instance
+		$mail = new PHPMailer;
+		//Tell PHPMailer to use SMTP
+		$mail->isSMTP();
+		//Enable SMTP debugging
+		// 0 = off (for production use)
+		// 1 = client messages
+		// 2 = client and server messages
+		$mail->SMTPDebug = 0;
+		//Ask for HTML-friendly debug output
+		$mail->Debugoutput = 'html';
+		//Set the hostname of the mail server
+		$mail->Host = "mx.customphpdesign.com";
+		//Set the SMTP port number - likely to be 25, 465 or 587
+		$mail->Port = 587;
+		//Whether to use SMTP authentication
+		$mail->SMTPAuth = true;
+		//Username to use for SMTP authentication
+		$mail->Username = "tickets@ticketpointe.customphpdesign.com";
+		//Password to use for SMTP authentication
+		$mail->Password = "1teamwork!";
+		//Set who the message is to be sent from
+		$mail->setFrom('tickets@ticketpointe.customphpdesign.com', 'Ticket Pointe');
+		//Set an alternative reply-to address
+		$mail->addReplyTo('tickets@ticketpointe.customphpdesign.com', 'Ticket Pointe');
+		//Set who the message is to be sent to
+		$mail->addAddress($email);
+		//Set the subject line
+		$mail->Subject = $subj;
+		//Read an HTML message body from an external file, convert referenced images to embedded,
+		//convert HTML into a basic plain-text alternative body
+		$mail->msgHTML($msg);
+		//$mail->msgHTML(file_get_contents('contents.html'), dirname(__FILE__));
+		//Replace the plain text body with one created manually
+		//$mail->AltBody = 'This is a plain-text message body';
+		//Attach an image file
+		//$mail->addAttachment('images/phpmailer_mini.png');
+
+		//send the message, check for errors
+		if (!$mail->send()) {
+		   // echo "Mailer Error: " . $mail->ErrorInfo;
+		} else {
+		    //echo "Message sent!";
+		}
+
 
 	}
 
@@ -3828,31 +3892,7 @@ class Tickets {
 		$url = $gw->responses['responsetext'];
 		$data =explode("=",$url);
 		if ($data[0] == "Approved") { // SUCCESS
-   
-			/*
-                     echo "Thanks for your Order! Please check your email for your tickets.";
-                        $sql2 = "UPDATE `cart` SET 
-			`status` = 'Paid', 
-			`email` = '$_POST[email]',
-			`name` = '$_POST[name]',
-			`addr1` = '$_POST[addr1]',
-			`city` = '$_POST[city]',
-			`state` = '$_POST[state]',
-			`zip` = '$_POST[zip]'
-			WHERE `viewID` = '$_POST[viewID]' AND `eventID` = '$_POST[id]' AND `sessionID` = '$sesID'";
-                        $result2 = $this->new_mysql($sql2);
-
-			if ($Dfound == "1") {
-				$sql3 = "INSERT INTO `cart_discount` (`viewID`,`eventID`,`amount_off`,`type`) VALUES ('$_POST[viewID]','$_POST[id]','$amount_off','$type')";
-				$result3 = $this->new_mysql($sql3);
-			}
-                        $html = $this->qr_code($sesID,$_POST);
-                        $subj = "Your tickets from Ticket Pointe";
-                        $msg = "$_POST[name],<br><br>Thank you for ordering your tickets from Ticket Pointe. Please check your email for your tickets. If the email is not delivered please check your spam folder.<br>$html";
-                        mail($_POST['email'],$subj,$msg,$settings[3]);
-                        $this->payment_notification('cart',$_POST['id']);
-			*/
-			$this->new_order_process();
+  			$this->new_order_process();
 		} else {
 	                print "<br><font color=red>There was an error processing your order. Please try another credit card or call your bank then try again.</font><br><br>";
 		        print "Error: $data[0]\n";
@@ -3912,236 +3952,11 @@ class Tickets {
                 $url = $gw->responses['responsetext'];
                 $data =explode("=",$url);
                 if ($data[0] == "Approved") { // SUCCESS
-			/*
-                        echo "Thanks for your Order! Please check your email for your tickets.";
-                        $sql2 = "UPDATE `cart` SET
-                        `status` = 'Paid',
-                        `email` = '$_POST[email]',
-                        `name` = '$_POST[name]',
-                        `addr1` = '$_POST[addr1]',
-                        `city` = '$_POST[city]',
-                        `state` = '$_POST[state]',
-                        `zip` = '$_POST[zip]'
-                        WHERE `viewID` = '$_POST[viewID]' AND `eventID` = '$_POST[id]' AND `sessionID` = '$sesID'";
-                        $result2 = $this->new_mysql($sql2);
-
-                        if ($Dfound == "1") {
-                                $sql3 = "INSERT INTO `cart_discount` (`viewID`,`eventID`,`amount_off`,`type`) VALUES ('$_POST[viewID]','$_POST[id]','$amount_off','$type')";
-                                $result3 = $this->new_mysql($sql3);
-                        }
-                        $html = $this->qr_code($sesID,$_POST);
-                        $subj = "Your tickets from Ticket Pointe";
-                        $msg = "$_POST[name],<br><br>Thank you for ordering your tickets from Ticket Pointe. Please check your email for your tickets. If the email is not delivered please check your spam folder.<br>$html";
-                        mail($_POST['email'],$subj,$msg,$settings[3]);
-                        $this->payment_notification('cart',$_POST['id']);
-			*/
 			$this->new_order_process();
                 } else {
                         print "<br><font color=red>There was an error processing your order. Please try another credit card or call your bank then try again.</font><br><br>";
                         print "Error: $data[0]\n";
                 }
-        }
-
-
-
-        public function payment_iframeOLD2() {
-                $sesID = session_id();
-
-                $sql = "SELECT `price`,`qty` FROM `cart` WHERE `viewID` = '$_POST[viewID]' AND `eventID` = '$_POST[id]' AND `sessionID` = '$sesID'";
-                $result = $this->new_mysql($sql);
-                while ($row = $result->fetch_assoc()) {
-                        $price = $row['price'] * $row['qty'];
-                        $total = $total + $price;
-                        $number++;
-                }
-                $fees = $this->get_fees($total,$number);
-                $total = $total + $fees;
-                $total = number_format($total,2,'.',',');
-
-                $settings = $this->get_settings();
-
-                include "class/gwapi.class.php";
-                $gw = new gwapi;
-                $gw->setLogin("Ticket5009", "TRAPskool2");
-                $name = explode(" ",$_POST['name']);
-                $gw->setBilling($name[0],$name[1],"",$_POST['addr1'],"", $_POST['city'],$_POST['state'],$_POST['zip'],"US",$_POST['phone'],$_POST['phone'],$_POST['email'],"www.ticketepointe.com");
-                $gw->setShipping($name[0],$name[1],"na",$_POST['addr1'],"", $_POST['city'],$_POST['state'],$_POST['zip'],"US",$_POST['email']);
-                $ordernumber = rand(50,1000);
-                $ip = $_SERVER['REMOTE_ADDR'];
-                $gw->setOrder($ordernumber,"TicketePointe",1, 2, $ordernumber,$ip);
-
-                $r = $gw->doSale($total,$_POST['ccNo'],"$_POST[expMonth]$_POST[expYear]",$_POST['cvv']); // amount, CC, EXP MMYY, CVV
-                $url = $gw->responses['responsetext'];
-                $data =explode("=",$url);
-                if ($data[0] == "Approved") { // SUCCESS
-                        //print "Sucess!\n";
-                        echo "Thanks for your Order! Please check your email for your tickets.";
-
-                        //$sql2 = "UPDATE `cart` SET `status` = 'Paid' WHERE `viewID` = '$_POST[viewID]' AND `eventID` = '$_POST[id]' AND `sessionID` = '$sesID'";
-                        $sql2 = "UPDATE `cart` SET
-                        `status` = 'Paid',
-                        `email` = '$_POST[email]',
-                        `name` = '$_POST[name]',
-                        `addr1` = '$_POST[addr1]',
-                        `city` = '$_POST[city]',
-                        `state` = '$_POST[state]',
-                        `zip` = '$_POST[zip]'
-
-                        WHERE `viewID` = '$_POST[viewID]' AND `eventID` = '$_POST[id]' AND `sessionID` = '$sesID'";
-
-                        $result2 = $this->new_mysql($sql2);
-
-                        $html = $this->qr_code($sesID,$_POST);
-                        //print "$html";
-
-                        $subj = "Your tickets from Ticket Pointe";
-                        $msg = "$_POST[name],<br><br>Thank you for ordering your tickets from Ticket Pointe. Please check your email for your tickets. If the email is not delivered please check your spam folder.<br>$html";
-
-                        // TO DO - email event owner about the new order
-
-                        // TO DO - capture customer details to the DB
-
-                        mail($_POST['email'],$subj,$msg,$settings[3]);
-                        $this->payment_notification('cart',$_POST['id']);
-
-                } else {
-                        print "<br><font color=red>There was an error processing your order. Please try another credit card or call your bank then try again.</font><br><br>";
-                        print "Error: $data[0]\n";
-                }
-
-        }
-
-
-	public function payment_OLD() { // 2Checkout
-                $sesID = session_id();
-                print "<div id=\"page_view\">";
-
-                $sql = "SELECT `price`,`qty` FROM `cart` WHERE `viewID` = '$_POST[viewID]' AND `eventID` = '$_POST[id]' AND `sessionID` = '$sesID'";
-                $result = $this->new_mysql($sql);
-                while ($row = $result->fetch_assoc()) {
-                        $price = $row['price'] * $row['qty'];
-                        $total = $total + $price;
-			$number++;
-                }
-		$fees = $this->get_fees($total,$number);
-                $total = $total + $fees;
-		$total = number_format($total,2,'.',',');
-
-                $settings = $this->get_settings();
-
-		require_once("2checkout/lib/Twocheckout.php");
-
-		Twocheckout::privateKey($settings[11]); //Private Key
-		Twocheckout::sellerId($settings[9]); // 2Checkout Account Number
-		Twocheckout::sandbox($settings[12]); // Set to false for production accounts.
-		try {
-		    $charge = Twocheckout_Charge::auth(array(
-		        "merchantOrderId" => "$_POST[viewID]_$sesID",
-		        "token"      => "$_POST[token]",
-		        "currency"   => 'USD',
-		        "total"      => "$total",
-		        "billingAddr" => array(
-		            "name" => "$_POST[name]",
-		            "addrLine1" => "$_POST[addr1]",
-		            "city" => "$_POST[city]",
-		            "state" => "$_POST[state]",
-		            "zipCode" => "$_POST[zip]",
-		            "country" => 'USA',
-		            "email" => "$_POST[email]",
-		            "phoneNumber" => "$_POST[phone]"
-		        )
-		    ));
-
-		    if ($charge['response']['responseCode'] == 'APPROVED') {
-		        echo "Thanks for your Order! Please check your email for your tickets.";
-
-			$sql2 = "UPDATE `cart` SET `status` = 'Paid' WHERE `viewID` = '$_POST[viewID]' AND `eventID` = '$_POST[id]' AND `sessionID` = '$sesID'";
-			$result2 = $this->new_mysql($sql2);
-
-			$html = $this->qr_code($sesID,$_POST);
-			//print "$html";
-
-			$subj = "Your tickets from Ticket Pointe";
-			$msg = "$_POST[name],<br><br>Thank you for ordering your tickets from Ticket Pointe. Please check your email for your tickets. If the email is not delivered please check your spam folder.<br>$html";
-
-			// TO DO - email event owner about the new order
-
-			// TO DO - capture customer details to the DB
-
-			mail($_POST['email'],$subj,$msg,$settings[3]);	
-
-		    }
-		} catch (Twocheckout_Error $e) {
-		    print "<br><font color=red>There was an error processing your order. Please try another credit card or call your bank then try again.</font><br><br>";
-		    print_r($e->getMessage());
-		}
-
-		print "</div>";
-	}
-
-        public function payment_iframeOLD() {
-                $sesID = session_id();
-
-                $sql = "SELECT `price`,`qty` FROM `cart` WHERE `viewID` = '$_POST[viewID]' AND `eventID` = '$_POST[id]' AND `sessionID` = '$sesID'";
-                $result = $this->new_mysql($sql);
-                while ($row = $result->fetch_assoc()) {
-                        $price = $row['price'] * $row['qty'];
-                        $total = $total + $price;
-                        $number++;
-                }
-                $fees = $this->get_fees($total,$number);
-                $total = $total + $fees;
-                $total = number_format($total,2,'.',',');
-
-                $settings = $this->get_settings();
-
-                require_once("2checkout/lib/Twocheckout.php");
-
-                Twocheckout::privateKey($settings[11]); //Private Key
-                Twocheckout::sellerId($settings[9]); // 2Checkout Account Number
-                Twocheckout::sandbox($settings[12]); // Set to false for production accounts.
-                try {
-                    $charge = Twocheckout_Charge::auth(array(
-                        "merchantOrderId" => "$_POST[viewID]_$sesID",
-                        "token"      => "$_POST[token]",
-                        "currency"   => 'USD',
-                        "total"      => "$total",
-                        "billingAddr" => array(
-                            "name" => "$_POST[name]",
-                            "addrLine1" => "$_POST[addr1]",
-                            "city" => "$_POST[city]",
-                            "state" => "$_POST[state]",
-                            "zipCode" => "$_POST[zip]",
-                            "country" => 'USA',
-                            "email" => "$_POST[email]",
-                            "phoneNumber" => "$_POST[phone]"
-                        )
-                    ));
-
-                    if ($charge['response']['responseCode'] == 'APPROVED') {
-                        echo "Thanks for your Order! Please check your email for your tickets.";
-
-                        $sql2 = "UPDATE `cart` SET `status` = 'Paid' WHERE `viewID` = '$_POST[viewID]' AND `eventID` = '$_POST[id]' AND `sessionID` = '$sesID'";
-                        $result2 = $this->new_mysql($sql2);
-
-                        $html = $this->qr_code($sesID,$_POST);
-                        //print "$html";
-
-                        $subj = "Your tickets from Ticket Pointe";
-                        $msg = "$_POST[name],<br><br>Thank you for ordering your tickets from Ticket Pointe. Please check your email for your tickets. If the email is not delivered please check your spam folder.<br>$html";
-
-                        // TO DO - email event owner about the new order
-
-                        // TO DO - capture customer details to the DB
-
-                        mail($_POST['email'],$subj,$msg,$settings[3]);
-
-                    }
-                } catch (Twocheckout_Error $e) {
-                    print "<br><font color=red>There was an error processing your order. Please try another credit card or call your bank then try again.</font><br><br>";
-                    print_r($e->getMessage());
-                }
-
         }
 
 	public function qr_code($sesID,$viewID) {
