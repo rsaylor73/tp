@@ -3756,7 +3756,7 @@ class Tickets {
 		echo "Thanks for your Order! Please check your email for your tickets.";
 		$url = "index.php?section=page_view&id=$_POST[id]";
 		print "<br>Loading please wait... <a href=\"$url\">Click here if the page does not load.</a><br>";
-		print "<meta http-equiv=\"refresh\" content=\"2;url=$url\">";
+		print "<meta http-equiv=\"refresh\" content=\"6;url=$url\">";
 
 
 	}
@@ -3956,6 +3956,7 @@ class Tickets {
                 } else {
                         print "<br><font color=red>There was an error processing your order. Please try another credit card or call your bank then try again.</font><br><br>";
                         print "Error: $data[0]\n";
+			die;
                 }
         }
 
