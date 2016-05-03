@@ -3731,11 +3731,36 @@ class Tickets {
 			                        }
 					}
 					// RBS
-					$html = $this->qr_code($sesID,$orderID);
+					$image = $this->qr_code($sesID,$orderID);
 		                        $subj = "Your tickets from Ticket Pointe";
                 		        $msg = "$name,<br><br>Thank you for ordering your tickets from Ticket Pointe. Please check your email for your tickets. If the email is not delivered please check your spam folder.<br>$html";
+
+					// get event details
+					$sql10 = "
+					SELECT 
+					*,
+					DATE_FORMAT(`start_date`, '%m/%d/%Y') AS 'e_start',
+					DATE_FORMAT(`end_date`, '%m/%d/%Y') AS 'e_end'
+
+					 FROM `events` WHERE `id` = '$row[eventID]'";
+					$result10 = $this->new_mysql($sql10);
+					while ($row10 = $result10->fetch_assoc()) {
+						$e_title = $row10['title'];
+						$e_location = $row10['address'];
+						$e_start = $row10['e_start'];
+						$e_end = $row10['e_end'];
+						$e_time1 = $row10['start_time'];
+						$e_time2 = $row10['end_time'];
+					}
+
+					// email template
+					$msg = $this->email_template($name,$image,$e_title,$e_location,$e_start,$e_end,$e_time1,$e_time2);
+
+
+
 		                        //mail($email,$subj,$msg,$settings[3]);
 					$this->send_email($email,$subj,$msg);
+
 		                        $this->payment_notification('cart',$_POST['id']);
 				}
 
@@ -3760,6 +3785,13 @@ class Tickets {
 
 
 	}
+
+	public function email_template($name,$image,$e_title,$e_location,$e_start,$e_end,$e_time1,$e_time2) {
+
+		include "email_template.php";
+		return $template;
+	}
+
 
 	public function send_email($email,$subj,$msg) {
 
@@ -4012,13 +4044,13 @@ class Tickets {
 	                        $qr = "http://" . $settings[8] . "/readqr.php?qr=" . $row['id'] . "-" . $row['sessionID'] . "-" . $row['viewID']."-" . $i;
         	                $qrcode = new QRGenerator($qr,100);  // 100 is the qr size
                 	        $image = $qrcode->generate();
-				$html .= "<br><br>Ticket $i2<br><img src=\"$image\"><br>";
+				//$html .= "<br><br>Ticket $i2<br><img src=\"$image\"><br>";
 			}
 			//$html .= "<img src=\"$image\">";
 
 		}
 
-		return $html;
+		return $image;
 		//print "</div>";
 
 	}
