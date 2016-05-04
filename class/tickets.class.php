@@ -3054,7 +3054,7 @@ class Tickets {
 
                                                         print "
                                                         <td><input type=\"text\" name=\"email_$row[id]_$y\" id=\"email_$row[id]_$y\" required> <a href=\"javascript:void(0)\" onclick=\"copy_email()\" size=60>Copy To All Tickets</a></td></td>
-                                                        <td>$".number_format($amount,2,'.',',')."</td>
+                                                        <td>$".number_format($row['price'],2,'.',',')."</td>
 	                                                </tr>";
 
         	                                        if ($row['more_info'] != "") {
