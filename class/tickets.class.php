@@ -2803,7 +2803,6 @@ class Tickets {
 				} else {
 					print "<input type=\"hidden\" name=\"$i\" value=\"$_POST[$i]\">";
 					$amount = $row['price'] * $_POST[$i];
-					
 					for ($y=0; $y < $_POST[$i]; $y++) {
 						print "<tr>
 							<td>$row[name]</td>
@@ -2819,7 +2818,7 @@ class Tickets {
 
 							print "
 							<td><input type=\"text\" name=\"email_$row[id]_$y\" id=\"email_$row[id]_$y\" required> <a href=\"javascript:void(0)\" onclick=\"copy_email()\" size=60>Copy To All Tickets</a></td></td>
-							<td>$".number_format($amount,2,'.',',')."</td>
+							<td>$".number_format($row['price'],2,'.',',')."</td>
 						</tr>";
 
 						if ($row['more_info'] != "") {
@@ -3036,6 +3035,7 @@ class Tickets {
                                 } else {
                                         print "<input type=\"hidden\" name=\"$i\" value=\"$_POST[$i]\">";
                                         $amount = $row['price'] * $_POST[$i];
+					//$amount = $row['price'];
 
                                         for ($y=0; $y < $_POST[$i]; $y++) {
 							if ($device == "0") {
@@ -3078,7 +3078,7 @@ class Tickets {
                                                         print "
                                                         <tr><td>Assign To Email: <input type=\"text\" name=\"email_$row[id]_$y\" id=\"email_$row[id]_$y\" required size=\"10\"><br>
 							 <a href=\"javascript:void(0)\" onclick=\"copy_email()\" size=60>Copy To All Tickets</a></td></td></tr>
-                                                        <tr><td>Amount: $".number_format($amount,2,'.',',')."</td></tr>
+                                                        <tr><td>Amount: $".number_format($row['price'],2,'.',',')."</td></tr>
                                                         ";
 
                                                         if ($row['more_info'] != "") {
