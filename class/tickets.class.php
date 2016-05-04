@@ -2989,8 +2989,8 @@ class Tickets {
                 	<tr>
                         	<td><b>Ticket</b></td>
 	                        <td><b>Price</b></td>
-        	                <td><b>Name</b></td>
-				<td><b>Email</b></td>
+        	                <td><b>Assign To Name</b></td>
+				<td><b>Assign To Email</b></td>
                 	        <td><b>Amount</b></td>
 	                </tr>";
 		} else {
@@ -3066,7 +3066,7 @@ class Tickets {
                                                         print "
 							<tr><td>$row[name]</td></tr>
                                                         <tr><td>Price: $$row[price]</td></tr>
-                                                        <tr><td>Name: <input type=\"text\" name=\"name_$row[id]_$y\" id=\"name_$row[id]_$y\" required size=\"10\"><br>
+                                                        <tr><td>Assign To Name: <input type=\"text\" name=\"name_$row[id]_$y\" id=\"name_$row[id]_$y\" required size=\"10\"><br>
 								<a href=\"javascript:void(0)\" onclick=\"copy_name()\" size=40>Copy To All Tickets</a></td></tr>
                                                         ";
                                                         $y2 = $y + 1;
@@ -3076,7 +3076,7 @@ class Tickets {
 
                                                         }
                                                         print "
-                                                        <tr><td>Email: <input type=\"text\" name=\"email_$row[id]_$y\" id=\"email_$row[id]_$y\" required size=\"10\"><br>
+                                                        <tr><td>Assign To Email: <input type=\"text\" name=\"email_$row[id]_$y\" id=\"email_$row[id]_$y\" required size=\"10\"><br>
 							 <a href=\"javascript:void(0)\" onclick=\"copy_email()\" size=60>Copy To All Tickets</a></td></td></tr>
                                                         <tr><td>Amount: $".number_format($amount,2,'.',',')."</td></tr>
                                                         ";
@@ -3230,66 +3230,6 @@ class Tickets {
 		<font color=red>Your time expired on your order. If you would like to purchase tickets please visit the event and purchase new tickets.</font><br><br>";
 		print "</div>";
 	}
-
-
-        public function cart_iframe_OLD() {
-                $sql = "
-                SELECT
-                        DATE_FORMAT(`events`.`start_date`, '%m/%d/%Y') AS 'start_date',
-                        DATE_FORMAT(`events`.`end_date`, '%m/%d/%Y') AS 'end_date',
-                        `start_time`,
-                        `end_time`,
-                        `title`
-                FROM
-                        `events`
-                WHERE
-                        `events`.`id` = '$_POST[id]'
-
-                ";
-                $result = $this->new_mysql($sql);
-                while ($row = $result->fetch_assoc()) {
-                        print "<h2>$row[title]</h2>
-                        <h3>$row[start_date] to $row[end_date] from $row[start_time] to $row[end_time]</h3>";
-                }
-                print "
-                <form action=\"tickets_iframe.php\" method=\"post\">
-                <input type=\"hidden\" name=\"section\" value=\"checkout\">
-                <input type=\"hidden\" name=\"id\" value=\"$_POST[id]\">
-                <input type=\"hidden\" name=\"viewID\" value=\"$_POST[viewID]\">
-                <table class=\"table\">
-                <tr>
-                        <td><b>Ticket</b></td>
-                        <td><b>Price</b></td>
-                        <td><b>Name</b></td>
-                        <td><b>Amount</b></td>
-                </tr>";
-                $sql = "SELECT * FROM `tickets` WHERE `eventID` = '$_POST[id]'";
-                $result = $this->new_mysql($sql);
-                while ($row = $result->fetch_assoc()) {
-                        $i = "qty";
-                        $i .= $row['id'];
-                        if ($_POST[$i] > 0) {
-                                print "<input type=\"hidden\" name=\"$i\" value=\"$_POST[$i]\">";
-                                $amount = $row['price'] * $_POST[$i];
-                                print "<tr><td>$row[name]</td><td>$$row[price]</td><td>$_POST[$i]</td><td>$".number_format($amount,2,'.',',')."</td></tr>";
-                                $total = $total + $amount;
-                                $number++;
-                        }
-                }
-                if ($total > 0) {
-                        $fees = $this->get_fees($total,$number);
-                        print "<tr><td colspan=3>Service Fee's</td><td>$".number_format($fees,2,'.',',')."</td></tr>";
-                        $grand_total = $total + $fees;
-                        print "<tr><td colspan=3>Total:</td><td>$".number_format($grand_total,2,'.',',')."</td></tr>";
-                        print "<tr><td colspan=4>To make any changes click back or if you are ready click check out.</td></tr>
-                        <tr><td colspan=3>&nbsp;</td><td><input type=\"submit\" class=\"btn btn-primary\" id=\"ck\" value=\"Check Out\"></td></tr>";
-
-                } else {
-                        print "<tr><td colspan=4>Sorry, you did not add any tickets to your cart.</td></tr>";
-                }
-                print "</table>
-		</form>";
-        }
 
 
 	public function cart_checkout() {
