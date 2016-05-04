@@ -3535,7 +3535,7 @@ class Tickets {
                 $gw = new gwapi;
                 $gw->setLogin("Ticket5009", "TRAPskool2");
                 $name = explode(" ",$_POST['name']);
-                $gw->setBilling($name[0],$name[1],"",$_POST['addr1'],"", $_POST['city'],$_POST['state'],$_POST['zip'],"US",$_POST['phone'],$_POST['phone'],$_POST['email'],"www.ticketepointe.com");
+                $gw->setBilling($name[0],$name[1],"",$_POST['addr1'],"", $_POST['city'],$_POST['state'],$_POST['zip'],"US",$_POST['phone'],$_POST['phone'],$_POST['email'],"www.ticketpointe.com");
                 $gw->setShipping($name[0],$name[1],"na",$_POST['addr1'],"", $_POST['city'],$_POST['state'],$_POST['zip'],"US",$_POST['email']);
                 $ordernumber = rand(50,1000);
                 $ip = $_SERVER['REMOTE_ADDR'];
@@ -3855,7 +3855,7 @@ class Tickets {
 		$gw = new gwapi;
 		$gw->setLogin("Ticket5009", "TRAPskool2");
 		$name = explode(" ",$_POST['name']);
-		$gw->setBilling($name[0],$name[1],"",$_POST['addr1'],"", $_POST['city'],$_POST['state'],$_POST['zip'],"US",$_POST['phone'],$_POST['phone'],$_POST['email'],"www.ticketepointe.com");
+		$gw->setBilling($name[0],$name[1],"",$_POST['addr1'],"", $_POST['city'],$_POST['state'],$_POST['zip'],"US",$_POST['phone'],$_POST['phone'],$_POST['email'],"www.ticketpointe.com");
 		$gw->setShipping($name[0],$name[1],"na",$_POST['addr1'],"", $_POST['city'],$_POST['state'],$_POST['zip'],"US",$_POST['email']);
 		$ordernumber = rand(50,1000);
 		$ip = $_SERVER['REMOTE_ADDR'];
