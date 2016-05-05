@@ -3292,7 +3292,7 @@ class Tickets {
 		while ($row = $result->fetch_assoc()) {
 			$price = $row['price'] * $row['qty'];
 			$total = $total + $price;
-			$number++;
+			$number = 1 * $row['qty'];
 		}
                 if ($_POST['discount'] != "") {
                         $today = date("Y-m-d");
@@ -3401,7 +3401,7 @@ class Tickets {
                 while ($row = $result->fetch_assoc()) {
                         $price = $row['price'] * $row['qty'];
                         $total = $total + $price;
-                        $number++;
+			$number = 1 * $row['qty'];
                 }
                 if ($_POST['discount'] != "") {
                         $today = date("Y-m-d");
@@ -3448,63 +3448,6 @@ class Tickets {
 
         }
 
-
-        public function cart_checkout_iframeOLD() {
-                $sesID = session_id();
-
-                $sql = "SELECT * FROM `tickets` WHERE `eventID` = '$_POST[id]'";
-                $result = $this->new_mysql($sql);
-                while ($row = $result->fetch_assoc()) {
-                        $i = "qty";
-                        $i .= $row['id'];
-                        $qty = $_POST[$i];
-                        if ($qty > 0) {
-                                $date = date("Ymd");
-                                $time = date("H:i");
-                                $sql2 = "SELECT * FROM `cart` WHERE `sessionID` = '$sesID' AND `viewID` = '$_POST[viewID]' AND `eventID` = '$_POST[id]' AND `ticketID` = '$row[id]'";
-                                $result2 = $this->new_mysql($sql2);
-                                $found = "0";
-                                while ($row2 = $result2->fetch_assoc()) {
-                                        $found = "1";
-                                }
-                                if ($found == "0") {
-                                        $sql2 = "INSERT INTO `cart` (`sessionID`,`viewID`,`eventID`,`ticketID`,`description`,`price`,`qty`,`status`,`date`,`time`) VALUES
-                                        ('$sesID','$_POST[viewID]','$_POST[id]','$row[id]','$row[name]','$row[price]','$qty','Pending','$date','$time')";
-                                        $result2 = $this->new_mysql($sql2);
-                                }
-                        }
-
-                }
-
-                $sql = "
-                SELECT
-                        DATE_FORMAT(`events`.`start_date`, '%m/%d/%Y') AS 'start_date',
-                        DATE_FORMAT(`events`.`end_date`, '%m/%d/%Y') AS 'end_date',
-                        `start_time`,
-                        `end_time`,
-                        `title`
-                FROM
-                        `events`
-                WHERE
-                        `events`.`id` = '$_POST[id]'
-                ";
-                $result = $this->new_mysql($sql);
-                while ($row = $result->fetch_assoc()) {
-                        print "<h2>$row[title]</h2>
-                        <h3>$row[start_date] to $row[end_date] from $row[start_time] to $row[end_time]</h3>";
-                }
-                $sql = "SELECT `price`,`qty` FROM `cart` WHERE `viewID` = '$_POST[viewID]' AND `eventID` = '$_POST[id]' AND `sessionID` = '$sesID'";
-                $result = $this->new_mysql($sql);
-                while ($row = $result->fetch_assoc()) {
-                        $price = $row['price'] * $row['qty'];
-                        $total = $total + $price;
-                        $number++;
-                }
-                $fees = $this->get_fees($total,$number);
-                $total = $total + $fees;
-                print "<br>Total: $".number_format($total,2,'.',',')."<br>Please complete the credit card form below. Be sure to enter in a valid email so you can receive your e-tickets.<br>";
-                $this->get_cc_form('tickets_iframe.php');
-        }
 
 
 	public function get_states() {
