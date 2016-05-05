@@ -3575,10 +3575,6 @@ class Tickets {
                 $settings = $this->get_settings();
                 $sesID = session_id();
 
-		//print "<pre>";
-		//print_r($_POST);
-		//print "</pre>";
-
 			// split the current order into seperate orders
 			$ok = "0";
 			$sql = "SELECT * FROM `cart` WHERE `sessionID` = '$sesID' AND `viewID` = '$_POST[viewID]'";
@@ -3588,6 +3584,7 @@ class Tickets {
 				$i .= $row['ticketID'];
 				$qty = $_POST[$i];
 				$qty2 = $qty2 + $qty;
+
 
 				for ($y=0; $y < $qty; $y++) {
 					$i2 = "name_";
@@ -3607,60 +3604,54 @@ class Tickets {
 					('$sesID','$orderID','$row[eventID]','$row[ticketID]','$row[description]','$row[price]','1','Paid','$date','$time','$email','No','$name')";
 					$result2 = $this->new_mysql($sql2);
 					if ($result2 == "TRUE") {
+						// email
+						// disabled for test
+		                                $image = $this->qr_code($sesID,$orderID);
+                	                        $subj = "Your tickets from Ticket Pointe";
+                        	                $msg = "$name,<br><br>Thank you for ordering your tickets from Ticket Pointe. Please check your email for your tickets. If the email is not delivered please check your spam folder.<br>$html";
+
+
+	                                        // get event details
+        	                                $sql10 = "
+                	                        SELECT 
+                        	                *,
+                                	        DATE_FORMAT(`start_date`, '%m/%d/%Y') AS 'e_start',
+                                        	DATE_FORMAT(`end_date`, '%m/%d/%Y') AS 'e_end'
+
+	                                         FROM `events` WHERE `id` = '$row[eventID]'";
+        	                                $result10 = $this->new_mysql($sql10);
+                	                        while ($row10 = $result10->fetch_assoc()) {
+                        	                        $e_title = $row10['title'];
+                                	                $e_location = $row10['address'];
+                                        	        $e_start = $row10['e_start'];
+                                                	$e_end = $row10['e_end'];
+	                                                $e_time1 = $row10['start_time'];
+        	                                        $e_time2 = $row10['end_time'];
+                	                        }
+
+                        	                // email template
+						// disabled for test
+                                	        $msg = $this->email_template($name,$image,$e_title,$e_location,$e_start,$e_end,$e_time1,$e_time2);
+	
+
+						// disabled for test
+                	                        $this->send_email($email,$subj,$msg);
+
+
+
+						// end email
+
 						$ok++;
 			                        if ($Dfound == "1") {
 			                                $sql3 = "INSERT INTO `cart_discount` (`viewID`,`eventID`,`amount_off`,`type`) VALUES ('$_POST[viewID]','$_POST[id]','$amount_off','$type')";
 			                                $result3 = $this->new_mysql($sql3);
 			                        }
 					}
-					// RBS
-					$image = $this->qr_code($sesID,$orderID);
-		                        $subj = "Your tickets from Ticket Pointe";
-                		        $msg = "$name,<br><br>Thank you for ordering your tickets from Ticket Pointe. Please check your email for your tickets. If the email is not delivered please check your spam folder.<br>$html";
-
-					// get event details
-					$sql10 = "
-					SELECT 
-					*,
-					DATE_FORMAT(`start_date`, '%m/%d/%Y') AS 'e_start',
-					DATE_FORMAT(`end_date`, '%m/%d/%Y') AS 'e_end'
-
-					 FROM `events` WHERE `id` = '$row[eventID]'";
-					$result10 = $this->new_mysql($sql10);
-					while ($row10 = $result10->fetch_assoc()) {
-						$e_title = $row10['title'];
-						$e_location = $row10['address'];
-						$e_start = $row10['e_start'];
-						$e_end = $row10['e_end'];
-						$e_time1 = $row10['start_time'];
-						$e_time2 = $row10['end_time'];
-					}
-
-					// email template
-					$msg = $this->email_template($name,$image,$e_title,$e_location,$e_start,$e_end,$e_time1,$e_time2);
-
-
-
-		                        //mail($email,$subj,$msg,$settings[3]);
-					$this->send_email($email,$subj,$msg);
-
+					// disabled for test
 		                        $this->payment_notification('cart',$_POST['id']);
 				}
 
 			}
-			if ($ok == $qty2) {
-				session_destroy();
-	                        //echo "Thanks for your Order! Please check your email for your tickets.";
-				$sql4 = "DELETE FROM `cart` WHERE `viewID` = '$_POST[viewID]' AND `sessionID` = '$sesID'";
-				$result4 = $this->new_mysql($sql4);
-	                        //$url = "index.php?section=page_view&id=$_POST[id]";
-        	                //print "<br>Loading please wait... <a href=\"$url\">Click here if the page does not load.</a><br>";
-                	        //print "<meta http-equiv=\"refresh\" content=\"2;url=$url\">";
-
-			} else {
-				//print "<font color=red>Your order has processed but there was an unknown error. Please report your order # $_POST[viewID]-$sesID to the admin.</font><br>";
-			}
-
 		echo "Thanks for your Order! Please check your email for your tickets.";
 		$url = "index.php?section=page_view&id=$_POST[id]";
 		print "<br>Loading please wait... <a href=\"$url\">Click here if the page does not load.</a><br>";
@@ -3671,7 +3662,224 @@ class Tickets {
 
 	public function email_template($name,$image,$e_title,$e_location,$e_start,$e_end,$e_time1,$e_time2) {
 
-		include "email_template.php";
+		//include_once "email_template.php";
+
+$template = '
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+        <meta charset="utf-8"> 
+        <meta name="viewport" content="width=device-width"> 
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+        <title></title> 
+
+        
+    <style type="text/css">
+
+        html,
+        body {
+            padding: 0 !important;
+            height: 100% !important;
+            width: 100% !important;
+        }
+        body {
+                margin: 0 !important;
+        }
+        
+        * {
+            -ms-text-size-adjust: 100%;
+            -webkit-text-size-adjust: 100%;
+        }
+        
+        div[style*="margin: 16px 0"] {
+            margin:0 !important;
+        }
+        
+        table,
+        td {
+            mso-table-lspace: 0pt !important;
+            mso-table-rspace: 0pt !important;
+        }
+                
+        table {
+            border-spacing: 0 !important;
+            border-collapse: collapse !important;
+            table-layout: fixed !important;
+            Margin: 0 auto !important;
+        }
+        table table table {
+            table-layout: auto; 
+        }
+        
+        img {
+            -ms-interpolation-mode:bicubic;
+        }
+        
+        .yshortcuts a {
+            border-bottom: none !important;
+        }
+        
+        .mobile-link--footer a,
+        a[x-apple-data-detectors] {
+            color:inherit !important;
+            text-decoration: underline !important;
+        }
+      
+    </style>
+    
+    <style>
+        
+        .button-td,
+        .button-a {
+            transition: all 100ms ease-in;
+        }
+        .button-td:hover,
+        .button-a:hover {
+            background: #555555 !important;
+            border-color: #555555 !important;
+        }
+
+        @media screen and (max-width: 600px) {
+
+            .email-container {
+                width: 100% !important;
+            }
+
+            .fluid,
+            .fluid-centered {
+                max-width: 100% !important;
+                height: auto !important;
+                Margin-left: auto !important;
+                Margin-right: auto !important;
+            }
+            .fluid-centered {
+                Margin-left: auto !important;
+                Margin-right: auto !important;
+            }
+
+            .stack-column,
+            .stack-column-center {
+                display: block !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                direction: ltr !important;
+            }
+            .stack-column-center {
+                text-align: center !important;
+            }
+        
+            .center-on-narrow {
+                text-align: center !important;
+                display: block !important;
+                Margin-left: auto !important;
+                Margin-right: auto !important;
+                float: none !important;
+            }
+            table.center-on-narrow {
+                display: inline-block !important;
+            }
+                
+        }
+
+    </style>
+
+</head>
+<body bgcolor="#808080" width="100%" style="Margin: 0;">
+<table bgcolor="#808080" cellpadding="0" cellspacing="0" border="0" height="100%" width="100%" style="border-collapse:collapse;"><tr><td valign="top">
+    <center style="width: 100%;">
+
+        <div style="display:none;font-size:1px;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden;mso-hide:all;font-family: sans-serif;">
+            (Optional) This text will appear in the inbox preview, but not the email body.
+        </div>
+
+        <table align="center" width="600" class="email-container">
+                        <tr>
+                                <td style="padding: 20px 0; text-align: center">
+                                        <img src="http://ticketpointe.com/img/logom.png" width="300" height="80" alt="logo" border="0">
+                                </td>
+                        </tr>
+        </table>
+        <table cellspacing="0" cellpadding="0" border="0" align="center" bgcolor="#ffffff" width="600" class="email-container">
+                       
+           
+            <tr>
+                <td dir="rtl" align="center" valign="top" width="100%" style="padding: 10px;">
+                    <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+                        <tr>
+                            
+                            <td width="66.66%" class="stack-column-center">
+                                <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+                                    <tr>
+                                        <td dir="ltr" valign="top" style="font-family: sans-serif; font-size: 15px; mso-height-rule: exactly; line-height: 20px; color: #555555; padding: 10px; text-align: left;" class="center-on-narrow">
+                                            <strong style="color:#111111;">
+                                            
+                                            '.$name.'
+
+                                            ,</strong>
+                                            <br><br>
+                                            Thank you for ordering your tickets from Ticket Pointe. Please use this email as admission to your event.
+                                            <br><br>
+                                            <br><br><b>Event: 
+
+                                            '.$e_title.'</b><br>
+                                            Location: '.$e_location.'<br>
+                                            Valid from '.$e_start.' to '.$e_end.'<br>
+                                            Operating Hours: '.$e_time1.' to '.$e_time2.'<br><br>  
+
+
+
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            
+                            <td width="33.33%" class="stack-column-center">
+                                <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+                                    <tr>
+                                        <td dir="ltr" valign="top" style="padding: 0 10px;">
+                                        
+                                            
+
+
+                                            <img src="'.$image.'" width="170" width="170" alt="ticket" border="0" class="center-on-narrow">
+
+
+
+                                        <br><br>Ticket Type: RSVP<br>Quantity: 
+
+                                        1
+
+
+                                        <br><br><br>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+        </table>
+          
+        <table align="center" width="600" class="email-container">
+            <tr>
+                <td style="padding: 40px 10px;width: 100%;font-size: 12px; font-family: sans-serif; mso-height-rule: exactly; line-height:18px; text-align: center; color: #ffffff;">
+                    <br><br>
+                    Ticket Pointe, LLC<br><span class="mobile-link--footer">P.O. Box 12657, Durham, NC, 27709</span><br>
+                    <br><br> 
+                </td>
+            </tr>
+        </table>
+
+    </center>
+</td></tr></table>
+</body>
+</html>
+
+';
+
 		return $template;
 	}
 
@@ -3720,7 +3928,7 @@ class Tickets {
 
 		//send the message, check for errors
 		if (!$mail->send()) {
-		   // echo "Mailer Error: " . $mail->ErrorInfo;
+		    //echo "Mailer Error: " . $mail->ErrorInfo;
 		} else {
 		    //echo "Message sent!";
 		}
@@ -3880,7 +4088,7 @@ class Tickets {
 
                 //print "<div id=\"page_view\">";
 
-		include('qr/QRGenerator.php');
+		include_once('qr/QRGenerator.php');
 		$sql = "
 		SELECT 
 			`cart`.`description`,
