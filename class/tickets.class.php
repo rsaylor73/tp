@@ -2804,6 +2804,7 @@ class Tickets {
 					print "<input type=\"hidden\" name=\"$i\" value=\"$_POST[$i]\">";
 					$amount = $row['price'] * $_POST[$i];
 					for ($y=0; $y < $_POST[$i]; $y++) {
+						$number++;
 						print "<tr>
 							<td>$row[name]</td>
 							<td>$$row[price]</td>
@@ -2827,7 +2828,6 @@ class Tickets {
 
 					}
 					$total = $total + $amount;
-					$number++;
 				}
 			}
 		}
@@ -3038,6 +3038,7 @@ class Tickets {
 					//$amount = $row['price'];
 
                                         for ($y=0; $y < $_POST[$i]; $y++) {
+							$number++;
 							if ($device == "0") {
 							// begin
                                         	        print "<tr>
@@ -3089,7 +3090,6 @@ class Tickets {
 
                                         }
                                         $total = $total + $amount;
-                                        $number++;
                                 }
 
                 ?>
@@ -3915,7 +3915,7 @@ class Tickets {
                 $gw = new gwapi;
                 $gw->setLogin("Ticket5009", "TRAPskool2");
                 $name = explode(" ",$_POST['name']);
-                $gw->setBilling($name[0],$name[1],"",$_POST['addr1'],"", $_POST['city'],$_POST['state'],$_POST['zip'],"US",$_POST['phone'],$_POST['phone'],$_POST['email'],"www.ticketepointe.com");
+                $gw->setBilling($name[0],$name[1],"",$_POST['addr1'],"", $_POST['city'],$_POST['state'],$_POST['zip'],"US",$_POST['phone'],$_POST['phone'],$_POST['email'],"www.ticketpointe.com");
                 $gw->setShipping($name[0],$name[1],"na",$_POST['addr1'],"", $_POST['city'],$_POST['state'],$_POST['zip'],"US",$_POST['email']);
                 $ordernumber = rand(50,1000);
                 $ip = $_SERVER['REMOTE_ADDR'];
