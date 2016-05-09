@@ -295,6 +295,8 @@ class Tickets {
 		$domain_pw = $row['domain_pw'];
 		$domain = $row['domain'];
 		$ssl = $row['SSL'];
+		$cc_username = $row['cc_username'];
+		$cc_password = $row['cc_password'];
 
                 // email headers - This is fine tuned, please do not modify
                 $header = "MIME-Version: 1.0\r\n";
@@ -315,6 +317,8 @@ class Tickets {
 		$data[] = $domain_pw;
 		$data[] = $domain;
 		$data[] = $ssl;
+		$data[] = $cc_username;
+		$data[] = $cc_password;
                 return $data;
         }
 
@@ -3473,16 +3477,17 @@ class Tickets {
 	}
 
 	public function donate_payment($total) {
+		$settings = $this->get_settings();
                 $sesID = session_id();
                 include "class/gwapi.class.php";
                 $gw = new gwapi;
-                $gw->setLogin("Ticket5009", "TRAPskool2");
+		$gw->setLogin($settings[10], $settings[11]);
                 $name = explode(" ",$_POST['name']);
                 $gw->setBilling($name[0],$name[1],"",$_POST['addr1'],"", $_POST['city'],$_POST['state'],$_POST['zip'],"US",$_POST['phone'],$_POST['phone'],$_POST['email'],"www.ticketpointe.com");
                 $gw->setShipping($name[0],$name[1],"na",$_POST['addr1'],"", $_POST['city'],$_POST['state'],$_POST['zip'],"US",$_POST['email']);
                 $ordernumber = rand(50,1000);
                 $ip = $_SERVER['REMOTE_ADDR'];
-                $gw->setOrder($ordernumber,"TicketePointe",1, 2, $ordernumber,$ip);
+                $gw->setOrder($ordernumber,"TicketPointe",1, 2, $ordernumber,$ip);
 
                 $r = $gw->doSale($total,$_POST['ccNo'],"$_POST[expMonth]$_POST[expYear]",$_POST['cvv']); // amount, CC, EXP MMYY, CVV
                 $url = $gw->responses['responsetext'];
@@ -4004,13 +4009,13 @@ $template = '
                 $settings = $this->get_settings();
 		include "class/gwapi.class.php";
 		$gw = new gwapi;
-		$gw->setLogin("Ticket5009", "TRAPskool2");
+		$gw->setLogin($settings[10], $settings[11]);
 		$name = explode(" ",$_POST['name']);
 		$gw->setBilling($name[0],$name[1],"",$_POST['addr1'],"", $_POST['city'],$_POST['state'],$_POST['zip'],"US",$_POST['phone'],$_POST['phone'],$_POST['email'],"www.ticketpointe.com");
 		$gw->setShipping($name[0],$name[1],"na",$_POST['addr1'],"", $_POST['city'],$_POST['state'],$_POST['zip'],"US",$_POST['email']);
 		$ordernumber = rand(50,1000);
 		$ip = $_SERVER['REMOTE_ADDR'];
-		$gw->setOrder($ordernumber,"TicketePointe",1, 2, $ordernumber,$ip);
+		$gw->setOrder($ordernumber,"TicketPointe",1, 2, $ordernumber,$ip);
 		$r = $gw->doSale($total,$_POST['ccNo'],"$_POST[expMonth]$_POST[expYear]",$_POST['cvv']); // amount, CC, EXP MMYY, CVV
 		$url = $gw->responses['responsetext'];
 		$data =explode("=",$url);
@@ -4064,7 +4069,7 @@ $template = '
                 $settings = $this->get_settings();
                 include "class/gwapi.class.php";
                 $gw = new gwapi;
-                $gw->setLogin("Ticket5009", "TRAPskool2");
+		$gw->setLogin($settings[10], $settings[11]);
                 $name = explode(" ",$_POST['name']);
                 $gw->setBilling($name[0],$name[1],"",$_POST['addr1'],"", $_POST['city'],$_POST['state'],$_POST['zip'],"US",$_POST['phone'],$_POST['phone'],$_POST['email'],"www.ticketpointe.com");
                 $gw->setShipping($name[0],$name[1],"na",$_POST['addr1'],"", $_POST['city'],$_POST['state'],$_POST['zip'],"US",$_POST['email']);
