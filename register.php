@@ -27,7 +27,6 @@ $file = $GLOBAL['path']  . "/templates/" . $dir . "/hq_header.phtml";
 $template->load_template($file,$null);
 $device = $tickets->device_type();
 
-
 print '
 <nav class="navbar-default navbar-side" role="navigation">
 <div class="sidebar-collapse">
@@ -65,6 +64,11 @@ print '
                         <div id="registration">
                         <form name="myform">
                                 <div class="modal-body">
+
+				<?php
+				if ($device == "0") {
+				?>
+
                                 <table width=500 style="text-align:center;" class="table">
                                 <tr>
                                 <td>Username: <div id="checkuu" style="display:inline"></div></td>
@@ -99,6 +103,61 @@ print '
                                 <td align="left"><input type="button" class="btn btn-primary btn-lg" value="Register" onclick="register(this.form)"></td>
                                 </tr>
                                 </table>
+
+				<?php
+				} else {
+				?>
+
+
+                                <table style="text-align:center;" class="table">
+                                <tr>
+                                	<td>Username: <div id="checkuu" style="display:inline"></div></td>
+				</tr>
+				<tr>
+                                	<td>Email: <div id="checkemail" style="display:inline"></div></td>
+                                </tr>
+                                <tr>
+	                                <td><input type="text" name="uuname" id="uuname" size=30 onblur="check_uu(this.form)"></td>
+				</tr>
+				<tr>
+	                                <td><input type="text" name="email" id="email" onblur="check_email(this.form)" size=30></td>
+                                </tr>
+                                <tr>
+	                                <td>Password:</td>
+				</tr>
+				<tr>
+	                                <td>Confirm Password: <div id="checkpw" style="display:inline"></div></td>
+                                </tr>
+                                <tr>
+	                                <td><input type="password" name="pass1" id="pass1" size=30></td>
+				</tr>
+				<tr>
+	                                <td><input type="password" name="pass2" id="pass2" onkeyup="check_pw(this.form)" size=30></td>
+                                </tr>
+                                <?php
+                                $sql = "SELECT * FROM `account_types` ORDER BY `description`";
+                                $result2 = $tickets->new_mysql($sql);
+                                while ($row2 = $result2->fetch_assoc()) {
+                                        $options .= "<option value=\"$row2[id]\">$row2[description]</option>";
+                                }
+                                ?>
+                                <tr><td>Account Type</td></tr>
+                                <tr><td><select name="account_type"><?=$options;?></select></td></tr>
+                                <tr><td><input type="checkbox" name="terms" value="checked"> I agree to the <a href="terms.html" target=_blank>Terms & Conditions</a></td></tr>
+                                <tr>
+	                                <td>
+        	                        <div class="g-recaptcha" data-sitekey="6LcnkA4TAAAAAD04ISkLGW_X0GWQnkbAUflFkI3E"></div>
+                	                </td>
+				</tr>
+				<tr>
+	                                <td><input type="button" class="btn btn-primary btn-lg" value="Register" onclick="register(this.form)"></td>
+                                </tr>
+                                </table>
+
+				<?php
+				}
+				?>
+
                                 </div>
                         </form>
                         </div>
