@@ -47,11 +47,17 @@ print '
 <!-- /. NAV SIDE  -->
 <div id="page-wrapper">
     <div id="page-inner">
+	';
+	if ($device == "0") {
+	print '
         <div class="row">
             <div class="col-md-8">
                 <h1 class="page-head-line">HQ Register</h1>
             </div>
         </div>
+	';
+	}
+	print '
 
                 <div class="row">
                     <div class="col-md-8">
@@ -113,26 +119,30 @@ print '
                                 <tr>
                                 	<td>Username: <div id="checkuu" style="display:inline"></div></td>
 				</tr>
+
+                                <tr>
+                                        <td><input type="text" name="uuname" id="uuname" size=20 onblur="check_uu(this.form)"></td>
+                                </tr>
+
 				<tr>
                                 	<td>Email: <div id="checkemail" style="display:inline"></div></td>
                                 </tr>
-                                <tr>
-	                                <td><input type="text" name="uuname" id="uuname" size=30 onblur="check_uu(this.form)"></td>
-				</tr>
 				<tr>
-	                                <td><input type="text" name="email" id="email" onblur="check_email(this.form)" size=30></td>
+	                                <td><input type="text" name="email" id="email" onblur="check_email(this.form)" size=20></td>
                                 </tr>
                                 <tr>
 	                                <td>Password:</td>
 				</tr>
+
+                                <tr>
+                                        <td><input type="password" name="pass1" id="pass1" size=20></td>
+                                </tr>
+
 				<tr>
 	                                <td>Confirm Password: <div id="checkpw" style="display:inline"></div></td>
                                 </tr>
-                                <tr>
-	                                <td><input type="password" name="pass1" id="pass1" size=30></td>
-				</tr>
 				<tr>
-	                                <td><input type="password" name="pass2" id="pass2" onkeyup="check_pw(this.form)" size=30></td>
+	                                <td><input type="password" name="pass2" id="pass2" onkeyup="check_pw(this.form)" size=20></td>
                                 </tr>
                                 <?php
                                 $sql = "SELECT * FROM `account_types` ORDER BY `description`";
