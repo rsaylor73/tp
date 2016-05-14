@@ -77,6 +77,51 @@ if (!empty($_POST['json'])) {
 	$request = $json_data['request']['action'];
 
 	switch ($request) {
+
+		case "get_list":
+			$eventID = $json_data['request']['event'];
+			if ($eventID == "") {
+				$JS->return_js_error('Event ID missing');
+				die;
+			}
+
+			$sql = "
+			SELECT
+				`c`.`id`,
+				`c`.`name`,
+				`c`.`addr1`,
+				`c`.`city`,
+				`c`.`state`,
+				`c`.`zip`,
+				`t`.`name` AS 'ticket_name',
+				`c`.`consumed` AS 'checkedin'
+
+			FROM
+				`cart` c,
+				`tickets` t
+
+			WHERE
+				`c`.`eventID` = '$eventID'
+				AND `c`.`status` = 'Paid'
+				AND `c`.`ticketID` = `t`.`id`
+			";
+			$data = array();
+			$result = $JS->new_mysql($sql);
+			while ($row = $result->fetch_assoc()) {
+				$id = $row['id'];
+				$data[$id]['id'] = $row['id'];
+				$data[$id]['name'] = $row['name'];
+				$data[$id]['addr1'] = $row['addr1'];
+				$data[$id]['city'] = $row['city'];
+				$data[$id]['state'] = $row['state'];
+				$data[$id]['zip'] = $row['zip'];
+				$data[$id]['ticket_name'] = $row['ticket_name'];
+				$data[$id]['checkedin'] = $row['checkedin'];
+			}
+			echo json_encode($data);
+
+		break;
+
 		case "get_events":
 			$sql = "
 			SELECT
