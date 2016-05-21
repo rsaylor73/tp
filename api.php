@@ -36,6 +36,9 @@ $_POST['json'] = stripslashes($_POST['json']);
 header('Content-Type: application/json');
 
 if (!empty($_POST['json'])) {
+	$sql = "INSERT INTO `api_log` (`date`,`log`) VALUES (NOW(),'$_POST[json]')";
+	$result = $JS->new_mysql($sql);
+
 	$json_data = json_decode($_POST['json'], true);
 
 	// check api credentials
