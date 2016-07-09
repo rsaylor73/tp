@@ -104,7 +104,9 @@ require_once('PKPass.php');
 	// add files to the PKPass package
 	$pass->addFile($path . '/pass/PHP-PKPass/images/icon.png');
 	$pass->addFile($path . '/pass/PHP-PKPass/images/icon@2x.png');
-	$pass->addFile($path . '/pass/PHP-PKPass/images/icon.png');
+	$pass->addFile($path . '/pass/PHP-PKPass/images/logo.png');
+        $pass->addFile($path . '/pass/PHP-PKPass/images/logo@2x.png');
+
 	if ($pass->checkError($error) == true) {
 		exit('An error occured: ' . $error);
 	}
