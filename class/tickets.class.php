@@ -922,6 +922,7 @@ class Tickets {
             $device = "20";
         }
 
+	$this->check_section('event_details');
 
 		if ($step == "1") {
 
@@ -939,6 +940,21 @@ class Tickets {
 
 		} else {
 	                print "<h2>Event Details</h2>";
+			print "
+			<nav>
+				<ul class=\"pagination\">
+                                <li class=\"page-item active\"><a href=\"index.php?section=dashboard&center=edit_details&id=$_GET[id]\">Details <span class=\"sr-only\">(current)</span></a></li>
+				<li class=\"page-item\"><a href=\"index.php?section=dashboard&center=edit_design&id=$_GET[id]\">Design <span class=\"sr-only\"></span></a></li>
+                                <li class=\"page-item\"><a href=\"index.php?section=dashboard&center=edit_settings&id=$_GET[id]\">Settings <span class=\"sr-only\"></span></a></li>
+                                <li class=\"page-item\"><a href=\"index.php?section=dashboard&center=manage_tickets&id=$_GET[id]\">Tickets <span class=\"sr-only\"></span></a></li>
+                                <li class=\"page-item\"><a href=\"index.php?section=dashboard&center=discounts&id=$_GET[id]\">Discounts <span class=\"sr-only\"></span></a></li>
+                                <li class=\"page-item\"><a href=\"index.php?section=dashboard&center=social&id=$_GET[id]\">Social <span class=\"sr-only\"></span></a></li>
+                                <li class=\"page-item\"><a href=\"javascript:void(0)\" onclick=\"window.open('download.php?id=$_GET[id]')\">Download Ticket List <span class=\"sr-only\"></span></a></li>
+
+				</ul>
+			</nav>
+			";
+
 		}
 
 
@@ -1130,6 +1146,62 @@ class Tickets {
 
 	}
 
+	public function check_section($part) {
+		if ($_SESSION['resellerID'] == "0") {
+		    $event_details = "Yes";
+		    $_SESSION['event_details'] = $event_details;
+		    $event_design = "Yes";
+		    $social = "Yes";
+		    $event_settings = "Yes";
+		    $create_tickets = "Yes";
+		    $checkin = "Yes";
+		} else {
+		    $event_details = $_SESSION['event_details'];
+		    $event_design = $_SESSION['event_design'];
+		    $social = $_SESSION['social'];
+		    $event_settings = $_SESSION['event_settings'];
+		    $create_tickets = $_SESSION['create_tickets'];
+		    $_SESSION['id'] = $_SESSION['resellerID'];
+		}
+
+		switch ($part) {
+			case "event_details":
+			if ($event_details != "Yes") {
+				$this->sorry_die('Details');
+			}
+			break;
+
+			case "event_design":
+			if ($event_design != "Yes") {
+				$this->sorry_die('Design');
+			}
+			break;
+
+			case "social":
+			if ($social != "Yes") {
+				$this->sorry_die('Social');
+			}
+			break;
+
+			case "event_settings":
+			if ($event_settings != "Yes") {
+				$this->sorry_die('Settings');
+			}
+			break;
+
+			case "create_tickets":
+			if ($create_tickets != "Yes") {
+				$this->sorry_die('Tickets');
+			}
+			break;
+		}
+	}
+
+	private function sorry_die($section) {
+		print "<br><br><font color=red>Sorry, but you do not have access to <b>$section</b></font><br><br>";
+		die;
+	}
+
 	public function design() {
         $device = $this->device_type();
 
@@ -1202,6 +1274,8 @@ class Tickets {
 	public function edit_design() {
         $device = $this->device_type();
 
+		$this->check_section('event_design');
+
 		if ($_GET['step'] == "2") {
                         print '
                         <h2>New Event : Step 2 of 4</h2>
@@ -1218,6 +1292,20 @@ class Tickets {
 
 		} else {
 			print "<h2>Edit Design</h2>";
+                        print "
+                        <nav>
+                                <ul class=\"pagination\">
+                                <li class=\"page-item\"><a href=\"index.php?section=dashboard&center=edit_details&id=$_GET[id]\">Details <span class=\"sr-only\"></span></a></li>
+                                <li class=\"page-item active\"><a href=\"index.php?section=dashboard&center=edit_design&id=$_GET[id]\">Design <span class=\"sr-only\">(current)</span></a></li>
+                                <li class=\"page-item\"><a href=\"index.php?section=dashboard&center=edit_settings&id=$_GET[id]\">Settings <span class=\"sr-only\"></span></a></li>
+                                <li class=\"page-item\"><a href=\"index.php?section=dashboard&center=manage_tickets&id=$_GET[id]\">Tickets <span class=\"sr-only\"></span></a></li>
+                                <li class=\"page-item\"><a href=\"index.php?section=dashboard&center=discounts&id=$_GET[id]\">Discounts <span class=\"sr-only\"></span></a></li>
+                                <li class=\"page-item\"><a href=\"index.php?section=dashboard&center=social&id=$_GET[id]\">Social <span class=\"sr-only\"></span></a></li>
+                                <li class=\"page-item\"><a href=\"javascript:void(0)\" onclick=\"window.open('download.php?id=$_GET[id]')\">Download Ticket List <span class=\"sr-only\"></span></a></li>
+
+                                </ul>
+                        </nav>
+                        ";
 		}
 
 		$sql = "
@@ -1469,6 +1557,8 @@ class Tickets {
 	public function event_settings() {
                 $srv_settings = $this->get_settings();
 
+		$this->check_section('event_settings');
+
 		print "<h2>Event Settings</h2>";
 
                 $sql = "
@@ -1549,7 +1639,21 @@ class Tickets {
                         ';
 
 		} else {
-			print "<h2>Event Settings";
+			print "<h2>Event Settings</h2>";
+                        print "
+                        <nav>
+                                <ul class=\"pagination\">
+                                <li class=\"page-item\"><a href=\"index.php?section=dashboard&center=edit_details&id=$_GET[id]\">Details <span class=\"sr-only\"></span></a></li>
+                                <li class=\"page-item\"><a href=\"index.php?section=dashboard&center=edit_design&id=$_GET[id]\">Design <span class=\"sr-only\"></span></a></li>
+                                <li class=\"page-item active\"><a href=\"index.php?section=dashboard&center=edit_settings&id=$_GET[id]\">Settings <span class=\"sr-only\">(current)</span></a></li>
+                                <li class=\"page-item\"><a href=\"index.php?section=dashboard&center=manage_tickets&id=$_GET[id]\">Tickets <span class=\"sr-only\"></span></a></li>
+                                <li class=\"page-item\"><a href=\"index.php?section=dashboard&center=discounts&id=$_GET[id]\">Discounts <span class=\"sr-only\"></span></a></li>
+                                <li class=\"page-item\"><a href=\"index.php?section=dashboard&center=social&id=$_GET[id]\">Social <span class=\"sr-only\"></span></a></li>
+                                <li class=\"page-item\"><a href=\"javascript:void(0)\" onclick=\"window.open('download.php?id=$_GET[id]')\">Download Ticket List <span class=\"sr-only\"></span></a></li>
+
+                                </ul>
+                        </nav>
+                        ";
 		}
 
 		$sql = "SELECT * FROM `events` WHERE `userID` = '$_SESSION[id]' AND `id` = '$_GET[id]'";
@@ -1808,6 +1912,9 @@ class Tickets {
 	public function manage_tickets() {
         $device = $this->device_type();
 
+		$this->check_section('create_tickets');
+
+
 		$check_tax = $this->check_tax_id();
 		if ($check_tax == "") {
 			print "<br><br><font color=red>Sorry, but before you can create any tickets and or donations you must provide your tax ID.<br><br>The main business owner needs to add their tax ID in their profile.</font><br><br>";
@@ -1848,7 +1955,21 @@ class Tickets {
                         </nav>
                         ';
 			} else {
-		                print "<h2>Manage Tickets<br>$title</h2>";
+		                print "<h2>Manage Tickets <br>($title)</h2>";
+                        print "
+                        <nav>
+                                <ul class=\"pagination\">
+                                <li class=\"page-item\"><a href=\"index.php?section=dashboard&center=edit_details&id=$_GET[id]\">Details <span class=\"sr-only\"></span></a></li>
+                                <li class=\"page-item\"><a href=\"index.php?section=dashboard&center=edit_design&id=$_GET[id]\">Design <span class=\"sr-only\"></span></a></li>
+                                <li class=\"page-item\"><a href=\"index.php?section=dashboard&center=edit_settings&id=$_GET[id]\">Settings <span class=\"sr-only\"></span></a></li>
+                                <li class=\"page-item active\"><a href=\"index.php?section=dashboard&center=manage_tickets&id=$_GET[id]\">Tickets <span class=\"sr-only\">(current)</span></a></li>
+                                <li class=\"page-item\"><a href=\"index.php?section=dashboard&center=discounts&id=$_GET[id]\">Discounts <span class=\"sr-only\"></span></a></li>
+                                <li class=\"page-item\"><a href=\"index.php?section=dashboard&center=social&id=$_GET[id]\">Social <span class=\"sr-only\"></span></a></li>
+                                <li class=\"page-item\"><a href=\"javascript:void(0)\" onclick=\"window.open('download.php?id=$_GET[id]')\">Download Ticket List <span class=\"sr-only\"></span></a></li>
+
+                                </ul>
+                        </nav>
+                        ";
 			}
 	
         if ($device == "0") {
@@ -2088,6 +2209,20 @@ class Tickets {
 	public function discounts() {
 		print "<h2>Discounts</h2>";
 
+                        print "
+                        <nav>
+                                <ul class=\"pagination\">
+                                <li class=\"page-item\"><a href=\"index.php?section=dashboard&center=edit_details&id=$_GET[id]\">Details <span class=\"sr-only\"></span></a></li>
+                                <li class=\"page-item\"><a href=\"index.php?section=dashboard&center=edit_design&id=$_GET[id]\">Design <span class=\"sr-only\"></span></a></li>
+                                <li class=\"page-item\"><a href=\"index.php?section=dashboard&center=edit_settings&id=$_GET[id]\">Settings <span class=\"sr-only\"></span></a></li>
+                                <li class=\"page-item\"><a href=\"index.php?section=dashboard&center=manage_tickets&id=$_GET[id]\">Tickets <span class=\"sr-only\"></span></a></li>
+                                <li class=\"page-item active\"><a href=\"index.php?section=dashboard&center=discounts&id=$_GET[id]\">Discounts <span class=\"sr-only\">(current)</span></a></li>
+                                <li class=\"page-item\"><a href=\"index.php?section=dashboard&center=social&id=$_GET[id]\">Social <span class=\"sr-only\"></span></a></li>
+                                <li class=\"page-item\"><a href=\"javascript:void(0)\" onclick=\"window.open('download.php?id=$_GET[id]')\">Download Ticket List <span class=\"sr-only\"></span></a></li>
+
+                                </ul>
+                        </nav>
+                        ";
 		if ($_GET['act'] == "del") {
 			$sql = "DELETE FROM `discounts` WHERE `id` = '$_GET[id2]' AND `userID` = '$_SESSION[id]'";
                         $result = $this->new_mysql($sql);
@@ -2189,6 +2324,9 @@ class Tickets {
 
 	public function social() {
 
+		$this->check_section('social');
+
+
                 $sql = "SELECT * FROM `social` WHERE `userID` = '$_SESSION[id]'";
                 $result = $this->new_mysql($sql);
                 while ($row = $result->fetch_assoc()) {
@@ -2230,6 +2368,21 @@ class Tickets {
 		";
 
                 print "<h2>Social</h2>";
+
+                        print "
+                        <nav>
+                                <ul class=\"pagination\">
+                                <li class=\"page-item\"><a href=\"index.php?section=dashboard&center=edit_details&id=$_GET[id]\">Details <span class=\"sr-only\"></span></a></li>
+                                <li class=\"page-item\"><a href=\"index.php?section=dashboard&center=edit_design&id=$_GET[id]\">Design <span class=\"sr-only\"></span></a></li>
+                                <li class=\"page-item\"><a href=\"index.php?section=dashboard&center=edit_settings&id=$_GET[id]\">Settings <span class=\"sr-only\"></span></a></li>
+                                <li class=\"page-item\"><a href=\"index.php?section=dashboard&center=manage_tickets&id=$_GET[id]\">Tickets <span class=\"sr-only\"></span></a></li>
+                                <li class=\"page-item\"><a href=\"index.php?section=dashboard&center=discounts&id=$_GET[id]\">Discounts <span class=\"sr-only\"></span></a></li>
+                                <li class=\"page-item active\"><a href=\"index.php?section=dashboard&center=social\">Social <span class=\"sr-only\">(current)</span></a></li>
+                                <li class=\"page-item\"><a href=\"javascript:void(0)\" onclick=\"window.open('download.php?id=$_GET[id]')\">Download Ticket List <span class=\"sr-only\"></span></a></li>
+
+                                </ul>
+                        </nav>
+                        ";
 
 		print "<table class=\"table\">
 		<tr>
@@ -3612,6 +3765,7 @@ class Tickets {
 						// email
 						// disabled for test
 		                                $image = $this->qr_code($sesID,$orderID);
+						$passbook = $this->qr_code_passbook($sesID,$orderID);
                 	                        $subj = "Your tickets from Ticket Pointe";
                         	                $msg = "$name,<br><br>Thank you for ordering your tickets from Ticket Pointe. Please check your email for your tickets. If the email is not delivered please check your spam folder.<br>$html";
 
@@ -3636,7 +3790,7 @@ class Tickets {
 
                         	                // email template
 						// disabled for test
-                                	        $msg = $this->email_template($name,$image,$e_title,$e_location,$e_start,$e_end,$e_time1,$e_time2);
+                                	        $msg = $this->email_template($name,$image,$e_title,$e_location,$e_start,$e_end,$e_time1,$e_time2,$passbook);
 	
 
 						// disabled for test
@@ -3665,7 +3819,7 @@ class Tickets {
 
 	}
 
-	public function email_template($name,$image,$e_title,$e_location,$e_start,$e_end,$e_time1,$e_time2) {
+	public function email_template($name,$image,$e_title,$e_location,$e_start,$e_end,$e_time1,$e_time2,$passbook='') {
 
 		//include_once "email_template.php";
 
@@ -3795,7 +3949,7 @@ $template = '
     <center style="width: 100%;">
 
         <div style="display:none;font-size:1px;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden;mso-hide:all;font-family: sans-serif;">
-            (Optional) This text will appear in the inbox preview, but not the email body.
+           Now you can add your ticket to Apple Pass Book 
         </div>
 
         <table align="center" width="600" class="email-container">
@@ -3831,7 +3985,7 @@ $template = '
                                             Location: '.$e_location.'<br>
                                             Valid from '.$e_start.' to '.$e_end.'<br>
                                             Operating Hours: '.$e_time1.' to '.$e_time2.'<br><br>  
-
+						To add to your Apple Passbook please click <a href="http://ticketpointe.customphpdesign.com/pass/PHP-PKPass/event.php?q='.$passbook.'&e='.$e_title.'&l='.$e_location.'&d1='.$e_start.'&d2='.$e_end.'&t1='.$e_time1.'&t2='.$e_time2.'">here</a>
 
 
                                         </td>
@@ -4151,6 +4305,63 @@ $template = '
 
 	}
 
+
+        public function qr_code_passbook($sesID,$viewID) {
+                $settings = $this->get_settings();
+
+                //print "<div id=\"page_view\">";
+
+                $sql = "
+                SELECT 
+                        `cart`.`description`,
+                        `cart`.`qty`,
+                        DATE_FORMAT(`events`.`start_date`, '%m/%d/%Y') AS 'start_date',
+                        DATE_FORMAT(`events`.`end_date`, '%m/%d/%Y') AS 'end_date',
+                        `events`.`title`,
+                        `events`.`start_time`,
+                        `events`.`end_time`,
+                        `location`.`location`,
+                        `cart`.`id`,
+                        `cart`.`sessionID`,
+                        `cart`.`viewID`
+
+                FROM 
+                        `cart`,`events`
+
+                LEFT JOIN `location` ON `events`.`locationID` = `location`.`id`
+
+                WHERE 
+                        `cart`.`sessionID` = '$sesID' 
+                        AND `cart`.`viewID` = '$viewID'
+                        AND `cart`.`eventID` = `events`.`id`
+                ";
+
+
+                $result = $this->new_mysql($sql);
+                $total = $result->num_rows;
+
+                $result = $this->new_mysql($sql);
+                while ($row = $result->fetch_assoc()) {
+                        $i++;
+
+                        for ($i=0; $i < $row['qty']; $i++) {
+                                $i2 = $i + 1;
+                                $qr = "http://" . $settings[8] . "/readqr.php?qr=" . $row['id'] . "-" . $row['sessionID'] . "-" . $row['viewID']."-" . $i;
+				$qr = $this->encrypt_decrypt('encrypt',$qr);
+                                //$html .= "<br><br>Ticket $i2<br><img src=\"$image\"><br>";
+                        }
+                        //$html .= "<img src=\"$image\">";
+
+                }
+
+                return $qr;
+                //print "</div>";
+
+        }
+
+
+
+
 	public function get_form_free($post_to) {
                 $settings = $this->get_settings();
                 $state = $this->get_states();
@@ -4360,7 +4571,7 @@ $template = '
 		<tr><td>Email:</td><td><input type=\"text\" name=\"email\" size=20></td></tr>
 		<tr><td>First Name:</td><td><input type=\"text\" name=\"fname\" size=20></td></tr>
 		<tr><td>Last Name:</td><td><input type=\"text\" name=\"lname\" size=20></td></tr>
-		<tr><td>Event Details Access?</td><td><select name=\"event_details\"><option>No</option><option>Yes</option></select></td></tr>
+		<tr><td>Event Details Access (required)</td><td><select name=\"event_details\"><option>Yes</option></select></td></tr>
 		<tr><td>Event Design Access?</td><td><select name=\"event_design\"><option>No</option><option>Yes</option></select></td></tr>
 		<tr><td>Social Access?</td><td><select name=\"social\"><option>No</option><option>Yes</option></select></td></tr>
 		<tr><td>Event Settings Access?</td><td><select name=\"event_settings\"><option>No</option><option>Yes</option></select></td></tr>
@@ -4474,7 +4685,7 @@ $template = '
 	                <tr><td>Email:</td><td><input type=\"text\" name=\"email\" value=\"$row[email]\"size=20></td></tr>
         	        <tr><td>First Name:</td><td><input type=\"text\" name=\"fname\" value=\"$row[fname]\" size=20></td></tr>
                 	<tr><td>Last Name:</td><td><input type=\"text\" name=\"lname\" value=\"$row[lname]\" size=20></td></tr>
-	                <tr><td>Event Details Access?</td><td><select name=\"event_details\"><option selected>$row[event_details]</option><option>No</option><option>Yes</option></select></td></tr>
+	                <tr><td>Event Details Access (required)</td><td><select name=\"event_details\"><option selected>$row[event_details]</option><option>Yes</option></select></td></tr>
         	        <tr><td>Event Design Access?</td><td><select name=\"event_design\"><option selected>$row[event_design]</option><option>No</option><option>Yes</option></select></td></tr>
                 	<tr><td>Social Access?</td><td><select name=\"social\"><option selected>$row[social]</option><option>No</option><option>Yes</option></select></td></tr>
 	                <tr><td>Event Settings Access?</td><td><select name=\"event_settings\"><option selected>$row[event_settings]</option><option>No</option><option>Yes</option></select></td></tr>
