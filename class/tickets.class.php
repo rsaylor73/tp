@@ -3985,7 +3985,7 @@ $template = '
                                             Location: '.$e_location.'<br>
                                             Valid from '.$e_start.' to '.$e_end.'<br>
                                             Operating Hours: '.$e_time1.' to '.$e_time2.'<br><br>  
-						To add to your Apple Passbook please click <a href="http://ticketpointe.customphpdesign.com/pass/PHP-PKPass/event.php?q='.$passbook.'&e='.$e_title.'&l='.$e_location.'&d1='.$e_start.'&d2='.$e_end.'&t1='.$e_time1.'&t2='.$e_time2.'">here</a>
+						To add to your Apple Passbook please click <a href="https://ticketpointe.com/pass/PHP-PKPass/event.php?q='.$passbook.'&e='.$e_title.'&l='.$e_location.'&d1='.$e_start.'&d2='.$e_end.'&t1='.$e_time1.'&t2='.$e_time2.'">here</a>
 
 
                                         </td>
