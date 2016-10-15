@@ -66,6 +66,8 @@ $resp = null;
 $error = null;
 $reCaptcha = new ReCaptcha($secret);
 // Was there a reCAPTCHA response?
+
+/*
 if ($_GET["g-recaptcha-response"]) {
         $resp = $reCaptcha->verifyResponse($_SERVER["REMOTE_ADDR"],$_POST["g-recaptcha-response"]);
 
@@ -78,7 +80,7 @@ if ($_GET["g-recaptcha-response"]) {
 if ($error != "") {
 	print "$error";
 } else {
-
+*/
 	$sql = "INSERT INTO `users` (`uuname`,`uupass`,`email`,`active`,`verified`,`account_type`) VALUES ('$_GET[uuname]','$_GET[pass1]','$_GET[email]','Yes','Yes','$_GET[account_type]')";
 	$result = $tickets->new_mysql($sql);
 	if ($result == "TRUE") {
@@ -86,8 +88,8 @@ if ($error != "") {
 	} else {
 		print "<br><br>&nbsp;&nbsp;<font color=red>There was an error creating your account. Most errors are due to spaces and symbols. Please try again without using any spaces or symbols.</font><br><br>";
 	}
-
+/*
 }
-
+*/
 
 ?>

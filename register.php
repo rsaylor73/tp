@@ -24,154 +24,114 @@ if ($type) {
 
 //$file = $GLOBAL['path']  . "/templates/" . $dir . "/header.phtml";
 $file = $GLOBAL['path']  . "/templates/" . $dir . "/hq_header.phtml";
-$template->load_template($file,$null);
-$device = $tickets->device_type();
-
-print '
-<nav class="navbar-default navbar-side" role="navigation">
-<div class="sidebar-collapse">
-    <form name="myform">
-    <ul class="nav" id="main-menu">
-        <li>
-            <div class="user-img-div">
-                <div class="inner-text">
-                    <?php echo "$_SESSION[fname] $_SESSION[lname]";?> 
-                </div>
-            </div>
-        </li>
-    </ul>
-    </form>
-</div>
-</nav>
-
-<!-- /. NAV SIDE  -->
-<div id="page-wrapper">
-    <div id="page-inner">
-	';
-	if ($device == "0") {
-	print '
-        <div class="row">
-            <div class="col-md-8">
-                <h1 class="page-head-line">HQ Register</h1>
-            </div>
-        </div>
-	';
-	}
-	print '
-
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="row">
-                            <div class="col-md-8" id="ajax">
-';
-
+//$template->load_template($file,$null);
+//$device = $tickets->device_type();
 ?>
-<div id="page_view" style="text-align:center">
-                        <div id="registration">
-                        <form name="myform">
-                                <div class="modal-body">
 
-				<?php
-				if ($device == "0") {
-				?>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="assets/img/logo-fav.png">
+    <title>Register</title>
+    <link rel="stylesheet" type="text/css" href="assets/lib/perfect-scrollbar/css/perfect-scrollbar.min.css"/>
+    <link rel="stylesheet" type="text/css" href="assets/lib/material-design-icons/css/material-design-iconic-font.min.css"/><!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
 
-                                <table width=500 style="text-align:center;" class="table">
-                                <tr>
-                                <td>Username: <div id="checkuu" style="display:inline"></div></td>
-                                <td>Email: <div id="checkemail" style="display:inline"></div></td>
-                                </tr>
-                                <tr>
-                                <td><input type="text" name="uuname" id="uuname" size=30 onblur="check_uu(this.form)"></td>
-                                <td><input type="text" name="email" id="email" onblur="check_email(this.form)" size=30></td>
-                                </tr>
-                                <tr>
-                                <td>Password:</td>
-                                <td>Confirm Password: <div id="checkpw" style="display:inline"></div></td>
-                                </tr>
-                                <tr>
-                                <td><input type="password" name="pass1" id="pass1" size=30></td>
-                                <td><input type="password" name="pass2" id="pass2" onkeyup="check_pw(this.form)" size=30></td>
-                                </tr>
-                                <?php
-                                $sql = "SELECT * FROM `account_types` ORDER BY `description`";
-                                $result2 = $tickets->new_mysql($sql);
-                                while ($row2 = $result2->fetch_assoc()) {
-                                        $options .= "<option value=\"$row2[id]\">$row2[description]</option>";
-                                }
-                                ?>
-                                <tr><td colspan=2 align="center">Account Type</td></tr>
-                                <tr><td colspan=2 align="center"><select name="account_type"><?=$options;?></select></td></tr>
-                                <tr><td colspan=2 align="center"><input type="checkbox" name="terms" value="checked"> I agree to the <a href="terms.html" target=_blank>Terms & Conditions</a></td></tr>
-                                <tr>
-                                <td align="right">
-                                <div class="g-recaptcha" data-sitekey="6LcnkA4TAAAAAD04ISkLGW_X0GWQnkbAUflFkI3E"></div>
-                                </td>
-                                <td align="left"><input type="button" class="btn btn-primary btn-lg" value="Register" onclick="register(this.form)"></td>
-                                </tr>
-                                </table>
+    <link rel="stylesheet" href="assets/css/style.css" type="text/css"/>
+  </head>
+  <body class="be-splash-screen">
+    <div class="be-wrapper be-login be-signup">
+      <div class="be-content">
+        <div class="main-content container-fluid">
+          <div class="splash-container sign-up">
+            <div class="panel panel-default panel-border-color panel-border-color-primary">
+              <div class="panel-heading"><img src="assets/img/tp.png" alt="logo" width="100" height="100" class="logo-img"><span class="splash-description">Please enter your user information.</span></div>
+              <div class="panel-body">
+		<div id="registration">
+		<form name="myform">
+                <span class="splash-title xs-pb-20">Sign Up</span>
+                  <div class="form-group">
+			<input type="text" name="uuname" id="uuname" placeholder="Username" onblur="check_uu(this.form)" class="form-control">
+                  </div>
+                  <div class="form-group">
+			<input type="text" name="email" id="email" onblur="check_email(this.form)" placeholder="E-mail" class="form-control">
+                  </div>
+                  <div class="form-group row signup-password">
+                    <div class="col-xs-6">
+			<input type="password" name="pass1" id="pass1" placeholder="Password" class="form-control">
+                    </div>
+                    <div class="col-xs-6">
+			<input type="password" name="pass2" id="pass2" onkeyup="check_pw(this.form)" placeholder="Confirm" class="form-control">
+                    </div>
+                  </div>
+                  <div class="form-group xs-pt-10">
+			<input type="button" class="btn btn-block btn-primary btn-xl" value="Sign Up" onclick="register(this.form)">
 
-				<?php
-				} else {
-				?>
-
-
-                                <table style="text-align:center;" class="table">
-                                <tr>
-                                	<td>Username: <div id="checkuu" style="display:inline"></div></td>
-				</tr>
-
-                                <tr>
-                                        <td><input type="text" name="uuname" id="uuname" size=20 onblur="check_uu(this.form)"></td>
-                                </tr>
-
-				<tr>
-                                	<td>Email: <div id="checkemail" style="display:inline"></div></td>
-                                </tr>
-				<tr>
-	                                <td><input type="text" name="email" id="email" onblur="check_email(this.form)" size=20></td>
-                                </tr>
-                                <tr>
-	                                <td>Password:</td>
-				</tr>
-
-                                <tr>
-                                        <td><input type="password" name="pass1" id="pass1" size=20></td>
-                                </tr>
-
-				<tr>
-	                                <td>Confirm Password: <div id="checkpw" style="display:inline"></div></td>
-                                </tr>
-				<tr>
-	                                <td><input type="password" name="pass2" id="pass2" onkeyup="check_pw(this.form)" size=20></td>
-                                </tr>
-                                <?php
-                                $sql = "SELECT * FROM `account_types` ORDER BY `description`";
-                                $result2 = $tickets->new_mysql($sql);
-                                while ($row2 = $result2->fetch_assoc()) {
-                                        $options .= "<option value=\"$row2[id]\">$row2[description]</option>";
-                                }
-                                ?>
-                                <tr><td>Account Type</td></tr>
-                                <tr><td><select name="account_type"><?=$options;?></select></td></tr>
-                                <tr><td><input type="checkbox" name="terms" value="checked"> I agree to the <a href="terms.html" target=_blank>Terms & Conditions</a></td></tr>
-                                <tr>
-	                                <td>
-        	                        <div class="g-recaptcha" data-sitekey="6LcnkA4TAAAAAD04ISkLGW_X0GWQnkbAUflFkI3E"></div>
-                	                </td>
-				</tr>
-				<tr>
-	                                <td><input type="button" class="btn btn-primary btn-lg" value="Register" onclick="register(this.form)"></td>
-                                </tr>
-                                </table>
-
-				<?php
-				}
-				?>
-
-                                </div>
-                        </form>
+                  </div>
+                  
+                  <div class="form-group">
+                      <label class="splash-title">Account Type</label>
+                      <div class="col-xs-offset-3">
+                        <div class="be-radio inline">
+                          <input type="radio" checked="" name="account_type" value="1">
+                          <label for="rad6">Personal</label>
                         </div>
-</div>
+                        <div class="be-radio inline">
+                          <input type="radio" checked="" name="account_type" value="2">
+                          <label for="rad7">Business</label>
+                        </div>
+                        </div>
+                      
+                    </div>
+
+                  <div class="form-group xs-pt-10">
+                    <div class="be-checkbox">
+			<input type="checkbox" name="terms" value="checked" checked>
+                      <label for="remember">By creating an account, you agree the <a href="https://www.ticketpointe.com/terms.html">terms and conditions</a>.</label>
+                    </div>
+                  </div>
+
+                </form>
+		</div>
+              </div>
+            </div>
+            <div class="splash-footer"><a href="https://ticketpointe.com">Ticket Pointe Home</a></div>
+            <div class="splash-footer"><span>Have an account? <a href="login">Sign In</a></span></div>
+            <br>
+            <div class="splash-footer">&copy; <?php $date = date("Y"); echo $date; ?> Ticket Pointe, LLC</div>
+
+            <div class="splash-footer">
+
+            <span id="siteseal"><script async type="text/javascript" src="https://seal.godaddy.com/getSeal?sealID=W0uJ3TMW8lEDbovKEgvO4h3tI0sNaCczq8Af5K245MIrqkX5uhKmYJov4aG2"></script></span>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="assets/lib/jquery/jquery.min.js" type="text/javascript"></script>
+    <script src="assets/lib/perfect-scrollbar/js/perfect-scrollbar.jquery.min.js" type="text/javascript"></script>
+    <script src="assets/js/main.js" type="text/javascript"></script>
+    <script src="assets/lib/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+      	//initialize the javascript
+      	App.init();
+      	
+      });
+    </script>
+  </body>
+</html>
+
+
 
                         <script>
                                  function check_uu(myform) {
@@ -215,10 +175,3 @@ print '
                                 
                         </script>
 
-
-<?php
-
-print '</div></div></div></div>';
-$file = $GLOBAL['path']  . "/templates/" . $dir . "/hq_footer.phtml";
-$template->load_template($file,$null);
-?>

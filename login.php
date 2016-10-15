@@ -25,41 +25,29 @@ if ($type) {
 }
 
 //$file = $GLOBAL['path']  . "/templates/" . $dir . "/header.phtml";
-$file = $GLOBAL['path']  . "/templates/" . $dir . "/hq_header.phtml";
-$template->load_template($file,$null);
-$device = $tickets->device_type();
+//$file = $GLOBAL['path']  . "/templates/" . $dir . "/hq_header.phtml";
+//$template->load_template($file,$null);
+//$device = $tickets->device_type();
 
 
 print '
-<nav class="navbar-default navbar-side" role="navigation">
-<div class="sidebar-collapse">
-    <form name="myform">
-    <ul class="nav" id="main-menu">
-        <li>
-            <div class="user-img-div">
-                <div class="inner-text">
-                    <?php echo "$_SESSION[fname] $_SESSION[lname]";?> 
-                </div>
-            </div>
-        </li>
-    </ul>
-    </form>
-</div>
-</nav>
-
-<!-- /. NAV SIDE  -->
-<div id="page-wrapper">
-    <div id="page-inner">
-        <div class="row">
-            <div class="col-md-8">
-                <h1 class="page-head-line">HQ Login</h1>
-            </div>
-        </div>
-
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="row">
-                            <div class="col-md-8" id="ajax">
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="assets/img/logo-fav.png">
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="assets/lib/perfect-scrollbar/css/perfect-scrollbar.min.css"/>
+    <link rel="stylesheet" type="text/css" href="assets/lib/material-design-icons/css/material-design-iconic-font.min.css"/><!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="assets/css/style.css" type="text/css"/>
+  </head>
 ';
 
 if ($_POST['lg'] == "login") {
@@ -99,80 +87,87 @@ if ($_POST['lg'] == "login") {
 
 
 ?>
-<style>
-input[type=text], select {
-    width: 75%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
+ <body class="be-splash-screen">
 
-input[type=password], select {
-    width: 75%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-input[type=submit] {
-    width: 100%;
-    background-color: #4CAF50;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
 
-input[type=submit]:hover {
-    background-color: #45a049;
-}
+    <div class="be-wrapper be-login">
+      <div class="be-content">
+        <div class="main-content container-fluid">
+          <div class="splash-container">
+            <div class="panel panel-default panel-border-color panel-border-color-primary">
+              <div class="panel-heading"><img src="assets/img/tp.png" alt="logo" width="100" height="100" class="logo-img"><span class="splash-description">Please enter your user information.
+		<?php
+		if ($_GET['p'] == "1") {
+			print "<br><font color=green>Your login details was sent to your email.</font>";
+		}
+		?>
+		</span></div>
+              <div class="panel-body" id="ajax">
 
-</style>
-<div id="page_view" style="text-align:center">
 
-                        <div id="login">
-			<?=$msg;?>
                         <form name="myform" action="login.php" method="post">
-			<input type="hidden" name="lg" value="login"> 
-                               <div class="modal-body">
-                                <table class="table">
-                                <tr>
-                                <td>Username: <div id="checkuu" style="display:inline"></div></td>
-                                <td>Password: <div id="checkemail" style="display:inline"></div></td>
-                                </tr>
-                                <tr>
-                                <td><input type="text" name="uuname" id="uuname" size=30 value="<?=$_COOKIE['uuname'];?>"></td>
-                                <td><input type="password" name="uupass" id="uupass" size=30></td>
-                                </tr>
-                                <?php
-                                if ($device == "0") {
-                                ?>
-                                <tr>
-                                <td colspan=2 align="center"><input type="checkbox" name="rememberme" value="checked" <?=$_COOKIE['rememberme'];?> onclick="return confirm('By clicking OK you understand this will place a cookie on your machine. If this is a public computer you should click cancel.')"> Remember Me</td>
-                                </tr>
-                                <?php
-                                }
-                                ?>
-                                <tr>
-                                <td colspan=2 align="center"><a href="forgot_password.php">Forgot Password?</a></td>
-                                </tr>
-                                <tr>
-                                <td colspan=2 align="center"><input type="submit" class="btn btn-primary btn-lg" value="Login"></td>
-                                </tr>
-                                </table>
-                                </div>
-                        </form>
-                        </div>
+                        <input type="hidden" name="lg" value="login">
+
+                  <div class="form-group">
+
+			<input type="text" name="uuname" id="uuname" value="<?=$_COOKIE['uuname'];?>" placeholder="Username" autocomplete="off" class="form-control">
+                  </div>
+                  <div class="form-group">
+			<input type="password" name="uupass" id="uupass" placeholder="Password" class="form-control">
+                  </div>
+                  <div class="form-group row login-tools">
+                    <div class="col-xs-6 login-remember">
+                      <div class="be-checkbox">
+			<input type="checkbox" name="rememberme" value="checked" <?=$_COOKIE['rememberme'];?> 
+			onclick="return confirm('By clicking OK you understand this will place a cookie on your machine. If this is a public computer you should click cancel.')">
+                        <label for="remember">Remember Me</label>
+                      </div>
+                    </div>
+                    <div class="col-xs-6 login-forgot-password"><a href="forgot_password.php">Forgot Password?</a></div>
+                  </div>
+                  <div class="form-group login-submit">
+                    <button data-dismiss="modal" type="submit" class="btn btn-primary btn-xl">Sign me in</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div class="splash-footer"><a href="https://ticketpointe.com">Ticket Pointe Home</a></div>
+            <div class="splash-footer"><span>Don't have an account? <a href="register">Sign Up</a></span></div>
+            <br>
+            <div class="splash-footer">&copy; <?php $date=date("Y"); echo $date;?> Ticket Pointe, LLC</div>
+
+            <div class="splash-footer">
+
+            <span id="siteseal"><script async type="text/javascript" src="https://seal.godaddy.com/getSeal?sealID=W0uJ3TMW8lEDbovKEgvO4h3tI0sNaCczq8Af5K245MIrqkX5uhKmYJov4aG2"></script></span>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="assets/lib/jquery/jquery.min.js" type="text/javascript"></script>
+    <script src="assets/lib/perfect-scrollbar/js/perfect-scrollbar.jquery.min.js" type="text/javascript"></script>
+    <script src="assets/js/main.js" type="text/javascript"></script>
+    <script src="assets/lib/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+      	//initialize the javascript
+      	App.init();
+      });
+      
+    </script>
+  </body>
+</html>
 
 
-</div>
+
+
+
+
+
+
+
 
                         <script>
                                  function check_uu(myform) {

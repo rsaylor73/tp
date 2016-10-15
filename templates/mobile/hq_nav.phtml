@@ -17,6 +17,44 @@ if ($_SESSION['resellerID'] == "0") {
 }
 ?>
 
+
+
+      <nav class="navbar navbar-default navbar-fixed-top be-top-header">
+        <div class="container-fluid">
+          <div class="navbar-header"><a href="index.html" class="navbar-brand"></a></div>
+          <div class="be-right-navbar">
+
+            <div class="page-title"><span>Dashboard</span></div>
+
+          </div>
+        </div>
+      </nav>
+      <div class="be-left-sidebar">
+        <div class="left-sidebar-wrapper"><a href="index.php?section=dashboard" class="left-sidebar-toggle">Home</a>
+          <div class="left-sidebar-spacer">
+            <div class="left-sidebar-scroll">
+              <div class="left-sidebar-content">
+                <ul class="sidebar-elements">
+                  <li class="divider">Menu</li>
+                  <li class="active"><a href="index.php?section=dashboard"><i class="icon mdi mdi-home"></i><span>Home</span></a></li>
+		  <li><a href="javascript:void(0)" onclick="load_profile(this.form)"><i class="icon mdi fa fa-user"></i><span>My Profile</span></a></li>
+		  <li><a href="javascript:void(0)" onclick="load_details(this.form)"><i class="icon mdi fa fa-ticket "></i>Events</a></li>
+		  <li><a href="javascript:void(0)" onclick="load_checkin(this.form)"><i class="icon mdi fa fa-users "></i>Check-In Users</a></li>
+		  <li><a href="javascript:void(0)" onclick="users(this.form)"><i class="icon mdi fa fa-user "></i>Manage Users</a></li>
+		  <li><a href="index.php?section=signout"><i class="icon mdi fa fa-sign-out "></i>Logout</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+
+
+<?php
+/*
 <nav class="navbar-default navbar-side" role="navigation">
 <div class="sidebar-collapse">
     <form name="myform">
@@ -39,19 +77,19 @@ if ($_SESSION['resellerID'] == "0") {
         </li>
 
 		<?php if ($event_design == "Yes") { ?>
-		<li><a href="javascript:void(0)" onclick="document.location.href='index.php?section=dashboard&center=design'"><i class="fa fa-camera "></i>Design</a></li>
+		<!--<li><a href="javascript:void(0)" onclick="document.location.href='index.php?section=dashboard&center=design'"><i class="fa fa-camera "></i>Design</a></li>-->
 		<?php } ?>
 
 		<?php if ($social == "Yes") { ?>
-        <li><a href="javascript:void(0)" onclick="document.location.href='index.php?section=dashboard&center=social'"><i class="fa fa-share-square "></i>Social</a></li>
+	        <!--<li><a href="javascript:void(0)" onclick="document.location.href='index.php?section=dashboard&center=social'"><i class="fa fa-share-square "></i>Social</a></li>-->
 		<?php } ?>
 
 		<?php if ($event_settings == "Yes") { ?>
-        <li><a href="javascript:void(0)" onclick="document.location.href='index.php?section=dashboard&center=event_settings'"><i class="fa fa-bars "></i>Settings</a></li>
+	        <!--<li><a href="javascript:void(0)" onclick="document.location.href='index.php?section=dashboard&center=event_settings'"><i class="fa fa-bars "></i>Settings</a></li>-->
 		<?php } ?>
 
 		<?php if ($create_tickets == "Yes") { ?>
-        <li><a href="javascript:void(0)" onclick="document.location.href='index.php?section=dashboard&center=tickets'"><i class="fa fa-money "></i>Tickets</a></li>
+	        <!--<li><a href="javascript:void(0)" onclick="document.location.href='index.php?section=dashboard&center=tickets'"><i class="fa fa-money "></i>Tickets</a></li>-->
 		<?php } ?>
 
         </li>
@@ -78,6 +116,10 @@ if ($_SESSION['resellerID'] == "0") {
             </div>
         </div>
 
+
+
+*/
+?>
 
 <script>        
 function logout(myform) {

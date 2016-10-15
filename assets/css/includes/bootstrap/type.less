@@ -1,0 +1,44 @@
+/*------------------------------------------------------------------
+  [Typography]
+*/
+
+.text-bold{
+	font-weight: @font-weight-medium !important;
+}
+
+// Contextual colors
+.text-success {
+  .text-emphasis-variant(@success-color);
+}
+
+.text-warning {
+  .text-emphasis-variant(@warning-color);
+}
+
+.text-danger {
+  .text-emphasis-variant(@danger-color);
+}
+
+//Display Heading
+.display-heading{
+	font-size: @display-heading-size;
+	font-weight: @font-weight-thin;
+	margin: @display-heading-margin;
+
+	@media @phone{
+		font-size: ceil(@display-heading-size - (@display-heading-size * 0.2));
+	}
+}
+
+//Display Description
+.display-description{
+	font-size: @display-description-size;
+	font-weight: @font-weight-thin;
+	line-height: @display-description-line-height;
+	margin: @display-description-margin;
+
+	@media @phone{
+		font-size: ceil(@display-description-size - (@display-description-size * 0.2));
+		line-height: ceil(@display-description-line-height - (@display-description-line-height * 0.2));
+	}
+}
