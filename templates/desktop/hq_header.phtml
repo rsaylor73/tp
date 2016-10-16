@@ -52,27 +52,11 @@ include "include/templates.php";
   <link rel="stylesheet" type="text/css" href="css/jquery.timepicker.css" />
   <script type="text/javascript" src="js/tinymce/tinymce.min.js"></script>
 
-  <script>
-  $(function() {
-    var availableTags = [
-   <?=$result;?>
-    ];
-    $( "#search_area" ).autocomplete({
-      source: availableTags,
-      appendTo: "#container",
-      position: { my : "right bottom", at: "right bottom" },
-      //<!-- Added SELECT event -kjg //-->
-      select: function (event, ui) {
-        $( "#search_area" ).val(ui.item.label);
-                document.getElementById('search_area').value = ui.item.label;
-        redirect_page()
-        },
-      //<!-- END //-->
-      minLength: 1
-    });
-  });
-  </script>
-
+  <script src="charts2/js/highcharts.js"></script>
+  <script src="charts2/js/modules/data.js"></script>
+  <script src="charts2/js/modules/drilldown.js"></script>
+  <script src="charts2/js/modules/exporting.js"></script>
+  <script src="charts2/js/modules/heatmap.js"></script>
 
 <?php
 if ($_GET['section'] == "page_view") {

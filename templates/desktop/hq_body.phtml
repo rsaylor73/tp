@@ -176,10 +176,12 @@ switch ($_GET['center']) {
 
 
 ?>
+  <style>
+  .achievements-wrapper { height: 300px; overflow: auto; }
+  </style>
 
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
   <script type="text/javascript">
-
 
 
 google.load('visualization', '1', {packages: ['corechart', 'bar']});
@@ -250,23 +252,22 @@ function drawMultSeries2() {
 
 
 <?php
-        print '
-        Hi and welcome to your HQ. To get started use the links to the left.
-        ';
+//        print '
+  //      Hi and welcome to your HQ. To get started use the links to the left.
+    //    ';
 
         ?>
-        <br><br><br>
         <?php
         if ($data != "") {
-                print "<div id=\"chart_div3\"></div>";
+                //print "<div id=\"chart_div3\"></div>";
         } else {
-                print "<br><br>No reports are available for Tickets Sold By Event<br><br>";
+                //print "<br><br>No reports are available for Tickets Sold By Event<br><br>";
         }
 
         if ($data2 != "") {
-                print "<div id=\"chart_div2\"></div>";
+                //print "<div id=\"chart_div2\"></div>";
         } else {
-                print "<br><br>No reports for Donations<br><br>";
+               //print "<br><br>No reports for Donations<br><br>";
         }
 
         break;
@@ -274,11 +275,302 @@ function drawMultSeries2() {
 
 ?>
 
-<br><br><br>
+
+<!-- start -->
+
+<?php
+// event tickets
+$sql = "
+SELECT
+	`e`.`title`,
+	`c`.`description`,
+	`c`.`price`,
+	`c`.`status`,
+	DATE_FORMAT(`c`.`date`, '%m/%d/%Y') AS 'date'
+FROM
+	`cart` c,
+	`events` e
+
+WHERE
+	`c`.`eventID` = `e`.`id`
+	AND `e`.`userID` = '$_SESSION[id]'
+
+ORDER BY `e`.`title` ASC
+";
+$result = $tickets->new_mysql($sql);
+while ($row = $result->fetch_assoc()) {
+	if ($this_title != $title) {
+		//$html2 .= "<tr><td colspan=4><b><h2>$row[title]</h2></b></td></tr>";
+		$title = $row['title'];
+	}
+	switch ($row['status']) {
+	case "Pending":
+		$status = '<td class="text-warning">Pending</td>';
+	break;
+	case "Paid":
+		$status = '<td class="text-success">Completed</td>';
+	break;
+	}
+	$html2 .= '
+                      <tr>
+                        <td>'.$row['description'].'</td>
+                        <td>$'.$row['price'].'</td>
+                        <td>'.$row['date'].'</td>
+                        '.$status.'
+                      </tr>
+	';
+}
 
 
+// Event Progress
+$sql = "
+SELECT
+	`e`.`id`,
+	`e`.`title`
+
+FROM
+	`events` e
+
+WHERE
+	`e`.`userID` = '$_SESSION[id]'
+
+ORDER BY `title` ASC
+";
+
+$sold = "0";
+$qty = "0";
+
+$result = $tickets->new_mysql($sql);
+while ($row = $result->fetch_assoc()) {
+
+	// get total qty
+	$sql2 = "SELECT SUM(`qty`) AS 'qty' FROM `tickets` WHERE `eventID` = '$row[id]'";
+	$result2 = $tickets->new_mysql($sql2);
+	while ($row2 = $result2->fetch_assoc()) {
+		$qty = $row2['qty'];
+	}
+	// get total sales
+	$sql2 = "SELECT SUM(`qty`) AS 'sold' FROM `cart` WHERE `eventID` = '$row[id]' AND `status` = 'Paid'";
+        $result2 = $tickets->new_mysql($sql2);
+        while ($row2 = $result2->fetch_assoc()) {
+                $sold = $row2['sold'];
+        }
+
+	if ($sold == "") {
+		$sold = "0";
+	}
+	if ($qty == "") {
+		$qty = "0";
+	}
+
+	@$per = $sold / $qty;
+	$per = $per * 100;
 
 
+	$html .= '
+                  <div class="row user-progress user-progress-small">
+                    <div class="col-md-5"><span class="title">'.$row['title'].'<br>'.$sold.' sold out of '.$qty.'</span></div>
+                    <div class="col-md-7">
+                      <div class="progress">
+                        <div style="width: '.$per.'%" class="progress-bar progress-bar-success"></div>
+                      </div>
+                    </div>
+                  </div>
+	';
+
+}
+
+?>
+
+
+	<div class="row">
+            <div class="col-md-12">
+              <div class="panel panel-default">
+                <div class="panel-heading panel-heading-divider">
+                <div class="panel-body">
+		<!-- chart -->
+		<?php
+
+		// past year
+		$year_past = date("Y") - 1;
+
+		$sql = "
+		SELECT
+			SUM(`c`.`price`) AS 'sales'
+		FROM
+			`cart` c,
+			`events` e
+		WHERE
+			`c`.`eventID` = `e`.`id`
+			AND `e`.`userID` = '$_SESSION[id]'
+			AND DATE_FORMAT(`c`.`date`, '%Y') = '$year_past'
+		";
+		$result = $tickets->new_mysql($sql);
+		while ($row = $result->fetch_assoc()) {
+			if ($row['sales'] == "") {
+				$row['sales'] = "0";
+			}
+			$good[] = $row['sales'];
+		}
+
+		// current year
+                $year_current = date("Y");
+
+                $sql = "
+                SELECT
+                        SUM(`c`.`price`) AS 'sales'
+                FROM
+                        `cart` c,
+                        `events` e
+                WHERE
+                        `c`.`eventID` = `e`.`id`
+                        AND `e`.`userID` = '$_SESSION[id]'
+                        AND DATE_FORMAT(`c`.`date`, '%Y') = '$year_current'
+                ";
+                $result = $tickets->new_mysql($sql);
+                while ($row = $result->fetch_assoc()) {
+                        if ($row['sales'] == "") {
+                                $row['sales'] = "0";
+                        }
+                        $good[] = $row['sales'];
+                }
+
+                // bar graph
+		$labels[] = "$year_past";
+		$labels[] = "$year_current";
+
+                $id = "bar_graph_1";
+                $title = "Yearly Sales";
+                $subtitle = "Dollar Amount (before fees)";
+                $s1_title = "Dollar Amount";
+
+                $bar = $tickets->bar_graph_v2($id,$title,$subtitle,$labels,$good,$s1_title);
+                print "$bar";
+                print '<br><div id="'.$id.'" style="min-width: 100%; max-width: 100%; height: 100%;"></div>';
+                // end bar
+		?>
+
+
+                </div>
+              </div>
+            </div>
+	</div>
+
+        <div class="row">
+            <div class="col-md-12">
+              <div class="panel panel-default">
+                <div class="panel-heading panel-heading-divider">
+                <div class="panel-body">
+                <!-- chart -->
+		<?php
+
+                // pie chart showing valid leads
+
+		$sql = "
+		SELECT
+			`e`.`id`,
+			`e`.`title`,
+			SUM(`c`.`qty`) AS 'sold'
+
+		FROM
+			`events` e,
+			`cart` c
+
+		WHERE
+			`e`.`userID` = '$_SESSION[id]'
+			AND `e`.`id` = `c`.`eventID`
+			AND `c`.`status` = 'Paid'
+		";
+		$result = $tickets->new_mysql($sql);
+		while ($row = $result->fetch_assoc()) {
+
+                        $chart_output .= "\n{name: '".$row['title']."',\n
+                        y: ".$row['sold'].",\n
+                        drilldown: '".$row['title']."',}";
+
+			$sql2 = "
+			SELECT
+				`t`.`name`,
+				SUM(`c`.`qty`) AS 'sold'
+
+			FROM
+				`cart` c,
+				`tickets` t
+			WHERE
+				`c`.`eventID` = '$row[id]'
+				AND `c`.`ticketID` = `t`.`id`
+				AND `c`.`status` = 'Paid'
+
+			GROUP BY `t`.`id`
+			";
+                        $drilldown .= "{name: '$row[title]',\nid: '$row[title]',\ndata:[\n";
+                        $result2 = $tickets->new_mysql($sql2);
+                        while ($row2 = $result2->fetch_assoc()) {
+                                $drilldown .= "['".$row2['name']."', ".$row2['sold']."],";
+                        }
+                        $drilldown = trim($drilldown,',');
+                        $drilldown .= "]},";
+
+		}
+
+                $chart_output = trim($chart_output,',');
+                $drilldown = trim($drilldown,',');
+
+                $pie_title = "Tickets Sold per Event";
+                $id = "pie_chart_1";
+                $name = "Events";
+                $pie = $tickets->pie_chart_v2($id,$name,$chart_output,$pie_title,$drilldown);
+                print "$pie";
+
+                print '<br><div id="'.$id.'" style="min-width: 100%; max-width: 100%; height: 100%;"></div>';
+                // end pie chart
+		?>
+                </div>
+              </div>
+            </div>
+        </div>
+
+
+          <div class="row">
+            <div class="col-xs-12 col-md-12">
+              <div class="panel panel-default">
+                <div class="panel-heading panel-hieading-divider xs-pb-15">Event Progress</div>
+                <div class="panel-body xs-pt-25">
+                <div class="span3 achievements-wrapper">
+		<?=$html;?>
+                </div>
+               </div>
+              </div>
+            </div>
+         </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="panel panel-default panel-table">
+                <div class="panel-heading"> 
+                  <div class="title">Tickets Sales</div>
+                </div>
+                <div class="panel-body table-responsive">
+		<div class="span3 achievements-wrapper">
+                  <table class="table table-striped table-borderless">
+                    <thead>
+                      <tr>
+                        <th style="width:40%;">Ticket</th>
+                        <th class="number">Price</th>
+                        <th style="width:20%;">Date</th>
+                        <th style="width:20%;">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody class="no-border-x">
+			<?=$html2;?>
+                    </tbody>
+                  </table>
+		</div>
+                </div>
+              </div>
+            </div>
+	</div>
+<!-- end -->
 
 
 

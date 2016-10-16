@@ -18,6 +18,130 @@ class Tickets {
         }
 
 
+        public function pie_chart_v2($id,$name,$data,$title,$drilldown) {
+
+                $pie_chart = "
+                <script type=\"text/javascript\">
+                $(function () {
+                    // Create the chart
+                    $('#$id').highcharts({
+                        chart: {
+                            type: 'pie'
+                        },
+                        title: {
+                            text: '$title'
+                        },
+                        subtitle: {
+                            text: 'Click to drilldown.'
+                        },
+                        plotOptions: {
+                            series: {
+                                dataLabels: {
+                                    enabled: false
+                                },
+                                showInLegend: true
+                            }
+                        },
+
+                        tooltip: {
+                            headerFormat: '<span style=\"font-size:11px\">{series.name}</span><br>',
+                            pointFormat: '<span style=\"color:{point.color}\">{point.name}</span>: <b>{point.y}</b> tickets<br/>'
+                        },
+                        series: [{
+                            name: '$name',
+                            colorByPoint: true,
+                            data: [
+                ";
+
+                $pie_chart .= $data;
+
+                $pie_chart .= "
+                                ]
+                        }],
+                        drilldown: {
+                            series: [
+                                ".$drilldown."
+                        ]
+                        }
+                    });
+                });
+                </script>
+                ";
+
+                return($pie_chart);
+        }
+
+
+        public function bar_graph_v2($id,$title,$subtitle,$labels,$series1,$s1_title) {
+
+                if (is_array($labels)) {
+                        foreach ($labels as $key=>$value) {
+                                $categories .= "'$value',";
+                        }
+                        $categories = trim($categories,',');
+                }
+
+                if (is_array($series1)) {
+                        foreach ($series1 as $key=>$value) {
+                                $s1 .= "$value,";
+                        }
+                        $s1 = trim($s1,",");
+                }
+
+                if (is_array($series2)) {
+                        foreach ($series2 as $key=>$value) {
+                                $s2 .= "$value,";
+                        }
+                        $s2 = trim($s2,",");
+                }
+
+                $bar_graph = "
+                <style type=\"text/css\">
+                        ${demo.css}
+                </style>
+                <script type=\"text/javascript\">
+                $(function () {
+                    $('#$id').highcharts({
+                        chart: {
+                            type: 'bar'
+                        },
+                        title: {
+                            text: '$title'
+                        },
+                        xAxis: {
+                            categories: [$categories]
+                        },
+                        yAxis: {
+                            min: 0,
+                            title: {
+                                text: '$subtitle'
+                            }
+                        },
+                        legend: {
+                            reversed: true
+                        },
+                        plotOptions: {
+                            series: {
+                                stacking: 'normal'
+                            }
+                        },
+                        series: [
+
+                        {
+                            name: '$s1_title',
+                            data: [$s1],
+                            color: '#088A08'
+                        }
+                        ]
+                    });
+                });
+                </script>
+                ";
+
+                return($bar_graph);
+
+        }
+
         // check login system
         public function check_login() {
                 $sql = "SELECT `users`.`id` FROM `users` WHERE `users`.`uuname` = '$_SESSION[uuname]' AND BINARY `users`.`uupass` = '$_SESSION[uupass]' AND `users`.`active` = 'Yes'";
