@@ -21,7 +21,7 @@ if ($_SESSION['resellerID'] == "0") {
 
       <nav class="navbar navbar-default navbar-fixed-top be-top-header">
         <div class="container-fluid">
-          <div class="navbar-header"><a href="index.html" class="navbar-brand"></a></div>
+          <div class="navbar-header"><a href="index.php" class="navbar-brand"></a></div>
           <div class="be-right-navbar">
 
             <div class="page-title"><span>Dashboard</span></div>
@@ -30,13 +30,20 @@ if ($_SESSION['resellerID'] == "0") {
         </div>
       </nav>
       <div class="be-left-sidebar">
-        <div class="left-sidebar-wrapper"><a href="index.php?section=dashboard" class="left-sidebar-toggle">Home</a>
+        <div class="left-sidebar-wrapper">
+		<a href="index.php?section=dashboard" class="left-sidebar-toggle">HQ</a>
+
+                  <a href="javascript:void(0)" class="left-sidebar-toggle" onclick="load_profile(this.form)">My Profile</span></a>
+                  <a href="javascript:void(0)" class="left-sidebar-toggle" onclick="load_details(this.form)">Events</a>
+                  <a href="javascript:void(0)" class="left-sidebar-toggle" onclick="load_checkin(this.form)">Check-In Users</a>
+                  <a href="javascript:void(0)" class="left-sidebar-toggle" onclick="users(this.form)">Manage Users</a>
+                  <a href="index.php?section=signout" class="left-sidebar-toggle">Logout</a>
+
           <div class="left-sidebar-spacer">
             <div class="left-sidebar-scroll">
               <div class="left-sidebar-content">
                 <ul class="sidebar-elements">
-                  <li class="divider">Menu</li>
-                  <li class="active"><a href="index.php?section=dashboard"><i class="icon mdi mdi-home"></i><span>Home</span></a></li>
+                  <li class="active"><a href="index.php?section=dashboard"><i class="icon mdi mdi-home"></i><span>HQ</span></a></li>
 		  <li><a href="javascript:void(0)" onclick="load_profile(this.form)"><i class="icon mdi fa fa-user"></i><span>My Profile</span></a></li>
 		  <li><a href="javascript:void(0)" onclick="load_details(this.form)"><i class="icon mdi fa fa-ticket "></i>Events</a></li>
 		  <li><a href="javascript:void(0)" onclick="load_checkin(this.form)"><i class="icon mdi fa fa-users "></i>Check-In Users</a></li>

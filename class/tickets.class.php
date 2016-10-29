@@ -159,6 +159,12 @@ class Tickets {
 	public function signoff() {
 		session_destroy();
                 $this->navigation2();
+                print '
+                      <div class="be-content">
+                        <div class="main-content container-fluid">
+                          <div class="row">
+                            <div class="col-md-12 col-lg-6" id="ajax">
+                ';
                 print '<div class="row"><div class="col-md-8"><div class="row"><div class="col-md-8" id="ajax">';
 		?>
 		You have been signed off. Loading...
@@ -577,6 +583,12 @@ class Tickets {
 	public function update_profile() {
 		
 		$this->navigation2();
+		print '
+		      <div class="be-content">
+		        <div class="main-content container-fluid">
+		          <div class="row">
+		            <div class="col-md-12 col-lg-6" id="ajax">
+		';
 		print '<div class="row"><div class="col-md-8"><div class="row"><div class="col-md-8" id="ajax">';
 
         if (substr($_POST['ach_routing'], 0,1) != "*") {
@@ -1213,6 +1225,13 @@ class Tickets {
 	public function save_details() {
 
                 $this->navigation2();
+		print '
+		      <div class="be-content">
+		        <div class="main-content container-fluid">
+		          <div class="row">
+		            <div class="col-md-12 col-lg-6" id="ajax">
+		';
+
                 print '<div class="row"><div class="col-md-8"><div class="row"><div class="col-md-8" id="ajax">';
 
 		$sql = "INSERT INTO `events` 
@@ -1238,6 +1257,12 @@ class Tickets {
 
 	public function update_details() {
                 $this->navigation2();
+                print '
+                      <div class="be-content">
+                        <div class="main-content container-fluid">
+                          <div class="row">
+                            <div class="col-md-12 col-lg-6" id="ajax">
+                ';
                 print '<div class="row"><div class="col-md-8"><div class="row"><div class="col-md-8" id="ajax">';
 
 		$sql = "UPDATE `events` SET `title` = '$_POST[title]', `tagline` = '$_POST[tagline]', `locationID` = '$_POST[locationID]', `categoryID` = '$_POST[categoryID]', `start_date` = '$_POST[start_date]',
@@ -1649,6 +1674,12 @@ class Tickets {
 
 
                 $this->navigation2();
+                print '
+                      <div class="be-content">
+                        <div class="main-content container-fluid">
+                          <div class="row">
+                            <div class="col-md-12 col-lg-6" id="ajax">
+                ';
                 print '<div class="row"><div class="col-md-8"><div class="row"><div class="col-md-8" id="ajax">';
 
 			if ($_POST['step'] == "3") {
@@ -1843,6 +1874,12 @@ class Tickets {
 	public function update_settings() {
 		$srv_settings = $this->get_settings();
                 $this->navigation2();
+                print '
+                      <div class="be-content">
+                        <div class="main-content container-fluid">
+                          <div class="row">
+                            <div class="col-md-12 col-lg-6" id="ajax">
+                ';
                 print '<div class="row"><div class="col-md-8"><div class="row"><div class="col-md-8" id="ajax">';
 
 		$found_owner = "0";
@@ -4713,6 +4750,12 @@ $template = '
                 }
 
                 $this->navigation2();
+                print '
+                      <div class="be-content">
+                        <div class="main-content container-fluid">
+                          <div class="row">
+                            <div class="col-md-12 col-lg-6" id="ajax">
+                ';
                 print '<div class="row"><div class="col-md-8"><div class="row"><div class="col-md-8" id="ajax">';
 
 		// check for errors
@@ -4828,6 +4871,12 @@ $template = '
 	public function save_update_user() {
 
                 $this->navigation2();
+                print '
+                      <div class="be-content">
+                        <div class="main-content container-fluid">
+                          <div class="row">
+                            <div class="col-md-12 col-lg-6" id="ajax">
+                ';
                 print '<div class="row"><div class="col-md-8"><div class="row"><div class="col-md-8" id="ajax">';
 
 		// check email
@@ -5033,6 +5082,12 @@ $template = '
 
 	public function save_registration_form() {
                 $this->navigation2();
+                print '
+                      <div class="be-content">
+                        <div class="main-content container-fluid">
+                          <div class="row">
+                            <div class="col-md-12 col-lg-6" id="ajax">
+                ';
                 print '<div class="row"><div class="col-md-8"><div class="row"><div class="col-md-8" id="ajax">';
 
 		$sql = "DELETE FROM `registration` WHERE `eventID` = '$_POST[eventID]' AND `userID` = '$_SESSION[id]'";
@@ -5144,6 +5199,12 @@ $template = '
 
 	public function create_checkin_user() {
                 $this->navigation2();
+                print '
+                      <div class="be-content">
+                        <div class="main-content container-fluid">
+                          <div class="row">
+                            <div class="col-md-12 col-lg-6" id="ajax">
+                ';
                 print '<div class="row"><div class="col-md-8"><div class="row"><div class="col-md-8" id="ajax">';
 
 		$sql = "SELECT * FROM `checkin_users` WHERE `email` = '$_POST[email]'";
