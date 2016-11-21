@@ -30,6 +30,7 @@ if ($type) {
 //$device = $tickets->device_type();
 
 
+if ($_POST['lg'] != "login") {
 print '
 <!DOCTYPE html>
 <html lang="en">
@@ -49,6 +50,7 @@ print '
     <link rel="stylesheet" href="assets/css/style.css" type="text/css"/>
   </head>
 ';
+}
 
 if ($_POST['lg'] == "login") {
 	$sql = "SELECT * FROM `users` WHERE `uuname` = '$_POST[uuname]' AND BINARY `uupass` = '$_POST[uupass]'";
@@ -118,8 +120,7 @@ if ($_POST['lg'] == "login") {
                   <div class="form-group row login-tools">
                     <div class="col-xs-6 login-remember">
                       <div class="be-checkbox">
-			<input type="checkbox" name="rememberme" value="checked" <?=$_COOKIE['rememberme'];?> 
-			onclick="return confirm('By clicking OK you understand this will place a cookie on your machine. If this is a public computer you should click cancel.')">
+			<input type="checkbox" name="rememberme" value="checked" checked <?=$_COOKIE['rememberme'];?>>
                         <label for="remember">Remember Me</label>
                       </div>
                     </div>

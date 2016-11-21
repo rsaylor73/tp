@@ -7,7 +7,17 @@ include "include/templates.php";
       <div class="be-content">
         <div class="main-content container-fluid">
           <div class="row">
-            <div class="col-md-12 col-lg-6" id="ajax">
+
+	<?php
+	if (($_GET['section'] == "dashboard") && ($_GET['center'] == "")) {
+		//print "<div class=\"col-md-12 col-lg-6\" id=\"ajax\">";
+                print "<div id=\"ajax\">
+		<div class=\"col-md-12 col-lg-6\">
+		";
+	} else {
+		print "<div id=\"ajax\">";
+	}
+	?>
 
 
 
@@ -420,6 +430,7 @@ if ($_GET['center'] == "") {
 		WHERE
 			`c`.`eventID` = `e`.`id`
 			AND `e`.`userID` = '$_SESSION[id]'
+                        AND `c`.`status` = 'Paid'
 			AND DATE_FORMAT(`c`.`date`, '%Y') = '$year_past'
 		";
 		$result = $tickets->new_mysql($sql);
@@ -442,6 +453,7 @@ if ($_GET['center'] == "") {
                 WHERE
                         `c`.`eventID` = `e`.`id`
                         AND `e`.`userID` = '$_SESSION[id]'
+                        AND `c`.`status` = 'Paid'
                         AND DATE_FORMAT(`c`.`date`, '%Y') = '$year_current'
                 ";
                 $result = $tickets->new_mysql($sql);

@@ -504,7 +504,21 @@ class Tickets {
 
 
 	public function profile() {
-		print "<h2>My Profile</h2>";
+
+		print '
+          <div class="user-profile">
+            <div class="row">
+              <div class="col-md-5">
+                <div class="user-display">
+                  <div class="user-display-bg"><img src="assets/img/user-profile-display.png" alt="Profile Background"></div>
+                  <div class="user-display-bottom">
+                    <div class="user-display-avatar"><img src="assets/img/avatar-150.png" alt="Avatar"></div>
+                    <div class="user-display-info">
+		';
+
+
+
+		print "<div class=\"name\">My Profile</div>";
 
 		$sql = "SELECT * FROM `users` WHERE `uuname` = '$_SESSION[uuname]'";
 		$result = $this->new_mysql($sql);
@@ -576,21 +590,24 @@ class Tickets {
 			</table>
 			</form>";
 			print "<br><br><br>";
+
+			print "</div></div></div></div></div>";
 		}
 
 	}
 
 	public function update_profile() {
 		
-		$this->navigation2();
-		print '
-		      <div class="be-content">
-		        <div class="main-content container-fluid">
-		          <div class="row">
-		            <div class="col-md-12 col-lg-6" id="ajax">
-		';
-		print '<div class="row"><div class="col-md-8"><div class="row"><div class="col-md-8" id="ajax">';
+                $this->navigation2();
+                print '
+                      <div class="be-content">
+                        <div class="main-content container-fluid">
+                          <div class="row">
+                            <!--<div class="col-md-12 col-lg-6" id="ajax">-->
+                                <div id="ajax">
+                ';
 
+                //print '<div class="row"><div class="col-md-8"><div class="row"><div class="col-md-8" id="ajax">';
         if (substr($_POST['ach_routing'], 0,1) != "*") {
             $ach_routing = $this->encrypt_decrypt('encrypt',$_POST['ach_routing']);
             $ach_routing_sql = ", `ach_routing` = '$ach_routing'";
@@ -612,7 +629,7 @@ class Tickets {
 		";
 		$result = $this->new_mysql($sql);
 		if ($result == "TRUE") {
-			print "<br><font color=green>Your profile was updated.</font><br>";
+			print "<br><font color=green>Your profile was updated.</font><br><br>";
 		} else {
 			print "<br><font color=red>Your profile failed to update.</font><br>";
 		}
@@ -1063,6 +1080,28 @@ class Tickets {
 		if ($step == "1") {
 
 			print '
+		        	<div class="page-head">
+		        		<h2 class="page-head-title">New Event : Step 1 of 4</h2>
+		        	</div>
+			';
+
+			print '
+		        <div class="main-content container-fluid">
+		          <div class="row wizard-row">
+		            <div class="col-md-12 fuelux">
+		              <div class="block-wizard panel panel-default">
+		                <div id="wizard1" class="wizard wizard-ux">
+		                  <ul class="steps">
+		                    <li data-step="1" class="active">Step 1<span class="chevron"></span></li>
+		                    <li data-step="2">Step 2<span class="chevron"></span></li>
+		                    <li data-step="3">Step 3<span class="chevron"></span></li>
+                                    <li data-step="4">Step 4<span class="chevron"></span></li>
+
+		                  </ul>
+			';
+
+			/*
+			print '
 			<h2>New Event : Step 1 of 4</h2>
 			<nav>
 			  <ul class="pagination">
@@ -1073,9 +1112,15 @@ class Tickets {
 			  </ul>
 			</nav>
 			';
+			*/
 
 		} else {
-	                print "<h2>Event Details</h2>";
+                                print '
+                                <div class="page-head">
+                                        <h2 class="page-head-title"><h2>Event Details</h2></h2>
+                                </div>
+                                ';
+
 			print "
 			<nav>
 				<ul class=\"pagination\">
@@ -1107,9 +1152,155 @@ class Tickets {
 			$notifications = "checked";
 		}
 
+		print '
+                <div class="step-content">
+                	<div data-step="1" class="step-pane active">
+		';
+
 		print "
-		<form action=\"index.php\" method=\"post\">
+		<form action=\"index.php\" method=\"post\" class=\"form-horizontal group-border-dashed\">
 		$form
+
+
+                <div class=\"form-group\">
+	                <label class=\"col-sm-3 control-label\">Title</label>
+        	        <div class=\"col-sm-6\">
+				<input type=\"text\" name=\"title\" placeholder=\"Title\" value=\"$post[title]\" size=$size class=\"form-control\"> 
+                	</div>
+                </div>
+
+                <div class=\"form-group\">
+                        <label class=\"col-sm-3 control-label\">Tagline</label>
+                        <div class=\"col-sm-6\">
+				<input type=\"text\" name=\"tagline\" value=\"$post[tagline]\" size=$size class=\"form-control\" placeholder=\"Tagline\">
+                        </div>
+                </div>
+
+
+                <div class=\"form-group\">
+                        <label class=\"col-sm-3 control-label\">Desktop Template</label>
+                        <div class=\"col-sm-6\">
+				<select name=\"templateID\" class=\"form-control\">$options</select>
+                        </div>
+                </div>
+
+
+                <div class=\"form-group\">
+                        <label class=\"col-sm-3 control-label\">Location</label>
+                        <div class=\"col-sm-6\">
+				<select name=\"locationID\" class=\"form-control\">$location</select>
+                        </div>
+                </div>
+
+
+                <div class=\"form-group\">
+                        <label class=\"col-sm-3 control-label\">Event Address</label>
+                        <div class=\"col-sm-6\">
+				<input type=\"text\" name=\"address\" placeholder=\"Example: 67 South St, Raleigh, NC\" size=$size value=\"$post[address]\" class=\"form-control\">
+                        </div>
+                </div>
+
+
+                <div class=\"form-group\">
+                        <label class=\"col-sm-3 control-label\">Category</label>
+                        <div class=\"col-sm-6\">
+				<select name=\"categoryID\" class=\"form-control\">$category</select>
+                        </div>
+                </div>
+
+
+                <div class=\"form-group\">
+                        <label class=\"col-sm-3 control-label\">Start Date</label>
+                        <div class=\"col-sm-6\">
+				<input type=\"text\" name=\"start_date\" value=\"$post[start_date]\" id=\"start_date\" class=\"form-control\">
+                        </div>
+                </div>
+
+
+                <div class=\"form-group\">
+                        <label class=\"col-sm-3 control-label\">End Date</label>
+                        <div class=\"col-sm-6\">
+				<input type=\"text\" name=\"end_date\" value=\"$post[end_date]\" id=\"end_date\" class=\"form-control\">
+                        </div>
+                </div>
+
+
+                <div class=\"form-group\">
+                        <label class=\"col-sm-3 control-label\">Start Time</label>
+                        <div class=\"col-sm-6\">
+				<input type=\"text\" name=\"start_time\" value=\"$post[start_time]\" id=\"start_time\" class=\"form-control\">
+                        </div>
+                </div>
+
+
+                <div class=\"form-group\">
+                        <label class=\"col-sm-3 control-label\">End Time</label>
+                        <div class=\"col-sm-6\">
+				<input type=\"text\" name=\"end_time\" id=\"end_time\" value=\"$post[end_time]\" class=\"form-control\">
+                        </div>
+                </div>
+
+
+                <div class=\"form-group\">
+                        <label class=\"col-sm-3 control-label\">Notifications</label>
+                        <div class=\"col-sm-6\">
+				<input type=\"checkbox\" name=\"notifications\" value=\"Yes\" $notifications>&nbsp;<i>Alerts on payments and registration</i>
+                        </div>
+                </div>
+
+                <div class=\"form-group\">
+                        <label class=\"col-sm-3 control-label\">Registration</label>
+                        <div class=\"col-sm-6\">
+				<input type=\"checkbox\" name=\"registration\" value=\"Yes\" $registration> <input type=\"button\" class=\"btn btn-success\" value=\"Manage Form\" onclick=\"window.open('index.php?section=dashboard&center=registration&id=$post[id]')\">&nbsp;<i>Please enable the Registration Desktop Theme</i>
+                        </div>
+                </div>
+
+		";
+                if ($post['registration'] == "Yes") {
+                print "<div class=\"form-group\">
+		<label class=\"col-sm-3 control-label\">Registration iFrame Code for your website</label>
+		<div class=\"col-sm-6\">
+                <textarea cols=100 rows=5><iframe src=\"http://$settings[8]/registration.php?id=$post[id]\" style=\"border:0px #FFFFFF none;\" name=\"myiFrame\" scrolling=\"yes\" frameborder=\"0\" marginheight=\"0px\" marginwidth=\"0px\" height=\"500px\" width=\"700px\"></iframe>
+
+                </textarea>
+                </div></div>";
+                }
+
+		print "
+                <div class=\"form-group\">
+                        <label class=\"col-sm-3 control-label\">Description</label>
+                        <div class=\"col-sm-6\">
+				<textarea name=\"description\" id=\"tiny\" cols=60 rows=20>$post[description]</textarea>
+                        </div>
+                </div>
+
+
+                <div class=\"form-group\">
+			<label class=\"col-sm-3 control-label\"></label>
+                        <div class=\"col-sm-6\">
+				<input type=\"submit\" value=\"$btn\" class=\"btn btn-primary\">
+                        </div>
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+		</div></div></div></div></div></div></div>
+
+
+		";
+
+		/*
+		print "
 		<table class=\"table\">
 		<tr>
 			<td width=\"200\">Title:</td>
@@ -1188,7 +1379,7 @@ class Tickets {
 		</form>
 
 		";
-
+		*/
 
 
 		?>
@@ -1229,10 +1420,11 @@ class Tickets {
 		      <div class="be-content">
 		        <div class="main-content container-fluid">
 		          <div class="row">
-		            <div class="col-md-12 col-lg-6" id="ajax">
+		            <!--<div class="col-md-12 col-lg-6" id="ajax">-->
+				<div id="ajax">
 		';
 
-                print '<div class="row"><div class="col-md-8"><div class="row"><div class="col-md-8" id="ajax">';
+                //print '<div class="row"><div class="col-md-8"><div class="row"><div class="col-md-8" id="ajax">';
 
 		$sql = "INSERT INTO `events` 
 		(`userID`,`title`,`tagline`,`locationID`,`categoryID`,`start_date`,`end_date`,`start_time`,`end_time`,`description`,`address`,`templateID`,`more_info`,`registration`,`notifications`) VALUES 
@@ -1261,9 +1453,9 @@ class Tickets {
                       <div class="be-content">
                         <div class="main-content container-fluid">
                           <div class="row">
-                            <div class="col-md-12 col-lg-6" id="ajax">
+                            <!--<div class="col-md-12 col-lg-6" id="ajax">-->
+                                <div id="ajax">
                 ';
-                print '<div class="row"><div class="col-md-8"><div class="row"><div class="col-md-8" id="ajax">';
 
 		$sql = "UPDATE `events` SET `title` = '$_POST[title]', `tagline` = '$_POST[tagline]', `locationID` = '$_POST[locationID]', `categoryID` = '$_POST[categoryID]', `start_date` = '$_POST[start_date]',
 		`end_date` = '$_POST[end_date]', `start_time` = '$_POST[start_time]', `end_time` = '$_POST[end_time]', `description` = '$_POST[description]' , `address` = '$_POST[address]', `templateID` = '$_POST[templateID]',
@@ -1426,21 +1618,36 @@ class Tickets {
 		$this->check_section('event_design');
 
 		if ($_GET['step'] == "2") {
+
                         print '
-                        <h2>New Event : Step 2 of 4</h2>
-                        <nav>
-                          <ul class="pagination">
-                            <li class="disabled"><a href="javascript:void(0)">1 <span class="sr-only"></span></a></li>
-                            <li class="active"><a href="javascript:void(0)">2 <span class="sr-only">(current)</span></a></li>
-                            <li class="disabled"><a href="javascript:void(0)">3 <span class="sr-only"></span></a></li>
-                            <li class="disabled"><a href="javascript:void(0)">4 <span class="sr-only"></span></a></li>
-                          </ul>
-                        </nav>
+                                <div class="page-head">
+                                        <h2 class="page-head-title">New Event : Step 2 of 4</h2>
+                                </div>
+                        ';
+
+                        print '
+                        <div class="main-content container-fluid">
+                          <div class="row wizard-row">
+                            <div class="col-md-12 fuelux">
+                              <div class="block-wizard panel panel-default">
+                                <div id="wizard1" class="wizard wizard-ux">
+                                  <ul class="steps">
+                                    <li data-step="1">Step 1<span class="chevron"></span></li>
+                                    <li data-step="2" class="active">Step 2<span class="chevron"></span></li>
+                                    <li data-step="3">Step 3<span class="chevron"></span></li>
+                                    <li data-step="4">Step 4<span class="chevron"></span></li>
+
+                                  </ul>
                         ';
 
 
 		} else {
-			print "<h2>Edit Design</h2>";
+                                print '
+                                <div class="page-head">
+                                        <h2 class="page-head-title"><h2>Edit Design</h2></h2>
+                                </div>
+                                ';
+
                         print "
                         <nav>
                                 <ul class=\"pagination\">
@@ -1482,8 +1689,9 @@ class Tickets {
 			}
 
 			print "
-			<form action=\"index.php\" method=\"post\" enctype=\"multipart/form-data\">
+			<form action=\"index.php\" method=\"post\" enctype=\"multipart/form-data\" class=\"form-horizontal group-border-dashed\">
 			<input type=\"hidden\" name=\"section\" value=\"update_design\">
+			<input type=\"hidden\" name=\"id\" value=\"$_GET[id]\">
 			";
 
 
@@ -1491,35 +1699,27 @@ class Tickets {
 				print "<input type=\"hidden\" name=\"step\" value=\"3\">";
 			}
 
-            if ($device == "0") {
-			     print "
-			     <input type=\"hidden\" name=\"id\" value=\"$_GET[id]\">
-			     <table class=\"table\">
-			     <tr><td colspan=2><h3>Cover Image or Flyer</h3></td></tr>
-			     <tr>
-				    <td>
-				        $cover
-				    </td>
-				    <td><input type=\"file\" name=\"cover_image\"><br>Please size image as <b>$row[cover_photo_dimentions]</b></td>
-			     </tr>
-			     <tr><td colspan=2><h3>Slideshow</h3></td></tr>
-			     ";
-            } else {
-                 print "
-                 <input type=\"hidden\" name=\"id\" value=\"$_GET[id]\">
-                 <table class=\"table\">
-                 <tr><td><h3>Cover Image or Flyer</h3></td></tr>
-                 <tr>
-                    <td>
-                        $cover
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type=\"file\" name=\"cover_image\"><br>Please size image as <b>$row[cover_photo_dimentions]</b></td>
-                 </tr>
-                 <tr><td><h3>Slideshow</h3></td></tr>
-                 ";                
-            }
+
+                print '
+                <div class="step-content">
+                        <div data-step="1" class="step-pane active">
+                ';
+
+		print "
+                <div class=\"form-group\">
+                        <label class=\"col-sm-3 control-label\">Cover Image or Flyer</label>
+                        <div class=\"col-sm-6\">
+			$cover<br>
+			<input type=\"file\" name=\"cover_image\" class=\"form-control\"><br>Please size image as <b>$row[cover_photo_dimentions]</b>
+                        </div>
+                </div>
+
+
+                <div class=\"form-group\">
+                        <label class=\"col-sm-3 control-label\">Slideshow</label>
+		</div>
+
+		";
 			for ($x=1; $x < 6; $x++) {
 				$img = "slide";
 				$img .= $x;
@@ -1535,47 +1735,23 @@ class Tickets {
 					$slide = "Please upload a photo";
 				}
 
-                if ($device == "0") {
-				    print "<tr>
-					    <td>
-					    Image $x $slide
-					    </td>
-					    <td><input type=\"file\" name=\"$img\"></td>
-				    </tr>";
-                } else {
-                    print "<tr>
-                        <td>
-                        Image $x $slide
-                        </td>
-                        </tr>
-                        <tr>
-                        <td><input type=\"file\" name=\"$img\"></td>
-                    </tr>";
-                }
-			}
-            /*
-			print "<tr><td colspan=2><h3>Video</h3></td></tr>
-			<tr><td colspan=2><textarea name=\"video\" cols=80 rows=5 placeholder=\"Insert Youtube or Vimeo embed code\">$row[video]</textarea></td></tr>
-			";
-            */
+				print "<div class=\"form-group\">
+				<label class=\"col-sm-3 control-label\">Image $x $slide</label>
+				<div class=\"col-sm-6\"><input type=\"file\" name=\"$img\" class=\"form-control\"></div>
+				</div>";
+				}
 
-			if ($_GET['step'] == "2") {
-                if ($device == "1") {
-				    print "<tr><td><input type=\"submit\" class=\"btn btn-primary\" value=\"Next Step\"></td></tr>";
-                } else {
-                    print "<tr><td colspan=2><input type=\"submit\" class=\"btn btn-primary\" value=\"Next Step\"></td></tr>";
-                }
-			} else {
-                if ($device == "1") {
-				    print "<tr><td><input type=\"submit\" class=\"btn btn-primary\" value=\"Save\"></td></tr>";
-                } else {
-                    print "<tr><td colspan=2><input type=\"submit\" class=\"btn btn-primary\" value=\"Save\"></td></tr>";
-                }
-			}
+		if ($_GET['step'] == "2") {
+
+			print "<div class=\"form-group\"><input type=\"submit\" class=\"btn btn-primary\" value=\"Next Step\"></div>";
+
+		} else {
+			print "<div class=\"form-group\"><label class=\"col-sm-3 control-label\"></label>
+			<div class=\"col-sm-6\"><input type=\"submit\" class=\"btn btn-primary\" value=\"Save\"></div></div>";
+		}
 			print "
-			</table>
 			</form>";
-
+			print "</div></div></div></div></div></div></div>";
 		}
 	}
 
@@ -1672,15 +1848,14 @@ class Tickets {
 
 	
 
-
                 $this->navigation2();
                 print '
                       <div class="be-content">
                         <div class="main-content container-fluid">
                           <div class="row">
-                            <div class="col-md-12 col-lg-6" id="ajax">
+                            <!--<div class="col-md-12 col-lg-6" id="ajax">-->
+                                <div id="ajax">
                 ';
-                print '<div class="row"><div class="col-md-8"><div class="row"><div class="col-md-8" id="ajax">';
 
 			if ($_POST['step'] == "3") {
 				$_GET['id'] = $_POST['id'];
@@ -1781,20 +1956,36 @@ class Tickets {
                 $srv_settings = $this->get_settings();
 
 		if ($_GET['step'] == "3") {
+
                         print '
-                        <h2>New Event : Step 3 of 4</h2>
-                        <nav>
-                          <ul class="pagination">
-                            <li class="disabled"><a href="javascript:void(0)">1 <span class="sr-only"></span></a></li>
-                            <li class="disabled"><a href="javascript:void(0)">2 <span class="sr-only"></span></a></li>
-                            <li class="active"><a href="javascript:void(0)">3 <span class="sr-only">(current)</span></a></li>
-                            <li class="disabled"><a href="javascript:void(0)">4 <span class="sr-only"></span></a></li>
-                          </ul>
-                        </nav>
+                                <div class="page-head">
+                                        <h2 class="page-head-title">New Event : Step 3 of 4</h2>
+                                </div>
                         ';
 
+                        print '
+                        <div class="main-content container-fluid">
+                          <div class="row wizard-row">
+                            <div class="col-md-12 fuelux">
+                              <div class="block-wizard panel panel-default">
+                                <div id="wizard1" class="wizard wizard-ux">
+                                  <ul class="steps">
+                                    <li data-step="1">Step 1<span class="chevron"></span></li>
+                                    <li data-step="2">Step 2<span class="chevron"></span></li>
+                                    <li data-step="3" class="active">Step 3<span class="chevron"></span></li>
+                                    <li data-step="4">Step 4<span class="chevron"></span></li>
+
+                                  </ul>
+                        ';
+
+
 		} else {
-			print "<h2>Event Settings</h2>";
+                                print '
+                                <div class="page-head">
+                                        <h2 class="page-head-title"><h2>Event Settings</h2></h2>
+                                </div>
+                                ';
+
                         print "
                         <nav>
                                 <ul class=\"pagination\">
@@ -1820,32 +2011,44 @@ class Tickets {
 			if ($row['event_page'] == "private") {
 				$private = "checked";
 			}
-			print " ($row[title])</h2>";
+			//print " ($row[title])</h2>";
+
+
+	                print '
+        	        <div class="step-content">
+	                        <div data-step="1" class="step-pane active">
+        	        ';
+
 			print "
-			<form action=\"index.php\" method=\"post\" name=\"myform\">
+			<form action=\"index.php\" method=\"post\" name=\"myform\" class=\"form-horizontal group-border-dashed\">
 			<input type=\"hidden\" name=\"section\" value=\"update_settings\">
 			<input type=\"hidden\" name=\"id\" value=\"$_GET[id]\">
 			<input type=\"hidden\" name=\"step\" value=\"4\">
-			<table class=\"table\">
-				<tr>
-					<td valign=top>Event Page *</td>
-					<td><input type=\"radio\" name=\"event_page\" value=\"public\" $public> Public<br>
-					<input type=\"radio\" name=\"event_page\" value=\"private\" $private> Private<br>
-					<i>* Private events can not be searched for though Ticket Pointe</i></td>
-				</tr>
-				<tr>
-					<td>Homepage</td><td><input type=\"text\" value=\"$row[homepage]\" name=\"homepage\" id=\"homepage\" onblur=\"check_dns(this.form)\">.$srv_settings[8]</td>
-					<br><div id=\"dns\" style=\"display:inline\"></div>
-				</tr>
-				";
-		                if ($_GET['step'] == "3") {
-					print "<tr><td colspan=2><input type=\"submit\" value=\"Next Step\" class=\"btn btn-primary\"></td></tr>";
-				} else {
-					print "<tr><td colspan=2><input type=\"submit\" value=\"Save\" class=\"btn btn-primary\"></td></tr>";
-				}
-			print "
-	
-			</table>
+
+                <div class=\"form-group\">
+                        <label class=\"col-sm-3 control-label\">Event Page</label>
+                        <div class=\"col-sm-6\">
+				<input type=\"radio\" name=\"event_page\" value=\"public\" $public> Public<br>
+                                <input type=\"radio\" name=\"event_page\" value=\"private\" $private> Private<br>
+                                <i>* Private events can not be searched for though Ticket Pointe</i>
+                        </div>
+                </div>
+
+		<div class=\"form-group\">
+			<label class=\"col-sm-3 control-label\">Homepage</label>
+			<div class=\"col-sm-6\">
+				<input type=\"text\" value=\"$row[homepage]\" name=\"homepage\" id=\"homepage\" 
+				onblur=\"check_dns(this.form)\">.$srv_settings[8]
+				<br><div id=\"dns\" style=\"display:inline\"></div>
+			</div>
+		</div>
+
+		<div class=\"form-group\">
+			<label class=\"col-sm-3 control-label\"></label>
+			<div class=\"col-sm-6\"><input type=\"submit\" value=\"Save\" class=\"btn btn-primary\"></div>
+		</div>
+
+
 			</form>
 			";
 			?>
@@ -1878,9 +2081,9 @@ class Tickets {
                       <div class="be-content">
                         <div class="main-content container-fluid">
                           <div class="row">
-                            <div class="col-md-12 col-lg-6" id="ajax">
+                            <!--<div class="col-md-12 col-lg-6" id="ajax">-->
+                                <div id="ajax">
                 ';
-                print '<div class="row"><div class="col-md-8"><div class="row"><div class="col-md-8" id="ajax">';
 
 		$found_owner = "0";
 		$sql = "SELECT * FROM `parked_domains` WHERE `parked_domain` = '$_POST[homepage]'";
@@ -1971,65 +2174,74 @@ class Tickets {
 
 		if ($_GET['step'] == "4") {
                         print '
-                        <h2>New Event : Step 4 of 4</h2>
-                        <nav>
-                          <ul class="pagination">
-                            <li class="disabled"><a href="javascript:void(0)">1 <span class="sr-only"></span></a></li>
-                            <li class="disabled"><a href="javascript:void(0)">2 <span class="sr-only"></span></a></li>
-                            <li class="disabled"><a href="javascript:void(0)">3 <span class="sr-only"></span></a></li>
-                            <li class="active"><a href="javascript:void(0)">4 <span class="sr-only">(current)</span></a></li>
-                          </ul>
-                        </nav>
+                                <div class="page-head">
+                                        <h2 class="page-head-title">New Event : Step 4 of 4</h2>
+                                </div>
+                        ';
+
+                        print '
+                        <div class="main-content container-fluid">
+                          <div class="row wizard-row">
+                            <div class="col-md-12 fuelux">
+                              <div class="block-wizard panel panel-default">
+                                <div id="wizard1" class="wizard wizard-ux">
+                                  <ul class="steps">
+                                    <li data-step="1">Step 1<span class="chevron"></span></li>
+                                    <li data-step="2">Step 2<span class="chevron"></span></li>
+                                    <li data-step="3">Step 3<span class="chevron"></span></li>
+                                    <li data-step="4" class="active">Step 4<span class="chevron"></span></li>
+
+                                  </ul>
                         ';
 		} else {
-			print "<h2>Edit Tickets<br>$title</h2>";
+                                print '
+                                <div class="page-head">
+                                        <h2 class="page-head-title"><h2>Edit Tickets<br>'.$title.'</h2></h2>
+                                </div>
+                                ';
+
 		}
 
 		$sql = "SELECT * FROM `tickets` WHERE `id` = '$_GET[item]' AND `userID` = '$_SESSION[id]'";
                 $result = $this->new_mysql($sql);
 		$row = $result->fetch_assoc();
 
-        if ($device == "0") {
                 print "
-                <form name=\"myform\" action=\"index.php\" method=\"get\">
+                <form name=\"myform\" action=\"index.php\" method=\"get\" class=\"form-horizontal group-border-dashed\">
                 <input type=\"hidden\" name=\"id\" value=\"$_GET[id]\">
 		<input type=\"hidden\" name=\"item\" value=\"$_GET[item]\">
 		<input type=\"hidden\" name=\"section\" value=\"dashboard\">
 		<input type=\"hidden\" name=\"center\" value=\"manage_tickets\">
 		<input type=\"hidden\" name=\"up\" value=\"y\">
-                <table class=\"table\">
-                <tr><td>Ticket Name:</td><td><input type=\"text\" name=\"name\" id=\"name\" value=\"$row[name]\" size=40></td></tr>
-		<tr><td>More Info:</td><td><input type=\"text\" name=\"more_info\" id=\"more_info\" value=\"$row[more_info]\" size=40></td></tr>
-                <tr><td>Quantity:</td><td><input type=\"text\" name=\"qty\" id=\"qty\" value=\"$row[qty]\" size=40 onkeypress=\"validate(event)\"></td></tr>
-                <tr><td>Price:</td><td>$<input tpye=\"text\" name=\"price\" id=\"price\" value=\"$row[price]\" size=40 onkeypress=\"return isNumberKey(event)\"></td></tr>
-		<tr><td colspan=2><font color=blue>A ticket must have a price or the visitor will not be able to checkout. If you would like to set a ticket as free set the price to 0.</font></td></tr>
-                <tr><td>&nbsp;</td><td><input type=\"submit\" value=\"Update Tickets\" class=\"btn btn-primary\"></td></tr>
-                </table>
+
+
+		<div class=\"form-group\">
+			<label class=\"col-sm-3 control-label\">Ticket Name</label>
+			<div class=\"col-sm-6\"><input type=\"text\" name=\"name\" id=\"name\" value=\"$row[name]\" class=\"form-control\"></div>
+		</div>
+
+		<div class=\"form-group\">
+			<label class=\"col-sm-3 control-label\">More Info</label>
+			<div class=\"col-sm-6\"><input type=\"text\" name=\"more_info\" id=\"more_info\" value=\"$row[more_info]\" class=\"form-control\"></div>
+		</div>
+
+		<div class=\"form-group\">
+			<label class=\"col-sm-3 control-label\">Quantity</label>
+			<div class=\"col-sm-6\"><input type=\"text\" name=\"qty\" id=\"qty\" value=\"$row[qty]\" class=\"form-control\" onkeypress=\"validate(event)\"></div>
+		</div>
+
+		<div class=\"form-group\">
+			<label class=\"col-sm-3 control-label\">Price</label>
+			<div class=\"col-sm-6\"><input tpye=\"text\" name=\"price\" id=\"price\" value=\"$row[price]\" class=\"form-control\" onkeypress=\"return isNumberKey(event)\"></div>
+		</div>
+
+		<div class=\"form-group\">
+			<label class=\"col-sm-3 control-label\"></label>
+			<div class=\"col-sm-6\"><input type=\"submit\" value=\"Update Tickets\" class=\"btn btn-primary\"></div>
+		</div>
+
                 </form>
 		";
-        } else {
-                 print "
-                <form name=\"myform\" action=\"index.php\" method=\"get\">
-                <input type=\"hidden\" name=\"id\" value=\"$_GET[id]\">
-                <input type=\"hidden\" name=\"item\" value=\"$_GET[item]\">
-                <input type=\"hidden\" name=\"section\" value=\"dashboard\">
-                <input type=\"hidden\" name=\"center\" value=\"manage_tickets\">
-                <input type=\"hidden\" name=\"up\" value=\"y\">
-                <table class=\"table\">
-                <tr><td>Ticket Name:</td></tr>
-                <tr><td><input type=\"text\" name=\"name\" id=\"name\" value=\"$row[name]\" size=40></td></tr>
-                <tr><td>More Info:</td></tr>
-                <tr><td><input type=\"text\" name=\"more_info\" id=\"more_info\" value=\"$row[more_info]\" size=40></td></tr>
-                <tr><td>Quantity:</td></tr>
-                <tr><td><input type=\"text\" name=\"qty\" id=\"qty\" value=\"$row[qty]\" size=40 onkeypress=\"validate(event)\"></td></tr>
-                <tr><td>Price:</td></tr>
-                <tr><td>$<input tpye=\"text\" name=\"price\" id=\"price\" value=\"$row[price]\" size=40 onkeypress=\"return isNumberKey(event)\"></td></tr>
-                <tr><td><font color=blue>A ticket must have a price or the visitor will not be able to checkout. If you would like to set a ticket as free set the price to 0.</font></td></tr>
-                <tr><td><input type=\"submit\" value=\"Update Tickets\" class=\"btn btn-primary\"></td></tr>
-                </table>
-                </form>
-        ";           
-        }
 
 	}
 
@@ -2105,19 +2317,34 @@ class Tickets {
 		if ($enable_donation == "No") {
 			if ($_GET['step'] == "4") {
                         print '
-                        <h2>New Event : Step 4 of 4</h2>
-                        <nav>
-                          <ul class="pagination">
-                            <li class="disabled"><a href="javascript:void(0)">1 <span class="sr-only"></span></a></li>
-                            <li class="disabled"><a href="javascript:void(0)">2 <span class="sr-only"></span></a></li>
-                            <li class="disabled"><a href="javascript:void(0)">3 <span class="sr-only"></span></a></li>
-                            <li class="active"><a href="javascript:void(0)">4 <span class="sr-only">(current)</span></a></li>
-                          </ul>
-                        </nav>
+                                <div class="page-head">
+                                        <h2 class="page-head-title">New Event : Step 4 of 4</h2>
+                                </div>
+                        ';
+
+                        print '
+                        <div class="main-content container-fluid">
+                          <div class="row wizard-row">
+                            <div class="col-md-12 fuelux">
+                              <div class="block-wizard panel panel-default">
+                                <div id="wizard1" class="wizard wizard-ux">
+                                  <ul class="steps">
+                                    <li data-step="1">Step 1<span class="chevron"></span></li>
+                                    <li data-step="2">Step 2<span class="chevron"></span></li>
+                                    <li data-step="3">Step 3<span class="chevron"></span></li>
+                                    <li data-step="4" class="active">Step 4<span class="chevron"></span></li>
+
+                                  </ul>
                         ';
 			} else {
-		                print "<h2>Manage Tickets <br>($title)</h2>";
+	                        print '
+                                <div class="page-head">
+                                        <h2 class="page-head-title"><h2>Manage Tickets <br>('.$title.')</h2></h2>
+                                </div>
+        	                ';
+
                         print "
+			<div class=\"form-group\">
                         <nav>
                                 <ul class=\"pagination\">
                                 <li class=\"page-item\"><a href=\"index.php?section=dashboard&center=edit_details&id=$_GET[id]\">Details <span class=\"sr-only\"></span></a></li>
@@ -2130,58 +2357,69 @@ class Tickets {
 
                                 </ul>
                         </nav>
+			</div>
                         ";
 			}
 	
-        if ($device == "0") {
-            $size = "40";
-        } else {
-            $size = "20";
-        }
 
-        if ($device == "0") {
+                print '
+                <div class="step-content">
+                        <div data-step="1" class="step-pane active">
+                ';
+
 		print "
-		<form name=\"myform\">
+		<form name=\"myform\" class=\"form-horizontal group-border-dashed\">
 		<input type=\"hidden\" name=\"id\" value=\"$_GET[id]\">
-		<table class=\"table\">
-		<tr><td>Ticket Name:</td><td><input type=\"text\" name=\"name\" id=\"name\" size=$size></td></tr>
-		<tr><td>More Info:</td><td><input type=\"text\" name=\"more_info\" size=$size></td></tr>
-		<tr><td>Quantity:</td><td><input type=\"text\" name=\"qty\" id=\"qty\" size=$size onkeypress=\"validate(event)\"></td></tr>
-		<tr><td>Price:</td><td>$<input tpye=\"text\" name=\"price\" id=\"price\" size=$size onkeypress=\"return isNumberKey(event)\"></td></tr>
-                <tr><td colspan=2><font color=blue>A ticket must have a price or the visitor will not be able to checkout. If you would like to set a ticket as free set the price to 0.</font></td></tr>
-		<tr><td>&nbsp;</td><td><input type=\"button\" value=\"Add Tickets\" class=\"btn btn-primary\" onclick=\"add_tickets(this.form)\"></td></tr>
-		</table>
+
+
+                <div class=\"form-group\">
+                        <label class=\"col-sm-3 control-label\">Ticket Name</label>
+                        <div class=\"col-sm-6\">
+				<input type=\"text\" name=\"name\" id=\"name\" class=\"form-control\">
+                        </div>
+                </div>
+
+
+		<div class=\"form-group\">
+			<label class=\"col-sm-3 control-label\">More Info</label>
+			<div class=\"col-sm-6\">
+				<input type=\"text\" name=\"more_info\" class=\"form-control\">
+			</div>
+		</div>
+
+		<div class=\"form-group\">
+			<label class=\"col-sm-3 control-label\">Quantity</label>
+			<div class=\"col-sm-6\">
+				<input type=\"text\" name=\"qty\" id=\"qty\" onkeypress=\"validate(event)\" class=\"form-control\">
+			</div>
+		</div>
+
+		<div class=\"form-group\">
+			<label class=\"col-sm-3 control-label\">Price</label>
+			<div class=\"col-sm-6\">
+				<input tpye=\"text\" name=\"price\" id=\"price\" class=\"form-control\" onkeypress=\"return isNumberKey(event)\">
+			</div>
+		</div>
+
+
+		<div class=\"form-group\">
+			<label class=\"col-sm-3 control-label\"></label>
+			<div class=\"col-sm-6\"><input type=\"button\" value=\"Add Tickets\" class=\"btn btn-primary\" onclick=\"add_tickets(this.form)\"></div>
+		</div>
+
 		</form>
-		<hr>
+
+
 
 		<div id=\"ticket_list\">
-		<table class=\"table\">
-		<tr><td><b>Name</b></td><td><b>Quantity</b></td><td><b>Price</b></td><td>&nbsp;</td></tr>
-		";
-        } else {
-            print "
-            <form name=\"myform\">
-            <input type=\"hidden\" name=\"id\" value=\"$_GET[id]\">
-            <table class=\"table\">
-            <tr><td>Ticket Name:</td></tr>
-            <tr><td><input type=\"text\" name=\"name\" id=\"name\" size=$size></td></tr>
-            <tr><td>More Info:</td></tr>
-            <tr><td><input type=\"text\" name=\"more_info\" size=$size></td></tr>
-            <tr><td>Quantity:</td></tr>
-            <tr><td><input type=\"text\" name=\"qty\" id=\"qty\" size=$size onkeypress=\"validate(event)\"></td></tr>
-            <tr><td>Price:</td></tr>
-            <tr><td>$<input tpye=\"text\" name=\"price\" id=\"price\" size=$size onkeypress=\"return isNumberKey(event)\"></td></tr>
-            <tr><td><font color=blue>A ticket must have a price or the visitor will not be able to checkout. If you would like to set a ticket as free set the price to 0.</font></td></tr>
-            <tr><td><input type=\"button\" value=\"Add Tickets\" class=\"btn btn-primary\" onclick=\"add_tickets(this.form)\"></td></tr>
-            </table>
-            </form>
-            <hr>
+		<div class=\"form-group\">
+			<label class=\"col-sm-2 control-label\">Name</label>
+			<label class=\"col-sm-2 control-label\">Quantity</label>
+			<label class=\"col-sm-2 control-label\">Price</label>
+			<label class=\"col-sm-2 control-label\"></label>
+		</div>
 
-            <div id=\"ticket_list\">
-            <table class=\"table\">
-            <tr><td><b>Name</b></td><td><b>Quantity</b></td><td><b>Price</b></td></tr>
-            ";
-        }
+		";
 
 		if ($_GET['up'] == "y") {
 			$sql = "UPDATE `tickets` SET `name` = '$_GET[name]', `qty` = '$_GET[qty]', `price` = '$_GET[price]', `more_info` = '$_GET[more_info]' WHERE `id` = '$_GET[item]' AND `userID` = '$_SESSION[id]'";
@@ -2200,43 +2438,51 @@ class Tickets {
                     $row['name'] = substr($row['name'], 0,20);
                     $row['name'] .= " ...";
                 }
-		        print "<tr><td>$row[name]</td><td>$row[qty]</td><td>$row[price]</td>";
-                if ($device == "0") {
-                    print "<td>
-                    <input type=\"button\" class=\"btn btn-primary\" value=\"Edit\" onclick=\"document.location.href='index.php?section=dashboard&center=edit_tickets&id=$_GET[id]&item=$row[id]'\">
-                    <input type=\"button\" class=\"btn btn-danger\" value=\"Delete\" onclick=\"if(confirm('WARNING: You are about to delete $row[name]')){document.location.href='index.php?section=dashboard&center=manage_tickets&id=$_GET[id]&delete=y&item=$row[id]'};\">
-				</td></tr>";
-                } else {
-                    print "</tr>
-                    <tr><td colspan=3>
-                    <input type=\"button\" class=\"btn btn-primary\" value=\"Edit\" onclick=\"document.location.href='index.php?section=dashboard&center=edit_tickets&id=$_GET[id]&item=$row[id]'\">
-                    <input type=\"button\" class=\"btn btn-danger\" value=\"Delete\" onclick=\"if(confirm('WARNING: You are about to delete $row[name]')){document.location.href='index.php?section=dashboard&center=manage_tickets&id=$_GET[id]&delete=y&item=$row[id]'};\">
-                    </td></tr>
-                    ";
-                } 
-		        $found = "1";
+
+		print "
+		<br><br>
+                <div class=\"form-group\">
+                        <div class=\"col-sm-2\">$row[name]</div>
+			<div class=\"col-sm-2\">$row[qty]</div>
+			<div class=\"col-sm-2\">$row[price]</div>
+			<div class=\"col-sm-2\">
+				<input type=\"button\" class=\"btn btn-primary\" value=\"Edit\" 
+				onclick=\"document.location.href='index.php?section=dashboard&center=edit_tickets&id=$_GET[id]&item=$row[id]'\">
+                    		<input type=\"button\" class=\"btn btn-danger\" value=\"Delete\" 
+				onclick=\"if(confirm('WARNING: You are about to delete $row[name]')){
+				document.location.href='index.php?section=dashboard&center=manage_tickets&id=$_GET[id]&delete=y&item=$row[id]'};\">
+			</div>
+		</div>";
+
+		$found = "1";
 		}
 		if ($found != "1") {
-		        print "<tr><td colspan=4>No results</td></tr>";
+			print "
+			<div class=\"form-group\">
+				<div col-sm-8>No results</div>
+			</div>";
 		}
 
-        print "</table>";
 
-        if ($device == "0") {
-		      print "
-		      <h2>Embed Payment for your web site</h2>
-		      Copy and paste the code below into your website.<br>
-		      <textarea cols=120 rows=5>
-                <iframe src=\"https://www.$settings[8]/tickets_iframe.php?id=$_GET[id]\" style=\"border:0px #FFFFFF none;\" name=\"myiFrame\" scrolling=\"yes\" frameborder=\"0\" marginheight=\"0px\" marginwidth=\"0px\" height=\"700px\" width=\"900px\"></iframe>
+	      print "
+		<br><br>
+		<div class=\"form-group\">
+		<label class=\"col-sm-3 control-label\"><b>Embed Payment for your web site</b></label>
+		<div class=\"col-sm-6\">
+	      Copy and paste the code below into your website.<br>
+	      <textarea cols=60 rows=5><iframe src=\"https://www.$settings[8]/tickets_iframe.php?id=$_GET[id]\" style=\"border:0px #FFFFFF none;\" name=\"myiFrame\" scrolling=\"yes\" frameborder=\"0\" marginheight=\"0px\" marginwidth=\"0px\" height=\"700px\" width=\"900px\"></iframe>
                 </textarea><br><br>
+		</div>
+		</div>
                 ";
-        }
 
-		print "</div>";
 
 		} 
 
-		print "<h2>Enable Donation</h2>";
+/*
+		print "<div class=\"form-group\">
+		<label class=\"col-sm-3 control-label\"><b>Enable Donation</b></label>
+		</div>";
 
 		if ($enable_donation == "Yes") {
 			$c1 = "checked";
@@ -2256,7 +2502,7 @@ class Tickets {
 			</form>
 			";
 		}
-
+*/
 
 		print "<br><br><br>";
 
@@ -2368,7 +2614,13 @@ class Tickets {
 	}
 
 	public function discounts() {
-		print "<h2>Discounts</h2>";
+
+                        print '
+                                <div class="page-head">
+                                        <h2 class="page-head-title">Discounts</h2>
+                                </div>
+                        ';
+
 
                         print "
                         <nav>
@@ -2400,50 +2652,99 @@ class Tickets {
                 while ($row = $result->fetch_assoc()) {
 			$title = $row['title'];
 		}
-		print "<br><b>Event: $title</b><br>";
 
-		print "<form name=\"myform2\" action=\"index.php\" method=\"get\">
+		print "
+                <div class=\"form-group\">
+			<label class=\"col-sm-3 control-label\">Event</label>
+			<div class=\"col-sm-6\">$title</div>
+		</div>
+		";
+
+
+		print "<form name=\"myform2\" action=\"index.php\" method=\"get\" class=\"form-horizontal group-border-dashed\">
 		<input type=\"hidden\" name=\"section\" value=\"dashboard\">
 		<input type=\"hidden\" name=\"center\" value=\"discounts\">
 		<input type=\"hidden\" name=\"id\" value=\"$_GET[id]\">
 		<input type=\"hidden\" name=\"act\" value=\"new\">
-		<table class=\"table\">
-		<tr><td><input type=\"text\" name=\"discount\" placeholder=\"Please type in your discount code\" size=40></td></tr>
-		<tr><td>Expiration Date:<br><input type=\"text\" name=\"expire\" id=\"start_date\"></td></tr>
-		<tr><td><select name=\"amount_how\"><option value=\"percent\">Percent Off</option><option value=\"dollar\">Dollar Amount</option></select></td></tr>
-		<tr><td>Amount Off (number only)<br><input type=\"text\" name=\"amount_off\"></td></tr>
-		<tr><td><input type=\"submit\" class=\"btn btn-primary\" value=\"Add Discount Code\"></td></tr>
-		</table>
+
+
+                <div class=\"form-group\">
+                        <label class=\"col-sm-3 control-label\">Discount Code</label>
+                        <div class=\"col-sm-6\"><input type=\"text\" name=\"discount\" placeholder=\"Please type in your discount code\" class=\"form-control\"></div>
+                </div>
+
+		<div class=\"form-group\">
+			<label class=\"col-sm-3 control-label\">Expiration Date</label>
+			<div class=\"col-sm-6\"><input type=\"text\" name=\"expire\" id=\"start_date\" class=\"form-control\"></div>
+		</div>
+
+
+                <div class=\"form-group\">
+			<label class=\"col-sm-3 control-label\">Discount</label>
+			<div class=\"col-sm-6\">
+			<select name=\"amount_how\"><option value=\"percent\">Percent Off</option><option value=\"dollar\">Dollar Amount</option></select>
+			</div>
+		</div>
+
+		<div class=\"form-group\">
+			<label class=\"col-sm-3 control-label\">Amount Off</label>
+			<div class=\"col-sm-6\"><input type=\"text\" name=\"amount_off\"></div>
+		</div>
+
+
+		<div class=\"form-group\">
+			<label class=\"col-sm-3 control-label\"></label>
+			<div class=\"col-sm-6\"><input type=\"submit\" class=\"btn btn-primary\" value=\"Add Discount Code\"></div>
+		</div>
+
+
 		</form>
 		";
 
-		print "<br><br><b><u>Existing Discounts:</b></u><br>";
 
-		print "<table class=\"table\">
-		<tr>
-			<td><b>Discount Code</b></td>
-			<td><b>Expiration Date</b></td>
-			<td><b>Type</b></td>
-			<td><b>Amount</b></td>
-			<td>&nbsp;</td>
-		</tr>";
+                        print '
+                                <div class="page-head">
+                                        <h2 class="page-head-title">Existing Discounts</h2>
+                                </div>
+                        ';
+
+
+
+
+		print "<div class=\"form-group\">
+		<div class=\"col-sm-2\">Discount Code</div>
+		<div class=\"col-sm-2\">Expiration Date</div>
+		<div class=\"col-sm-2\">Type</div>
+		<div class=\"col-sm-2\">Amount</div>
+		<div class=\"col-sm-2\">&nbsp;</div>
+		</div>
+		";
+
+
 
 		$sql = "SELECT * FROM `discounts` WHERE `eventID` = '$_GET[id]' AND `userID` = '$_SESSION[id]'";
                 $result = $this->new_mysql($sql);
 		while ($row = $result->fetch_assoc()) {
-			print "<tr>
-			<td>$row[code]</td>
-			<td>$row[expire]</td>
-			<td>$row[amount_how]</td>
-			<td>$row[amount_off]</td>
-			<td><input type=\"button\" class=\"btn btn-warning\" value=\"Delete\" onclick=\"document.location.href='index.php?section=dashboard&center=discounts&id=$_GET[id]&id2=$row[id]&act=del'\"></td>
-			</tr>";
+
+			print "<br><br>
+			<div class=\"form-group\">
+			<div class=\"col-sm-2\">$row[code]</div>
+			<div class=\"col-sm-2\">$row[expire]</div>
+			<div class=\"col-sm-2\">$row[amount_how]</div>
+			<div class=\"col-sm-2\">$row[amount_off]</div>
+			<div class=\"col-sm-2\">
+			<input type=\"button\" class=\"btn btn-warning\" value=\"Delete\" 
+			onclick=\"document.location.href='index.php?section=dashboard&center=discounts&id=$_GET[id]&id2=$row[id]&act=del'\">
+			</div>
+			";
 			$found = "1";
 		}
 		if ($found != "1") {
-			print "<tr><td colspan=5><font color=blue>Sorry, there are no discounts.</font></td></tr>";
+			print "<br><br>
+			<div class=\"form-group\">
+			<div class=\"col-sm-10\"><font color=blue>Sorry, there are no discounts.</font></div>
+			</div>";
 		}
-		print "</table>";
 
 	}
 
@@ -2528,7 +2829,12 @@ class Tickets {
 		<div id=\"social_div\">
 		";
 
-                print "<h2>Social</h2>";
+                        print '
+                                <div class="page-head">
+                                        <h2 class="page-head-title">Social</h2>
+                                </div>
+                        ';
+
 
                         print "
                         <nav>
@@ -2545,18 +2851,49 @@ class Tickets {
                         </nav>
                         ";
 
-		print "<table class=\"table\">
-		<tr>
-			<td colspan=2>Please select the social platform(s) that you would like visitors to have the ability to share:</td>
-		</tr>
-		<tr><td width=120><img src=\"img/facebook.png\" alt=\"Facebook\" title=\"Facebook\"></td><td><select name=\"facebook\">$facebook<option>Yes</option><option>No</option></select></td></tr>
-		<tr><td><img src=\"img/google.png\" alt=\"Google\" title=\"Google\"></td><td><select name=\"google\">$google<option>Yes</option><option>No</option></select></td></tr>
-		<tr><td><img src=\"img/linkedin.png\" alt=\"Linked In\" title=\"Linked In\"></td><td><select name=\"linkedin\">$linkedin<option>Yes</option><option>No</option></select></td></tr>
-		<tr><td><img src=\"img/tumblr.png\" alt=\"Tumbler\" title=\"Tumbler\"></td><td><select name=\"tumbler\">$tumbler<option>Yes</option><option>No</option></select></td></tr>
-		<tr><td><img src=\"img/twitter.png\" alt=\"Twitter\" title=\"Twitter\"></td><td><select name=\"twitter\">$twitter<option>Yes</option><option>No</option></select></td></tr>
-		<tr><td></td><td><input type=\"button\" value=\"Save\" onclick=\"update_social(this.form)\" class=\"btn btn-primary\"></td></tr>";
-		print "</table>";
-		print "</div></form>";
+		print "
+		<div class=\"form-group\">
+		<label class=\"col-sm-6 control-label\">Please select the social platform(s) that you would like visitors <br>to have the ability to share:</label>
+		</div>
+
+		<br><br><br>
+                <div class=\"form-group\">
+                        <label class=\"col-sm-3 control-label\"><img src=\"img/facebook.png\" alt=\"Facebook\" title=\"Facebook\"></label>
+			<div class=\"col-sm-6\"><select name=\"facebook\">$facebook<option>Yes</option><option>No</option></select></div>
+		</div>
+
+		<br><br><br>
+                <div class=\"form-group\">
+                        <label class=\"col-sm-3 control-label\"><img src=\"img/google.png\" alt=\"Google\" title=\"Google\"></label>
+                        <div class=\"col-sm-6\"><select name=\"google\">$google<option>Yes</option><option>No</option></select></div>
+                </div>
+
+		<br><br><br>
+                <div class=\"form-group\">
+                        <label class=\"col-sm-3 control-label\"><img src=\"img/linkedin.png\" alt=\"Linked In\" title=\"Linked In\"></label>
+                        <div class=\"col-sm-6\"><select name=\"linkedin\">$linkedin<option>Yes</option><option>No</option></select></div>
+                </div>
+
+		<br><br><br>
+                <div class=\"form-group\">
+                        <label class=\"col-sm-3 control-label\"><img src=\"img/tumblr.png\" alt=\"Tumbler\" title=\"Tumbler\"></label>
+                        <div class=\"col-sm-6\"><select name=\"tumbler\">$tumbler<option>Yes</option><option>No</option></select></div>
+                </div>
+
+		<br><br><br>
+                <div class=\"form-group\">
+                        <label class=\"col-sm-3 control-label\"><img src=\"img/twitter.png\" alt=\"Twitter\" title=\"Twitter\"></label>
+                        <div class=\"col-sm-6\"><select name=\"twitter\">$twitter<option>Yes</option><option>No</option></select></div>
+                </div>
+
+		<br><br><br>
+		<div class=\"form-group\">
+			<label class=\"col-sm-3 control-label\"></label>
+			<div class=\"col-sm-6\"><input type=\"button\" value=\"Save\" onclick=\"update_social(this.form)\" class=\"btn btn-primary\"></div>
+		</div>
+
+
+		</div></form>";
 
 		?>
 		<script>
@@ -4925,7 +5262,11 @@ $template = '
 			die;
 		}
 
-		print "<h2>Users</h2>";
+                                print "
+                                <div class=\"page-head\">
+                                        <h2 class=\"page-head-title\"><h2>Users <input type=\"button\" class=\"btn btn-success\" value=\"Add New User\" onclick=\"document.location.href='index.php?section=dashboard&center=new_user'\"></h2>
+                                </div>
+                                ";
 
 		print "$msg";
 
@@ -4935,19 +5276,33 @@ $template = '
 			print "<br><font color=green>The user was deleted.<br><br></font><br>";
 		}
 
-		print "<input type=\"button\" class=\"btn btn-success\" value=\"Add New User\" onclick=\"document.location.href='index.php?section=dashboard&center=new_user'\"><br><hr>";
 
-		print "<table class=\"table\">
+
+		print '
+        <div class="main-content container-fluid">
+          <div class="row">
+              <div class="col-sm-6">
+              <div class="panel panel-default panel-table">
+                <div class="panel-heading">Current Users
+                </div>
+                <div class="panel-body">
+                  <table class="table table-striped table-borderless">
+                    <thead>
+
+
 		<tr>
-			<td><b>Name</b></td>
-			<td><b>Username</b></td>
-			<td><b>Details</b></td>
-			<td><b>Design</b></td>
-			<td><b>Social</b></td>
-			<td><b>Settings</b></td>
-			<td><b>Tickets</b></td>
-			<td>&nbsp;</td>
-		</tr>";
+			<th><b>Name</b></th>
+			<th><b>Username</b></th>
+			<th><b>Details</b></th>
+			<th><b>Design</b></th>
+			<th><b>Social</b></th>
+			<th><b>Settings</b></th>
+			<th><b>Tickets</b></th>
+			<th>&nbsp;</th>
+		</tr>
+		</thead>
+		<tbody class="no-border-x">
+		';
 		$sql = "SELECT * FROM `users` WHERE `resellerID` = '$_SESSION[id]' ORDER BY `lname` ASC, `fname` ASC";
 		$result = $this->new_mysql($sql);
 		while ($row = $result->fetch_assoc()) {
@@ -4965,14 +5320,17 @@ $template = '
 				<input type=\"button\" class=\"btn btn-primary\" value=\"Edit\"
 				onclick=\"document.location.href='index.php?section=dashboard&center=edit_user&id=$row[id]'\">
 			</td>
-			</tr>";
+			</tr>
+			";
 			$found = "1";
 		}
 
 		if ($found != "1") {
 			print "<tr><td colspan=8><center><font color=blue>You do not have any users.</font></center></td></tr>";
 		}
-		print "</table>";
+		print "</tbody></table>";
+                print "</div></div></div></div></div>";
+
 
 	}
 
@@ -5117,55 +5475,87 @@ $template = '
 		}
 
 
-		print "<h2>Check-In Users</h2>";
-		print "This section is used to create users for the Ticket Point Check-In app to be used at the event. You can add a user or delete a user. If you need to edit a user you would simple delete then re-add the user.<br>";
+                                print '
+                                <div class="page-head">
+                                        <h2 class="page-head-title"><h2>Check-In Users</h2>
+					This section is used to create users for the Ticket Point Check-In app to be used at the event. You can add a user or delete a user. If you need to edit a user you would simple delete then re-add the user.<br>
+                                </div>
+                                ';
 
-        if ($device == "0") {
-    		print "<form action=\"index.php\" method=\"post\">
-	   	    <input type=\"hidden\" name=\"section\" value=\"create_checkin_user\">
-		    <table class=\"table\">
-		    <tr><td>First Name</td><td><input type=\"text\" name=\"firstname\" size=40 required></td></tr>
-		    <tr><td>Last Name:</td><td><input type=\"text\" name=\"lastname\" size=40 required></td></tr>
-		    <tr><td>Phone Number:</td><td><input type=\"text\" name=\"phonenumber\" size=40></td></tr>
-		    <tr><td>Email:</td><td><input type=\"text\" name=\"email\" size=40 required></td></tr>
-		    <tr><td>Password:</td><td><input type=\"text\" name=\"password\" size=40 required></td></tr>
-		    <tr><td colspan=2><input type=\"submit\" value=\"Create User\" class=\"btn btn-success\"></td></tr>
-		    </table>
-		    </form>
-		    ";
-        } else {
+
             print "<form action=\"index.php\" method=\"post\">
             <input type=\"hidden\" name=\"section\" value=\"create_checkin_user\">
-            <table class=\"table\">
-            <tr><td>First Name</td></tr>
-            <tr><td><input type=\"text\" name=\"firstname\" size=40 required></td></tr>
-            <tr><td>Last Name:</td></tr>
-            <tr><td><input type=\"text\" name=\"lastname\" size=40 required></td></tr>
-            <tr><td>Phone Number:</td></tr>
-            <tr><td><input type=\"text\" name=\"phonenumber\" size=40></td></tr>
-            <tr><td>Email:</td></tr>
-            <tr><td><input type=\"text\" name=\"email\" size=40 required></td></tr>
-            <tr><td>Password:</td></tr>
-            <tr><td><input type=\"text\" name=\"password\" size=40 required></td></tr>
-            <tr><td><input type=\"submit\" value=\"Create User\" class=\"btn btn-success\"></td></tr>
-            </table>
-            </form>
-            ";            
-        }
 
+		<div class=\"form-group\">
+		<label class=\"col-sm-3 control-label\">First Name</label>
+		<div class=\"col-sm-6\"><input type=\"text\" name=\"firstname\" style=\"width:200px\" required class=\"form-control\"></div>
+		</div>
+		<br><br>
+
+		<div class=\"form-group\">
+		<label class=\"col-sm-3 control-label\">Last Name</label>
+		<div class=\"col-sm-6\"><input type=\"text\" name=\"lastname\" style=\"width:200px\" required class=\"form-control\"></div>
+		</div>
+		<br><br>
+		<div class=\"form-group\">
+		<label class=\"col-sm-3 control-label\">Phone Number</label>
+		<div class=\"col-sm-6\"><input type=\"text\" name=\"phonenumber\" class=\"form-control\" style=\"width:200px\"></div>
+		</div>
+		<br><br>
+
+                <div class=\"form-group\">
+                <label class=\"col-sm-3 control-label\">Email</label>
+                <div class=\"col-sm-6\"><input type=\"text\" name=\"email\" class=\"form-control\" style=\"width:200px\"></div>
+                </div>
+		<br><br>
+
+                <div class=\"form-group\">
+                <label class=\"col-sm-3 control-label\">Password</label>
+                <div class=\"col-sm-6\"><input type=\"text\" name=\"password\" class=\"form-control\" style=\"width:200px\"></div>
+                </div>
+		<br><br>
+
+		<div class=\"form-group\">
+		<label class=\"col-sm-3 control-label\"></label>
+		<div class=\"col-sm-6\"><input type=\"submit\" value=\"Create User\" class=\"btn btn-success\" style=\"width:200px\"></div>
+		</div>
+		<br><br>
+            </form>
+            ";     
+       
 		$sql = "SELECT * FROM `checkin_users` WHERE `resellerID` = '$_SESSION[id]'";
 		$result = $this->new_mysql($sql);
-		print "<hr><b>Current Users:</b><br>
-		<table class=\"table\">";
+
+		print '
+        <div class="main-content container-fluid">
+          <div class="row">
+	      <div class="col-sm-6">
+              <div class="panel panel-default panel-table">
+                <div class="panel-heading">Current Users
+                </div>
+                <div class="panel-body">
+                  <table class="table table-striped table-borderless">
+                    <thead>
+			<tr>
+                        <th style="width:50%;">Name</th>
+                        <th style="width:25%;">Email</th>
+                        <th class="actions"></th>
+			</tr>
+                    </thead>
+                    <tbody class="no-border-x">
+		';
+
 		while ($row = $result->fetch_assoc()) {
-			print "<tr><td>$row[firstname] $row[lastname]</td><td>$row[email]</td><td><input type=\"button\" class=\"btn btn-danger\" value=\"Delete\" onclick=\"document.location.href=('index.php?section=dashboard&center=delete_cu&id=$row[id]')\"></td></tr>";
+			print "<tr><td>$row[firstname] $row[lastname]</td><td>$row[email]</td><td class=\"actions\">
+			<a href=\"index.php?section=dashboard&center=delete_cu&id=$row[id]\" class=\"icon\"><i class=\"mdi mdi-delete\"></i></a>
+			</td></tr>";
 			$f = "1";
 		}
 		if ($f != "1") {
 			print "<tr><td colspan=3><font color=blue>You do not have any Check-In users. Please add at least one.</font></td></tr>";
 		}
-		print "</table>";
-
+		print "</tbody></table>";
+		print "</div></div></div></div></div>";
 
 	}
 
@@ -5203,9 +5593,11 @@ $template = '
                       <div class="be-content">
                         <div class="main-content container-fluid">
                           <div class="row">
-                            <div class="col-md-12 col-lg-6" id="ajax">
+                            <!--<div class="col-md-12 col-lg-6" id="ajax">-->
+                                <div id="ajax">
                 ';
-                print '<div class="row"><div class="col-md-8"><div class="row"><div class="col-md-8" id="ajax">';
+
+                //print '<div class="row"><div class="col-md-8"><div class="row"><div class="col-md-8" id="ajax">';
 
 		$sql = "SELECT * FROM `checkin_users` WHERE `email` = '$_POST[email]'";
 		$result = $this->new_mysql($sql);
