@@ -664,6 +664,7 @@ class Tickets {
 
                 ?>
 
+                <div class="col-md-12 col-lg-6">
 
                 <table width=100%>
                 <tr><td>
@@ -743,7 +744,7 @@ class Tickets {
 			$found = "1";
 			$counter2++;
 		}
-		print "</table>";
+		print "</table></div>";
 
 	}
 
