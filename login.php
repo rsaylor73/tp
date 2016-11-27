@@ -30,8 +30,8 @@ if ($type) {
 //$device = $tickets->device_type();
 
 
-if ($_POST['lg'] != "login") {
-print '
+//if ($_POST['lg'] != "login") {
+$head = '
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -50,7 +50,7 @@ print '
     <link rel="stylesheet" href="assets/css/style.css" type="text/css"/>
   </head>
 ';
-}
+//}
 
 if ($_POST['lg'] == "login") {
 	$sql = "SELECT * FROM `users` WHERE `uuname` = '$_POST[uuname]' AND BINARY `uupass` = '$_POST[uupass]'";
@@ -87,7 +87,7 @@ if ($_POST['lg'] == "login") {
 	}
 }
 
-
+print "$head";
 ?>
  <body class="be-splash-screen">
 

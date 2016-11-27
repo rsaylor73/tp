@@ -886,6 +886,61 @@ class Tickets {
                         }
 
 
+
+			// event tickets
+			$sql = "
+			SELECT
+			        `e`.`title`,
+			        `c`.`description`,
+				`c`.`name`,
+			        `c`.`price`,
+			        `c`.`status`,
+			        DATE_FORMAT(`c`.`date`, '%m/%d/%Y') AS 'date'
+			FROM
+			        `cart` c,
+			        `events` e
+
+			WHERE
+			        `c`.`eventID` = `e`.`id`
+				AND `c`.`eventID` = '$_GET[id]'
+			        AND `e`.`userID` = '$_SESSION[id]'
+			        AND `c`.`status` = 'Paid'
+
+			ORDER BY `e`.`title` ASC
+			";
+			$result = $this->new_mysql($sql);
+			while ($row = $result->fetch_assoc()) {
+			        if ($this_title != $title) {
+			                //$html2 .= "<tr><td colspan=4><b><h2>$row[title]</h2></b></td></tr>";
+			                $title = $row['title'];
+			        }
+			        switch ($row['status']) {
+			        case "Pending":
+			                $status = '<td class="text-warning">Pending</td>';
+			        break;
+			        case "Paid":
+			                $status = '<td class="text-success">Completed</td>';
+			        break;
+			        }
+			        $html2 .= '
+			                      <tr>
+						<td>'.$row['name'].'</td>
+			                        <td>'.$row['description'].'</td>
+			                        <td>$'.$row['price'].'</td>
+			                        <td>'.$row['date'].'</td>
+			                        '.$status.'
+			                      </tr>
+			        ';
+			}
+
+
+
+
+
+
+
+
+
 			// get percentage
 			$per_sold = ($total_tickets_sold / $total_tickets_avail) * 100;
 
@@ -1001,6 +1056,38 @@ class Tickets {
 
 			$img = $this->bar_graph($data,'Sales Summary','Dollars');
 			print "$img";
+
+			?>
+
+			  <style>
+			  .achievements-wrapper { height: 300px; overflow: auto; }
+			  </style>
+
+	                <div class="panel panel-default panel-table">
+                        <div class="panel-heading">
+                                <div class="title">Tickets Sales</div>
+                        </div>
+                        <div class="panel-body table-responsive">
+                                <div class="span3 achievements-wrapper">
+                                  <table class="table table-striped table-borderless">
+                                    <thead>
+                                      <tr>
+					<th style="width:20%;">Name</th>
+                                        <th style="width:20%;">Ticket</th>
+                                        <th class="number">Price</th>
+                                        <th style="width:20%;">Date</th>
+                                        <th style="width:20%;">Status</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody class="no-border-x">
+                                        <?=$html2;?>
+                                    </tbody>
+                                  </table>
+                                </div>
+                        </div>
+        	        </div>
+			<?php
+
 		}
 
 	}
