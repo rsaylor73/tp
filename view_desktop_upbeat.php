@@ -112,11 +112,16 @@ $cover = "uploads/$row[userID]/cover/$row[id]/$row[cover_image]";
 	<div class="col-md-12  col-sm-12 col-xs-12 center">
             <center><div class="navbar-brand" id="timeleft"></div></center><br>
               <script type="text/javascript">
+
+/*
+Code disabled per David
+
               function refreshDiv() {
-                 $('#timeleft').load('check_time.php?id=<?=$_GET['id']?>', function(){ /* callback code here */ });
+                 $('#timeleft').load('check_time.php?id=<?=$_GET['id']?>', function(){  });
 
               }
               setInterval(refreshDiv, 4000);
+*/	
               </script>
 	</div>
 
