@@ -5660,12 +5660,12 @@ $template = '
 			$sql2 = "DELETE FROM `checkin_users` WHERE `id` = '$_GET[id]' AND `resellerID` = '$_SESSION[id]'";
 			$result2 = $this->new_mysql($sql2);
 
-                        $DB2_NAME = 'siberian_appwizard2';
+                        $DB2_NAME = 'wwsib2_siberian';
                         $DB2_HOST = '98.142.210.130';
-                        $DB2_USER = "siberian_tp";
+                        $DB2_USER = "wwsib2_tp";
                         $DB2_PASS = '2q,wJ[IIgIL)';
                         $linkID2 = new mysqli($DB2_HOST, $DB2_USER, $DB2_PASS, $DB2_NAME);
-                        $sql_siberian = "DELETE FROM `customer` WHERE `email` = '$row[email]' AND `app_id` = '149'";
+                        $sql_siberian = "DELETE FROM `customer` WHERE `email` = '$row[email]' AND `app_id` = '25'";
 
                         //print "Test: $sql_siberian<br>";
 
@@ -5703,13 +5703,13 @@ $template = '
 		if ($result == "TRUE") {
 			// inject into Siberian CMS
 
-			$DB2_NAME = 'siberian_appwizard2';
-			$DB2_HOST = '98.142.210.130';
-			$DB2_USER = "siberian_tp";
-			$DB2_PASS = '2q,wJ[IIgIL)';
+                        $DB2_NAME = 'wwsib2_siberian';
+                        $DB2_HOST = '98.142.210.130';
+                        $DB2_USER = "wwsib2_tp";
+                        $DB2_PASS = '2q,wJ[IIgIL)';
 			$linkID2 = new mysqli($DB2_HOST, $DB2_USER, $DB2_PASS, $DB2_NAME);
 			$sql_siberian = "INSERT INTO `customer` (`app_id`,`firstname`,`lastname`,`phonenumber`,`email`,`password`,`can_access_locked_features`,`is_active`,`created_at`,`updated_at`) VALUES
-			('149','$_POST[firstname]','$_POST[lastname]','$_POST[phonenumber]','$_POST[email]','$new_pw','1','1',NOW(),NOW())";
+			('25','$_POST[firstname]','$_POST[lastname]','$_POST[phonenumber]','$_POST[email]','$new_pw','1','1',NOW(),NOW())";
 
 			//print "Test: $sql_siberian<br>";
 
