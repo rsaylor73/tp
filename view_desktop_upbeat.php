@@ -17,10 +17,15 @@ http://www.templatemo.com/free-website-templates/
 <link rel="stylesheet" href="css/font-awesome.min.css">
 <link rel="stylesheet" href="css/templatemo-style.css">
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.35.3/css/bootstrap-dialog.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
 
 <style>
 /* home section */
 #home {
+
 
 <?php 
 $cover = "uploads/$row[userID]/cover/$row[id]/$row[cover_image]";
@@ -101,6 +106,154 @@ $cover = "uploads/$row[userID]/cover/$row[id]/$row[cover_image]";
     </div>
   </div>
 </div>
+
+
+
+<style>
+.top-buffer { margin-top:10px; margin-left:10px; margin-right:10px; }
+</style>
+
+
+<?php
+   print '
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"></h4>
+      </div>
+      <div class="modal-body">
+	';
+
+
+                                                        $sql2 = "SELECT * FROM `tickets` WHERE `eventID` = '$row[id]'";
+                                                        $result2 = $this->new_mysql($sql2);
+                                                        for ($y=0; $y < 51; $y++) {
+                                                                $qty .= "<option value=\"$y\">$y</option>";
+                                                        }
+                                                        $viewID = rand(50,500);
+
+                                                        if ($row['enable_donation'] != "Yes") {
+                                                        print "
+                                                        <form name=\"myform\" action=\"index.php\" method=\"post\">
+                                                        <input type=\"hidden\" name=\"id\" value=\"$row[id]\">
+                                                        <input type=\"hidden\" name=\"section\" value=\"cart\">
+                                                        <input type=\"hidden\" name=\"viewID\" value=\"$viewID\">
+							<div class=\"row top-buffer\">
+								<div class=\"col-sm-4\"><b>Ticket:</b></div>
+								<div class=\"col-sm-4\"><b>Price:</b></div>
+								<div class=\"col-sm-4\"><b>Quantity:</b></div>
+							</div>";
+                                                        while ($row2 = $result2->fetch_assoc()) {
+                                                                // check qty
+                                                                $total_avail = $row2['qty'];
+                                                                $sql3 = "
+                                                                SELECT
+                                                                        SUM(`qty`) AS 'total'
+                                                                FROM
+                                                                        `cart`
+                                                                WHERE
+                                                                        `cart`.`ticketID` = '$row2[id]'
+                                                                        AND `cart`.`status` = 'Paid'
+                                                                ";
+                                                                $qty_used = "0";
+                                                                $result3 = $this->new_mysql($sql3);
+                                                                while ($row3 = $result3->fetch_assoc()) {
+                                                                        $qty_used = $row3['total'];
+                                                                }
+                                                                if ($qty_used >= $total_avail) {
+                                                                        print "
+									<div class=\"row top-buffer\">
+									<div class=\"col-sm-12\"><font color=red>Sorry, <b>$row2[name]</b> is sold out.</font></div>
+									</div>";
+                                                                } else {
+                                                                        print "<div class=\"row top-buffer\">
+									<div class=\"col-sm-4\">$row2[name]</div>
+									<div class=\"col-sm-4\">$".number_format($row2['price'],2,'.',',')."</div>
+									<div class=\"col-sm-4\"><select name=\"qty$row2[id]\">$qty</select></div>
+									</div>";
+                                                                }
+                                                                $found = "1";
+                                                        }
+                                                        if ($found != "1") {
+                                                                print "<div class=\"row top-buffer\"><div class=\"col-sm-12\">
+								<font color=blue>Sorry, but tickets are not yet available.</font></div></div>";
+                                                        } else {
+                                                                $check_today = date("Ymd");
+                                                                if ($check_today > $row['end_date2']) {
+                                                                        print "<div class=\"row top-buffer\"><div class=\"col-sm-12\">
+									<font color=red>This event is now closed.</font></div></div>";
+                                                                } else {
+                                                                        print "<div class=\"row top-buffer\"><div class=\"col-sm-12\">
+									<input type=\"submit\" class=\"btn btn-success btn-lg\" value=\"Purchase Tickets\"></div></div>";
+                                                                }
+                                                        }
+                                                        print "
+                                                        </form>";
+                                                        } else {
+                                                                print "
+                                                                <form name=\"myform\" action=\"index.php\" method=\"post\">
+                                                                <input type=\"hidden\" name=\"id\" value=\"$row[id]\">
+                                                                <input type=\"hidden\" name=\"section\" value=\"donate\">
+                                                                <input type=\"hidden\" name=\"viewID\" value=\"$viewID\">
+                                                                ";
+
+                                                                print "<div class=\"row top-buffer\">";
+                                                                print "<div class=\"col-sm-12\">Donation Goal: $$row[donation_goal]</b></div></div>";
+                                                                print "<div class=\"row top-buffer\">
+								<div class=\"col-sm-6\">
+                     							<input type=\"radio\" name=\"donate\" value=\"p1\" checked> Donate $5
+								</div>
+								<div class=\"col-sm-6\">
+                                                                        <input type=\"radio\" name=\"donate\" value=\"p2\"> Donate $25
+								</div>
+								</div>
+
+								<div class=\"row top-buffer\">
+								<div class=\"col-sm-6\">
+                                                                        <input type=\"radio\" name=\"donate\" value=\"p3\"> Donate $50
+								</div>
+								<div class=\"col-sm-6\">
+                                                                        <input type=\"radio\" name=\"donate\" value=\"p4\"> Donate $100
+								</div>
+								</div>
+
+								<div class=\"row top-buffer\">
+								<div class=\"col-sm-6\">
+                                                                        <input type=\"radio\" name=\"donate\" value=\"p5\"> Donate $250
+								</div>
+								<div class=\"col-sm-6\">
+                                                                        <input type=\"radio\" name=\"donate\" value=\"p6\"> Donate $<input type=\"text\" name=\"custom_amount\" size=10>
+								</div>
+								</div>
+
+								<div class=\"row top-buffer\">
+								<div class=\"col-sm-12\">
+                                                                <input type=\"submit\" value=\"Donate\" class=\"btn btn-success\">
+                                                                </div></div>
+								</form>";
+
+                                                        }
+
+
+
+	print '
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+   ';
+
+?>
+
 
 
 
@@ -244,87 +397,10 @@ Code disabled per David
         <div class="col-md-6  col-sm-6 col-xs-12 center"> 
 
 <!-- TICKET INFO and PRICE OPTIONS / PURCHASE BUTTON / REGISTER FOR EVENT BUTTON -->    
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Buy Tickets</button><br><br>
 
 
-                                                        <?php
-                                                        $sql2 = "SELECT * FROM `tickets` WHERE `eventID` = '$row[id]'";
-                                                        $result2 = $this->new_mysql($sql2);
-                                                        for ($y=0; $y < 51; $y++) {
-                                                                $qty .= "<option value=\"$y\">$y</option>";
-                                                        }
-                                                        $viewID = rand(50,500);
-
-                                                        if ($row['enable_donation'] != "Yes") {
-                                                        print "
-                                                        <form name=\"myform\" action=\"index.php\" method=\"post\">
-                                                        <input type=\"hidden\" name=\"id\" value=\"$row[id]\">
-                                                        <input type=\"hidden\" name=\"section\" value=\"cart\">
-                                                        <input type=\"hidden\" name=\"viewID\" value=\"$viewID\">
-                                                        <table class=\"table\">
-                                                        <tr><td><b>Ticket:</b></td><td><b>Price:</b></td><td><b>Quantity:</b></td></tr>";
-                                                        while ($row2 = $result2->fetch_assoc()) {
-                                                                // check qty
-                                                                $total_avail = $row2['qty'];
-                                                                $sql3 = "
-                                                                SELECT
-                                                                        SUM(`qty`) AS 'total'
-                                                                FROM
-                                                                        `cart`
-                                                                WHERE
-                                                                        `cart`.`ticketID` = '$row2[id]'
-                                                                        AND `cart`.`status` = 'Paid'
-                                                                ";
-                                                                $qty_used = "0";
-                                                                $result3 = $this->new_mysql($sql3);
-                                                                while ($row3 = $result3->fetch_assoc()) {
-                                                                        $qty_used = $row3['total'];
-                                                                }
-                                                                if ($qty_used >= $total_avail) {
-                                                                        print "<tr><td colspan=3><font color=red>Sorry, <b>$row2[name]</b> is sold out.</font></td></tr>";
-                                                                } else {
-                                                                        print "<tr><td>$row2[name]</td><td>$".number_format($row2['price'],2,'.',',')."</td><td><select name=\"qty$row2[id]\">$qty</select></td></tr>";
-                                                                }
-                                                                $found = "1";
-                                                        }
-                                                        if ($found != "1") {
-                                                                print "<tr><td colspan=3><font color=blue>Sorry, but tickets are not yet available.</font></td></tr>";
-                                                        } else {
-                                                                $check_today = date("Ymd");
-                                                                if ($check_today > $row['end_date2']) {
-                                                                        print "<tr><td colspan=3><font color=red>This event is now closed.</font></td></tr>";
-                                                                } else {
-                                                                        print "<tr><td colspan=3><input type=\"submit\" class=\"btn btn-primary\" value=\"Purchase Tickets\"></td></tr>";
-                                                                }
-                                                        }
-                                                        print "</table>
-                                                        </form>";
-                                                        } else {
-                                                                print "
-                                                                <form name=\"myform\" action=\"index.php\" method=\"post\">
-                                                                <input type=\"hidden\" name=\"id\" value=\"$row[id]\">
-                                                                <input type=\"hidden\" name=\"section\" value=\"donate\">
-                                                                <input type=\"hidden\" name=\"viewID\" value=\"$viewID\">
-                                                                ";
-
-                                                                print "<table class=\"table\">";
-                                                                print "<tr><td colspan=2><b>Donation Goal: $$row[donation_goal]</b></td></tr>";
-                                                                print "<tr>
-                                                                        <td><input type=\"radio\" name=\"donate\" value=\"p1\" checked> Donate $5</td>
-                                                                        <td><input type=\"radio\" name=\"donate\" value=\"p2\"> Donate $25</td>
-                                                                </tr>
-                                                                <tr>
-                                                                        <td><input type=\"radio\" name=\"donate\" value=\"p3\"> Donate $50</td>
-                                                                        <td><input type=\"radio\" name=\"donate\" value=\"p4\"> Donate $100</td>
-                                                                </tr>
-                                                                <tr>
-                                                                        <td><input type=\"radio\" name=\"donate\" value=\"p5\"> Donate $250</td>
-                                                                        <td><input type=\"radio\" name=\"donate\" value=\"p6\"> Donate $<input type=\"text\" name=\"custom_amount\" size=10></td>
-                                                                </tr>
-                                                                <tr><td colspan=2><input type=\"submit\" value=\"Donate\" class=\"btn btn-success\"></td></tr>
-                                                                </table></form>";
-
-                                                        }
-
+			<?php
                                                         if ($row['registration'] == "Yes") {
                                                                 print "
                                                                 <form action=\"registration.php\" style=\"display:inline\" method=\"post\"><input type=\"hidden\" name=\"id\" value=\"$row[id]\">&nbsp;&nbsp;<input type=\"submit\" class=\"btn btn-success\" value=\"Register For Event\"></form>";

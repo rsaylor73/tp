@@ -241,6 +241,10 @@ class Tickets {
                 SELECT
                         `events`.`title`,
                         DATE_FORMAT(`events`.`start_date`, '%m/%d/%Y') AS 'start_date',
+			DATE_FORMAT(`events`.`start_date`, '%W') AS 'weekday',
+			DATE_FORMAT(`events`.`start_date`, '%l:%i%p') AS 'timedate',
+			DATE_FORMAT(`events`.`start_date`, '%Y') AS 'year',
+			DATE_FORMAT(`events`.`start_date`, '%e %b') AS 'date1',
                         DATE_FORMAT(`events`.`end_date`, '%m/%d/%Y') AS 'end_date',
                         `events`.`cover_image`,
                         `location`.`location`,
@@ -259,7 +263,7 @@ class Tickets {
 		LIMIT 8
 		";
 
-		$html .= "<table><tr>";
+		$html .= "<div class=\"sh-width\">";
 
 		$result = $this->new_mysql($sql);
 		while ($row = $result->fetch_assoc()) {
@@ -275,26 +279,67 @@ class Tickets {
                         }
 			$views = $this->get_views($row['id']);
 			$cover = "";
+
+			$html .= "
+			    <div class=\"event\">
+			      <div class=\"event-cover\">
+			        <div class=\"event-bg\"></div>
+			        <img src=\"uploads/$row[userID]/cover/$row[id]/$row[cover_image]\">
+
+		        <div class=\"event-title\">
+		          <div class=\"event-dmy\">
+		            $row[date1]<span>$row[year]</span>
+		            <div class=\"event-week\">$row[weekday]</div>
+		            <div class=\"event-time\">$row[timedate]</div>
+		          </div><!-- end .event-dmy -->
+
+		          <h2>
+		          <center>
+		          <a href=\"https://www.$settings[8]/index.php?section=page_view&id=$row[id]\">$row[title]</a>
+		          </center>
+		          </h2>
+		        </div><!-- end .event-title -->
+		        <div class=\"event-info\">
+		          <div class=\"event-venue\"></div>
+		
+		        </div><!-- end .event-info -->
+
+		        <div class=\"event-lv\">
+		          <i class=\"fa fa-eye fa-lg\"></i>
+		          <div class=\"info-view\">$views</div>
+		        </div><!-- end .event-lv -->
+		      </div><!-- end .event-cover -->
+		    </div><!-- end .event -->
+			";
+
+
+
 			if ($row['cover_image'] != "") {
-				$cover = "<tr><td colspan=2><center>$link1<img src=\"uploads/$row[userID]/cover/$row[id]/$row[cover_image]\" width=\"300\" height=\"200\"></center>$link2</td></tr>";
+				//$cover = "<tr><td colspan=2><center>$link1<img src=\"uploads/$row[userID]/cover/$row[id]/$row[cover_image]\" width=\"300\" height=\"200\"></center>$link2</td></tr>";
 			}
 
 			if ($counter == "4") {
-				$html .= "</tr><tr>";
+				$html .= "</div><div class=\"sh-width\">";
+				//$html .= "</tr><tr>";
 				$counter = 0;
 			}
 
+			
+
+			/*
 			$html .= "<td><table border=0 width=300  style=\"display: inline\">
 			$cover
 			<tr bgcolor=#FFFFFF><td colspan=2><center>$link</center></td></tr>
 			<tr bgcolor=#FFFFFF><td colspan=2><center><i class=\"fa fa-map-marker\" font color=\"#99A9C2\"></i> <font color=#99A9C2>$row[location]</font></td></tr>
 			<tr bgcolor=#EFEFEF><td align=left><i class=\"fa fa-calendar fa-lg\" style=\"color:#99A9C2\"></i> $row[start_date]</td><td align=right><i class=\"fa fa-eye fa-lg\"></i> $views</td></tr>
 			</table></td>";
+			*/
 			$counter++;
 			
 			
 		}
-		$html .= "</tr></table>";
+		$html .= "</div>";
+		//$html .= "</tr></table>";
 
 		if ($html == "") {
 			$html = "No upcoming events...";
@@ -3463,6 +3508,13 @@ class Tickets {
 	}
 
 	public function cart() {
+
+		print '
+		<style>
+		.top-buffer { margin-top:10px; margin-left:10px; margin-right:10px; }
+		</style>
+		';
+
                 print "<div id=\"page_view2\"><div id=\"cart_inner\">";
 		$sql = "
 		SELECT
@@ -3481,8 +3533,11 @@ class Tickets {
 		$result = $this->new_mysql($sql);
 		while ($row = $result->fetch_assoc()) {
 			$more_info = $row['more_info'];
+			print "<div class\"row top-buffer\">
+			<div class=\"col-sm-12\">";
 			print "<h2>$row[title]</h2>
 			<h3>$row[start_date] to $row[end_date] from $row[start_time] to $row[end_time]</h3>";
+			print "</div></div>";
 		}
 
 		if ($_POST['act'] == "apply_code") {
@@ -3496,7 +3551,9 @@ class Tickets {
 				$type = $row['amount_how'];
 			}
 			if ($Dfound != "1") {
+				print "<div class=\"row top-buffer\"><div class=\"col-sm-12\">";
 				print "<font color=red>Sorry, the discount code entered was invalid or expired.</font><br>";
+				print "</div></div>";
 			}
 		}
 
@@ -3505,14 +3562,15 @@ class Tickets {
 		<input type=\"hidden\" name=\"section\" value=\"checkout\">
 		<input type=\"hidden\" name=\"id\" value=\"$_POST[id]\">
                 <input type=\"hidden\" name=\"viewID\" value=\"$_POST[viewID]\">
-		<table class=\"table\">
-		<tr>
-			<td><b>Ticket</b></td>
-			<td><b>Price</b></td>
-			<td><b>Assign To Name</b></td>
-			<td><b>Assign To Email</b></td>
-			<td><b>Amount</b></td>
-		</tr>";
+		<div class=\"row top-buffer\">
+			<div class=\"col-sm-2\"><b>Ticket</b></div>
+			<div class=\"col-sm-2\"><b>Price</b></div>
+			<div class=\"col-sm-3\"><b>Assign To Name</b></div>
+			<div class=\"col-sm-3\"><b>Assign To Email</b></div>
+			<div class=\"col-sm-2\"><b>Amount</b></div>
+		</div>
+		";
+
 		$sql = "SELECT * FROM `tickets` WHERE `eventID` = '$_POST[id]'";
 		$result = $this->new_mysql($sql);
 		while ($row = $result->fetch_assoc()) {
@@ -3541,17 +3599,19 @@ class Tickets {
 	                        }
 				$total_sold = $total_sold + $_POST[$i];
 				if ($total_sold > $total_qty) {
-					print "<tr><td colspan=5><font color=red>You have selected a quantity that is greater then what is available for <b>$row[name]</b>. Please click back and select a lesser quantity.</font></td></tr>";
+					print "<div class=\"row top-buffer\"><div class=\"col-sm-12\">";
+					print "<font color=red>You have selected a quantity that is greater then what is available for <b>$row[name]</b>. Please click back and select a lesser quantity.</font>";
+					print "</div></div>";
 					$err = "1";
 				} else {
 					print "<input type=\"hidden\" name=\"$i\" value=\"$_POST[$i]\">";
 					$amount = $row['price'] * $_POST[$i];
 					for ($y=0; $y < $_POST[$i]; $y++) {
 						$number++;
-						print "<tr>
-							<td>$row[name]</td>
-							<td>$$row[price]</td>
-							<td><input type=\"text\" name=\"name_$row[id]_$y\" id=\"name_$row[id]_$y\" required> <a href=\"javascript:void(0)\" onclick=\"copy_name()\" size=40>Copy To All Tickets</a></td>
+						print "<div class=\"row top-buffer\">
+						<div class=\"col-sm-2\">$row[name]</div>
+						<div class=\"col-sm-2\">$$row[price]</div>
+						<div class=\"col-sm-3\"><input type=\"text\" name=\"name_$row[id]_$y\" id=\"name_$row[id]_$y\" required> <a href=\"javascript:void(0)\" onclick=\"copy_name()\" size=40>Copy To All Tickets</a></div>
 							";
 							$y2 = $y + 1;
 							if ($y2 < $_POST[$i]) {
@@ -3561,12 +3621,12 @@ class Tickets {
 							}
 
 							print "
-							<td><input type=\"text\" name=\"email_$row[id]_$y\" id=\"email_$row[id]_$y\" required> <a href=\"javascript:void(0)\" onclick=\"copy_email()\" size=60>Copy To All Tickets</a></td></td>
-							<td>$".number_format($row['price'],2,'.',',')."</td>
-						</tr>";
+							<div class=\"col-sm-3\"><input type=\"text\" name=\"email_$row[id]_$y\" id=\"email_$row[id]_$y\" required> <a href=\"javascript:void(0)\" onclick=\"copy_email()\" size=60>Copy To All Tickets</a></div>
+							<div class=\"col-sm-2\">$".number_format($row['price'],2,'.',',')."</div>
+						</div>";
 
 						if ($row['more_info'] != "") {
-							print "<tr><td colspan=5>$row[more_info]</td></tr>";
+							print "<div class=\"row top-buffer\"><div class=\"col-sm-12\">$row[more_info]</div></div>";
 						}
 
 					}
@@ -3607,16 +3667,17 @@ class Tickets {
 			}
 			if ($err != "1") {
 		                $fees = $this->get_fees($total,$number);
-        	                print "<tr><td colspan=4>Service Fee's</td><td>$".number_format($fees,2,'.',',')."</td></tr>";
+        	                print "<div class=\"row top-buffer\"><div class=\"col-sm-12\">Service Fee's</td><td>$".number_format($fees,2,'.',',')."</div></div>";
                 	        $grand_total = $total + $fees;
 
 				if ($total_discount != "") {
-					print "<tr><td colspan=4>Discount:</td><td>$".number_format($total_discount,2,'.',',')."</td></tr>";
+					print "<div class=\"row top-buffer\"><div class=\"col-sm-6\">Discount:</div><div class=\"col-sm-6\">$".number_format($total_discount,2,'.',',')."</div>";
 				}
 
-	                        print "<tr><td colspan=4>Total:</td><td>$".number_format($grand_total,2,'.',',')."</td></tr>";
-				print "<tr><td colspan=5>To make any changes click back or if you are ready click check out.</td></tr>
-				<tr><td colspan=4><div id=\"timeleft\"></div></td><td><input type=\"checkbox\" name=\"terms\" value=\"checked\" required>&nbsp;
+	                        print "<div class=\"row top-buffer\"><div class=\"col-sm-6\">Total:</div><div class=\"col-sm-6\">$".number_format($grand_total,2,'.',',')."</div></div>";
+				print "<div class=\"row top-buffer\"><div class=\"col-sm-12\">To make any changes click back or if you are ready click check out.</div></div>
+				<div class=\"row top-buffer\"><div class=\"col-sm-12\"><div id=\"timeleft\"></div><br>
+				<input type=\"checkbox\" name=\"terms\" value=\"checked\" required>&nbsp;
 
 				I acknowledge that I have read and agree with Ticket Pointe's <a href=\"terms.html\">terms of service</a>.&nbsp;&nbsp;
 
@@ -3635,18 +3696,17 @@ class Tickets {
 			<?php
 
 			print "
-			</td></tr>";
+			</div></div>";
 
 		} else {
 			if ($number > 0) {
-                                print "<tr><td colspan=4>&nbsp;</td><td><input type=\"checkbox\" name=\"terms\" value=\"checked\" required>&nbsp;
-                                 I acknowledge that I have read and agree with Ticket Pointe's <a href=\"terms.html\">terms of service</a>.<br>
-			&nbsp;&nbsp;<input type=\"submit\" class=\"btn btn-primary\" id=\"ck\" value=\"Check Out\"></td></tr>";
+                                print "<div class=\"row top-buffer\"><div class=\"col-sm-12\"><input type=\"checkbox\" name=\"terms\" value=\"checked\" required>&nbsp;
+                                 I acknowledge that I have read and agree with Ticket Pointe's <a href=\"terms.html\">terms of service</a>.
+			&nbsp;&nbsp;<input type=\"submit\" class=\"btn btn-primary\" id=\"ck\" value=\"Check Out\"></div></div>";
 			} else {
-				print "<tr><td colspan=5>Sorry, you did not add any tickets to your cart.</td></tr>";
+				print "<div class=\"row top-buffer\"><div class=\"col-sm-12\">Sorry, you did not add any tickets to your cart.</div></div>";
 			}
 		}
-		print "</table>";
 		print "<input type=\"hidden\" name=\"discount\" value=\"$_POST[discount]\">";
 		print "</form>";
 
@@ -3658,7 +3718,7 @@ class Tickets {
 			print "<input type=\"hidden\" name=\"$key\" value=\"$value\">";
 		}
 		print "
-		<input type=\"hidden\" name=\"act\" value=\"apply_code\">
+		<div class=\"row top-buffer\"><div class=\"col-sm-12\"><input type=\"hidden\" name=\"act\" value=\"apply_code\">
 		Discount Code: <input type=\"text\" name=\"discount\" size=20> <input type=\"submit\" class=\"btn btn-primary\" value=\"Apply Discount\"> &nbsp;&nbsp;
 		<!--<input type=\"button\" name=\"more_info\" id=\"more_info\" class=\"btn btn-success\" value=\"More Info\" onclick=\"
 			document.getElementById('display_more_info').style.display='inline';
@@ -3673,6 +3733,7 @@ class Tickets {
 
 		\">
 		</div>
+		</div></div>
 
 		";
 		}
@@ -3976,6 +4037,12 @@ class Tickets {
 
 
 	public function cart_checkout() {
+                print '
+                <style>
+                .top-buffer { margin-top:10px; margin-left:10px; margin-right:10px; }
+                </style>
+                ';
+
 		$sesID = session_id();
 
                 $sql = "SELECT * FROM `tickets` WHERE `eventID` = '$_POST[id]'";
@@ -4027,8 +4094,10 @@ class Tickets {
                 ";
                 $result = $this->new_mysql($sql);
                 while ($row = $result->fetch_assoc()) {
-                        print "<h2>$row[title]</h2>
-                        <h3>$row[start_date] to $row[end_date] from $row[start_time] to $row[end_time]</h3>";
+                        print "
+			<div class=\"row top-buffer\"><div class=\"col-sm-12\">
+				<h2>$row[title]</h2>
+                        	<h3>$row[start_date] to $row[end_date] from $row[start_time] to $row[end_time]</h3></div></div>";
                 }
 		$sql = "SELECT `price`,`qty` FROM `cart` WHERE `viewID` = '$_POST[viewID]' AND `eventID` = '$_POST[id]' AND `sessionID` = '$sesID'";
 		$result = $this->new_mysql($sql);
@@ -4066,14 +4135,14 @@ class Tickets {
                 $fees = $this->get_fees($total,$number);
 		$total = $total + $fees;
 		if ($Dfound == "1") {
-			print "<br>Discount: $".number_format($total_discount,2,'.',',')."";
+			print "<div class=\"row top-buffer\"><div class=\"col-sm-12\">Discount: $".number_format($total_discount,2,'.',',')."</div></div>";
 			$_SESSION['discount'] = $_POST['discount'];
 		}
 
 
 
 		if ($total2 > 0) {
-			print "<br>Total: $".number_format($total,2,'.',',')."<br>Please complete the credit card form below. Be sure to enter in a valid email so you can receive your e-tickets.<br>";
+			print "<div class=\"row top-buffer\"><div class=\"col-sm-12\">Total: $".number_format($total,2,'.',',')."<br>Please complete the credit card form below. Be sure to enter in a valid email so you can receive your e-tickets.</div></div>";
 			$this->get_cc_form('index.php');
 		}
 
@@ -4085,6 +4154,12 @@ class Tickets {
 
 
         public function cart_checkout_iframe() {
+                print '
+                <style>
+                .top-buffer { margin-top:10px; margin-left:10px; margin-right:10px; }
+                </style>
+                ';
+
                 $sesID = session_id();
 
                 $sql = "SELECT * FROM `tickets` WHERE `eventID` = '$_POST[id]'";
@@ -4136,8 +4211,8 @@ class Tickets {
                 ";
                 $result = $this->new_mysql($sql);
                 while ($row = $result->fetch_assoc()) {
-                        print "<h2>$row[title]</h2>
-                        <h3>$row[start_date] to $row[end_date] from $row[start_time] to $row[end_time]</h3>";
+                        print "<div class=\"row top-buffer\"><div class=\"col-sm-12\"><h2>$row[title]</h2>
+                        <h3>$row[start_date] to $row[end_date] from $row[start_time] to $row[end_time]</h3></div></div>";
                 }
                 $sql = "SELECT `price`,`qty` FROM `cart` WHERE `viewID` = '$_POST[viewID]' AND `eventID` = '$_POST[id]' AND `sessionID` = '$sesID'";
                 $result = $this->new_mysql($sql);
@@ -4176,12 +4251,12 @@ class Tickets {
                 $fees = $this->get_fees($total,$number);
                 $total = $total + $fees;
                 if ($Dfound == "1") {
-                        print "<br>Discount: $".number_format($total_discount,2,'.',',')."";
+                        print "<div class=\"row top-buffer\"><div class=\"col-sm-12\">Discount: $".number_format($total_discount,2,'.',',')."</div></div>";
                         $_SESSION['discount'] = $_POST['discount'];
                 }
 
                 if ($total2 > 0) {
-                        print "<br>Total: $".number_format($total,2,'.',',')."<br>Please complete the credit card form below. Be sure to enter in a valid email so you can receive your e-tickets.<br>";
+                        print "<div class=\"row top-buffer\"><div class=\"col-sm-12\">Total: $".number_format($total,2,'.',',')."<br>Please complete the credit card form below. Be sure to enter in a valid email so you can receive your e-tickets.</div></div>";
                         $this->get_cc_form('tickets_iframe.php');
                 }
 
@@ -4968,36 +5043,39 @@ $template = '
 
 
 	        <input id="token" name="token" type="hidden" value="<?=$_SESSION['token'];?>">
-                                <table class="table">
-                                <tr>
-                                        <td><input type="text" name="name" placeholder="Your First and Last Name" size=40 required>
-                                        </td>
-                                </tr>
-                                <tr>
-                                        <td><input type="text" name="addr1" placeholder="Address" size=40></td>
-                                </tr>
-                                <tr>
-                                        <td><input type="text" name="city" placeholder="city" size=40></td>
-                                </tr>
-                                <tr>
-                                        <td><select name="state"><?=$state?></select></td>
-                                </tr>
-                                <tr>
-                                        <td><input type="text" name="zip" placeholder="Zip Code" size=40></td>
-                                </tr>
-                                <tr>
-                                        <td><input type="text" name="email" placeholder="Your email address" size=40 required></td>
-                                </tr>
-                                <tr>
-                                        <td><input type="text" name="phone" placeholder="Your phone number" size=40></td>
-                                </tr>
-
-
-                <tr><td>
-                    <input type="submit" value="Complete Order" class="btn btn-primary">
-                </td></tr>
-        </table>
-        <br><br><br>
+                                <div class="row top-buffer">
+				<div class="col-sm-12">
+                                        <input type="text" name="name" placeholder="Your First and Last Name" size=40 required>
+				</div>
+				</div>
+                                <div class="row top-buffer">
+                                <div class="col-sm-12">
+                                        <input type="text" name="addr1" placeholder="Address" size=40>
+				</div></div>
+                                <div class="row top-buffer">
+                                <div class="col-sm-12">
+                                        <input type="text" name="city" placeholder="city" size=40>
+				</div></div>
+                                <div class="row top-buffer">
+                                <div class="col-sm-12">
+                                        <select name="state"><?=$state?></select>
+				</div></div>
+                                <div class="row top-buffer">
+                                <div class="col-sm-12">
+                                        <input type="text" name="zip" placeholder="Zip Code" size=40>
+				</div></div>
+                                <div class="row top-buffer">
+                                <div class="col-sm-12">
+                                        <input type="text" name="email" placeholder="Your email address" size=40 required>
+				</div></div>
+                                <div class="row top-buffer">
+                                <div class="col-sm-12">
+                                        <input type="text" name="phone" placeholder="Your phone number" size=40>
+				</div></div>
+				<div class="row top-buffer">
+				<div class="col-sm-12">
+                    			<input type="submit" value="Complete Order" class="btn btn-primary">
+				</div></div>
 	</form>
 	<?php
 	}
@@ -5007,6 +5085,7 @@ $template = '
 		$settings = $this->get_settings();
 		$state = $this->get_states();
 		?>
+
 
     <form id="myCCForm" action="<?=$post_to;?>" method="post">
 	<input type="hidden" name="section" value="payment">
@@ -5020,53 +5099,48 @@ $template = '
                 ?>
 
 
-
-                                <table class="table">
-                                <tr>
-                                        <td><input type="text" name="name" placeholder="Your First and Last Name" size=40 required>
-                                        </td>
-                                </tr>
-                                <tr>
-                                        <td><input type="text" name="addr1" placeholder="Address" size=40 required></td>
-                                </tr>
-                                <tr>
-                                        <td><input type="text" name="city" placeholder="city" size=40 required></td>
-                                </tr>
-                                <tr>
-                                        <td><select name="state"><?=$state?></select></td>
-                                </tr>
-                                <tr>
-                                        <td><input type="text" name="zip" placeholder="Zip Code" size=40 required></td>
-                                </tr>
-                                <tr>
-                                        <td><input type="text" name="email" placeholder="Your email address" size=40 required></td>
-                                </tr>
-                                <tr>
-                                        <td><input type="text" name="phone" placeholder="Your phone number" size=40 required></td>
-                                </tr>
-
-
-		<tr><td>
-                <input id="ccNo" name="ccNo" type="text" size="40" placeholder="Credit Card Number" value="" autocomplete="off" required />
-		</td></tr>
-
-		<tr><td>
-		Expiration Date:<br>
-		<select name="expMonth" id="expMonth">
-			<option value="01">Jan - 01</option>
-			<option value="02">Feb - 02</option>
-			<option value="03">Mar - 03</option>
-			<option value="04">Arp - 04</option>
-			<option value="05">May - 05</option>
-			<option value="06">Jun - 06</option>
-			<option value="07">Jul - 07</option>
-			<option value="08">Aug - 08</option>
-			<option value="09">Sep - 09</option>
-			<option value="10">Oct - 10</option>
-			<option value="11">Nov - 11</option>
-			<option value="12">Dec - 12</option>
-		</select>
-                <span> / </span>
+				<div class="row top-buffer"><div class="col-sm-12">
+                                        <input type="text" name="name" placeholder="Your First and Last Name" size=40 required>
+				</div></div>
+                                <div class="row top-buffer"><div class="col-sm-12">
+                                        <input type="text" name="addr1" placeholder="Address" size=40 required>
+				</div></div>
+                                <div class="row top-buffer"><div class="col-sm-12">
+                                        <input type="text" name="city" placeholder="city" size=40 required>
+				</div></div>
+                                <div class="row top-buffer"><div class="col-sm-12">
+                                        <select name="state"><?=$state?></select>
+				</div></div>
+                                <div class="row top-buffer"><div class="col-sm-12">
+                                        <input type="text" name="zip" placeholder="Zip Code" size=40 required>
+				</div></div>
+                                <div class="row top-buffer"><div class="col-sm-12">
+                                        <input type="text" name="email" placeholder="Your email address" size=40 required>
+				</div></div>
+                                <div class="row top-buffer"><div class="col-sm-12">
+                                        <input type="text" name="phone" placeholder="Your phone number" size=40 required>
+				</div></div>
+                                <div class="row top-buffer"><div class="col-sm-12">
+		                <input id="ccNo" name="ccNo" type="text" size="40" placeholder="Credit Card Number" value="" autocomplete="off" required />
+				</div></div>
+                                <div class="row top-buffer">
+					<div class="col-sm-4">Expiration Date:</div>
+					<div class="col-sm-8">
+					 <select name="expMonth" id="expMonth">
+					<option value="01">Jan - 01</option>
+					<option value="02">Feb - 02</option>
+					<option value="03">Mar - 03</option>
+					<option value="04">Arp - 04</option>
+					<option value="05">May - 05</option>
+					<option value="06">Jun - 06</option>
+					<option value="07">Jul - 07</option>
+					<option value="08">Aug - 08</option>
+					<option value="09">Sep - 09</option>
+					<option value="10">Oct - 10</option>
+					<option value="11">Nov - 11</option>
+					<option value="12">Dec - 12</option>
+					</select>
+		                	<span> / </span>
 
 		<?php
 		$today = date("y");
@@ -5077,16 +5151,15 @@ $template = '
 
 		?>
 		<select name="expYear" id="expYear"><?=$options;?></select>
-		</td></tr>
+		</div></div>
 
-		<tr><td>
+		<div class="row top-buffer">
+		<div class="col-sm-12">
                 <input id="cvv" name="cvv" size="40" placeholder="Security code on the back" type="text" value="" autocomplete="off" required />
-		</td></tr>
-		<tr><td>
+		</div></div>
+		<div class="row top-buffer"><div class="col-sm-12">
 	            <input type="submit" value="Submit Payment" class="btn btn-primary">
-		</td></tr>
-	</table>
-	<br><br><br>
+		</div></div>
         </form>
 
 
